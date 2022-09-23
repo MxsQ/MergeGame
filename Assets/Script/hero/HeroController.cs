@@ -17,11 +17,17 @@ public class HeroController
         _hero = hero;
         HeroType = herotype;
         character = hero.GetComponent<Character>();
+        //if (herotype == HeroConstance.ARCHER)
+        //{
+        character.GetReady();
+        //}
+        //else {
+        //character.Relax()
+        //}
     }
 
-    bool inChargeStart = false;
-    bool inChargeMid = false;
-    bool inChargeShoot = false;
+    bool inChart = false;
+    bool inRelase = false;
 
     public void Update()
     {
@@ -42,52 +48,28 @@ public class HeroController
         }
         else
         {
-            //if (!inChargeStart)
-            //{
-            //    inChargeStart = true;
-            //    character.Animator.SetInteger("Charge", 2);
-            //}
-            //else if (inChargeStart && _changeTime > 1 && !inChargeMid)
-            //{
-            //    character.Animator.SetInteger("Charge", 2);
-            //    inChargeMid = true;
-            //}
-            //else if (inChargeMid && _changeTime > 1.5 && !inChargeShoot)
-            //{
-            //    character.Animator.SetInteger("Charge", 3);
-            //    inChargeShoot = true;
-            //}
-            //else if (inChargeShoot && _changeTime > 2)
-            //{
-            //    Shoot();
-            //    _changeTime = 0;
-            //    inChargeStart = false;
-            //    inChargeMid = false;
-            //    inChargeShoot = false;
-            //}
-
-            if (_changeTime > 2)
+            if (!inChart && !inRelase)
             {
-                Shoot();
+                character.Animator.SetInteger("Charge", 1);
+                inChart = true;
+            }
+            else if (inChart && _changeTime > 0.8)
+            {
+                character.Animator.SetInteger("Charge", 2);
+                inChart = false;
+                inRelase = true;
+            }
+            else if (inRelase && _changeTime > 1.4)
+            {
+                character.Animator.SetInteger("Charge", 0);
+                inChart = false;
+                inRelase = false;
                 _changeTime = 0;
             }
-
         }
 
     }
 
-    public IEnumerator test()
-    {
-        character.Animator.SetInteger("Charge", 1); // 0 = ready, 1 = charging, 2 = release, 3 = cancel.
-
-        yield return new WaitForSeconds(1);
-
-        character.Animator.SetInteger("Charge", 2);
-
-        yield return new WaitForSeconds(1);
-
-        character.Animator.SetInteger("Charge", 0);
-    }
 
     private void Shoot()
     {

@@ -22,6 +22,10 @@ public class MergeItem : MonoBehaviour
         //Log.D("word ps = " + Camera.main.WorldToScreenPoint(_mPostion));
     }
 
+    public void Update()
+    {
+        _heroController.Update();
+    }
 
     public bool InZone(Vector2 screenPs)
     {
@@ -93,16 +97,4 @@ public class MergeItem : MonoBehaviour
         CharacterLevel = 0;
     }
 
-    private float _cha = 0;
-    private void Update()
-    {
-        _heroController.Update();
-        _cha += Time.deltaTime;
-        if (_cha >= 2 && CharacterType == HeroConstance.ARCHER)
-        {
-            StartCoroutine(_heroController.test());
-            _cha = 0;
-        }
-
-    }
 }
