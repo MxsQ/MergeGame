@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Sprites
+  serializedVersion: 2
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 0af4020a146fa1d49b603e0e1dfa595d, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 271ba1104896b0e4dbe3a92a984d47d1, type: 3}
+  - {fileID: 21300000, guid: 72d420706955deb4dab456703f703b2f, type: 3}
+  - {fileID: 21300000, guid: 322a1041b3c923b42a38581c719b6346, type: 3}
+  - {fileID: 21300000, guid: 230106a181d15a04ba61f57daccc3398, type: 3}
+  - {fileID: 21300000, guid: d9402122012e28a4f81cba395911a7ba, type: 3}
+  - {fileID: 21300000, guid: c77579032c21d4342afd1b135c0e0083, type: 3}
+  - {fileID: 21300000, guid: bef9abb342dd76b4b9b76efc9cbc9de1, type: 3}
+  - {fileID: 21300000, guid: 466d41e3762337c45937b6f618e9e9ca, type: 3}
+  - {fileID: 21300000, guid: 06407846db85bdc45815b361e2aa57cb, type: 3}
+  - {fileID: 21300000, guid: 275ffd48f9b95244587c7692f87cc101, type: 3}
+  - {fileID: 21300000, guid: 2e7edd78f2fccf24cb30b70c3beeea03, type: 3}
+  - {fileID: 21300000, guid: 4ab9a93a5da6e7f4184e16fd994f982c, type: 3}
+  - {fileID: 21300000, guid: 9bcdaacaa7ebcb94bbfcc0de96609b7e, type: 3}
+  - {fileID: 21300000, guid: 72f441ea87e407046a8dfbb184c5f842, type: 3}
+  - {fileID: 21300000, guid: 157aed9b911007240bd0f4ae9cfe8e53, type: 3}
+  - {fileID: 21300000, guid: 2d3f33ec7f132b34e80266f624ca6e0c, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - MummiesShiled2
+  - DemonSword
+  - UndeadShiled1
+  - DemonShield2
+  - MummiesShiled1
+  - MummiesSword
+  - FantasySword
+  - UndeadDagger
+  - MummiesStaff
+  - UndeadStaff
+  - FantasyShiled1
+  - FantasyStaff
+  - FantasyShiled2
+  - DemonShield1
+  - UndeadShiled2
+  - DemonStaff
+  m_RenderDataMap: {}
+  m_Tag: Sprites
+  m_IsVariant: 0
+  m_IsPlaceholder: 0
