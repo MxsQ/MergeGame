@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
@@ -8,15 +9,16 @@ public class ArrowManager : MonoBehaviour
 {
     public static ArrowManager Instance
     {
-        set;
-        get;
+        get { return _instance; }
     }
+
+    private static ArrowManager _instance;
 
     public List<TheArrow> _arrows = new List<TheArrow>();
 
     private void Awake()
     {
-        Instance = this;
+        _instance = this;
     }
 
     private void Update()
@@ -34,7 +36,7 @@ public class ArrowManager : MonoBehaviour
             }
         }
 
-        foreach (TheArrow a in _arrows)
+        foreach (TheArrow a in hittedArrow)
         {
             _arrows.Remove(a);
             GameObject.Destroy(a.Arrow);
@@ -57,7 +59,9 @@ public class TheArrow
     {
         Arrow = arrow;
         _targetPs = targetPs;
-        _speed = (arrow.transform.position - targetPs);
+        _speed = (targetPs - arrow.transform.position);
+        Vector3 rotate = new Vector3(0, 0, angle(targetPs, arrow.transform.position) - 90);
+        arrow.transform.rotation = Quaternion.Euler(rotate);
     }
 
     public void KeepMove(float delta)
@@ -69,5 +73,13 @@ public class TheArrow
     {
         var ps = Arrow.transform.position;
         return Mathf.Abs(ps.x - _targetPs.x) < 10 && Mathf.Abs(ps.y - _targetPs.y) < 10;
+    }
+
+    private float angle(Vector3 from, Vector3 to)
+    {
+        var v = Vector3.Dot(from.normalized, to.normalized);
+        float angle = Mathf.Acos(v);
+        angle *= Mathf.Rad2Deg;
+        return angle;
     }
 }

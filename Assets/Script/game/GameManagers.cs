@@ -59,9 +59,4 @@ public class GameManagers : MonoBehaviour
     public void UnRegisterHero(GameObject hero) => _hero.Remove(hero);
     public void RegisterEnemy(GameObject enemy) => _enmey.Add(enemy);
     public void UnRegisterEnemy(GameObject enemy) => _enmey.Remove(enemy);
-
-    internal GameObject FindEnemy(Character character)
-    {
-        throw new NotImplementedException();
-    }
 }

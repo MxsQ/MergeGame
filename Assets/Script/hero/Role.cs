@@ -1,5 +1,6 @@
 ﻿using Assets.HeroEditor.Common.CharacterScripts;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 
@@ -8,7 +9,6 @@ public abstract class Role
     protected Character _character;
 
     protected float _changeTime = 0;
-
 
     public Role(Character character)
     {
@@ -47,36 +47,28 @@ public class WorriorHero : Role
 
 public class ArchorHero : Role
 {
-    protected GameObject _arrow;
+    protected Sprite _arrow;
+    private int _arrowIndex = 0;
+    private int _armIndex = 0;
+    private int weaponIndex = 3;
+
+    private Transform _arm;
+    private Transform _weapon;
 
     bool inChart = false;
     bool inRelase = false;
     bool inIdle = false;
 
+
     public ArchorHero(Character character) : base(character)
     {
-        //Debug.Log(character.transform.parent.gameObject.name);
-
-
-        object tmp = GameObject.Find($"{character.name}/Animation/Body/Upper/ArmL/ForearmL[2]/HandL/Bow/FireTransform/Arrow");
-
-        //_arrow = (tmp as GameObject).GetComponent<SpriteRenderer>();
-        _arrow = tmp as GameObject;
-        _arrow.SetActive(true);
-        //int a = 1;
-        //GameManagers.Instance.StartCoroutine(findObject());
+        _arrow = character.Bow[_arrowIndex];
+        _weapon = character.BodyRenderers[3].transform;
+        CharacterBodySculptor sculptor = character.gameObject.GetComponent<CharacterBodySculptor>();
+        _arm = sculptor.ArmL;
+        //craeteAShoo();
     }
 
-    //public IEnumerator findObject()
-    //{
-    //    yield return new WaitForSeconds(1);
-
-    //    object tmp = GameObject.Find("archor0(Clone)/Animation/Body/Upper/ArmL/ForearmL[2]/HandL/Bow/FireTransform/Arrow");
-    //    //object tmp = _character.FindW("Arrow");
-    //    //_arrow = (tmp as GameObject).GetComponent<SpriteRenderer>();
-    //    _arrow = tmp as GameObject;
-    //    _arrow.SetActive(true);
-    //}
 
     public override void Update()
     {
@@ -109,18 +101,42 @@ public class ArchorHero : Role
         }
     }
 
+    private void RotateArm()
+    {
+        var targePs = GameManagers.Instance.FindEnemy(_character.gameObject).transform.position;
+        //var angle = angle(targePs, _character.transform.position);
+    }
+
+    private void craeteAShoo()
+    {
+        var originPs = _character.transform.position;
+        //_arrow.gameObject.SetActive(true);
+        var arrow = GameObject.Instantiate(_arrow);
+
+        var arrowObject = new GameObject();
+        SpriteRenderer spr = arrowObject.AddComponent(typeof(SpriteRenderer)) as SpriteRenderer;
+        spr.sprite = arrow;
+        arrowObject.transform.position = new Vector3(originPs.x, originPs.y, originPs.z);
+        arrowObject.transform.localScale = new Vector3(25, 25, 0);
+
+        arrowObject.layer = 10;
+    }
+
     private void Shoot()
     {
-        //var originPs = _character.transform.position;
+        var originPs = _character.transform.position;
         //_arrow.gameObject.SetActive(true);
-        //var arrow = GameObject.Instantiate(_arrow.sprite);
+        var arrow = GameObject.Instantiate(_arrow);
 
-        //var arrowObject = new GameObject();
-        //SpriteRenderer spr = arrowObject.AddComponent(typeof(SpriteRenderer)) as SpriteRenderer;
-        //spr.sprite = arrow;
-        //arrowObject.transform.position = new Vector3(originPs.x, originPs.y, originPs.z);
+        var arrowObject = new GameObject();
+        SpriteRenderer spr = arrowObject.AddComponent(typeof(SpriteRenderer)) as SpriteRenderer;
+        spr.sprite = arrow;
+        arrowObject.transform.position = new Vector3(originPs.x, originPs.y, originPs.z);
+        arrowObject.transform.localScale = new Vector3(25, 25, 0);
+        arrowObject.layer = 10;
 
-        //GameObject target = GameManagers.Instance.FindEnemy(_character);
-        //ArrowManager.Instance.Shoot(arrowObject, target.transform.position);
+
+        GameObject target = GameManagers.Instance.FindEnemy(_character.gameObject);
+        ArrowManager.Instance.Shoot(arrowObject, target.transform.position);
     }
 }
