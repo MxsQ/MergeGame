@@ -48,7 +48,7 @@ public class MergeItem : MonoBehaviour
             Destroy(_character);
         }
 
-        _heroController.setTo(character, characterType);
+
         _character = character;
 
         HasCharesctor = true;
@@ -56,6 +56,8 @@ public class MergeItem : MonoBehaviour
         character.transform.localScale = new Vector3(_length * 1.5f * 0.25f, _length * 1.5f * 0.25f, 1);
         character.transform.position = new Vector3(_mPostion.x, _mPostion.y + -_length / 2, 0);
         character.transform.parent = gameObject.transform;
+
+        _heroController.setTo(character, characterType);
     }
 
     public bool canbeMerge(MergeItem target)
