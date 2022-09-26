@@ -7,12 +7,16 @@ using UnityEngine;
 public abstract class Role
 {
     protected Character _character;
+    protected GameObject _parent;
+    protected Vector3 _parentOriginPs;
 
     protected float _changeTime = 0;
 
     public Role(Character character)
     {
         _character = character;
+        _parent = _character.transform.parent.gameObject;
+        _parentOriginPs = _parent.transform.position;
         character.GetReady();
     }
 
@@ -28,19 +32,53 @@ public abstract class Role
 
 public class WorriorHero : Role
 {
+    private static int _attackRange = 90;
+
+    private BoxCollider2D boxCollider;
+
+    private int speed = 180;
+
     public WorriorHero(Character character) : base(character)
     {
-
+        boxCollider = _parent.GetComponent<BoxCollider2D>();
     }
 
     public override void Update()
     {
         _changeTime += Time.deltaTime;
+        var enemy = GameManagers.Instance.FindEnemy(_parent.gameObject);
+        var targetPs = enemy.transform.position;
+        if (enemy == null)
+        {
+            _character.SetState(CharacterState.Run);
+            return;
+        }
+
+        if (boxCollider.bounds.Contains(targetPs))
+        {
+            _character.SetState(CharacterState.Ready);
+            atack();
+        }
+        else
+        {
+            var direction = (targetPs - _parent.transform.position).normalized;
+            _parent.transform.position += speed * direction * Time.deltaTime;
+        }
+
+        //if(Mathf.Abs(enemy.transform.position - _character.transform.position))
+    }
+
+    private void atack()
+    {
         if (_changeTime > 1)
         {
             _character.Slash();
             _changeTime = 0;
         }
+    }
+
+    private void moveToEnemy()
+    {
 
     }
 }

@@ -12,12 +12,13 @@ public class MergeItem : MonoBehaviour
     private GameObject _character;
     public int CharacterLevel = 0;
     public int CharacterType = -1;
-    private HeroController _heroController = new HeroController();
+    private HeroController _heroController;
 
     private void Awake()
     {
         HasCharesctor = false;
         _mPostion = gameObject.transform.position;
+        _heroController = new HeroController();
         //Log.D("position = " + _mPostion);
         //Log.D("word ps = " + Camera.main.WorldToScreenPoint(_mPostion));
     }
@@ -53,7 +54,7 @@ public class MergeItem : MonoBehaviour
 
         HasCharesctor = true;
 
-        character.transform.localScale = new Vector3(_length * 1.5f * 0.25f, _length * 1.5f * 0.25f, 1);
+        character.transform.localScale = new Vector3(_length * 0.5f, _length * 0.5f, 1);
         character.transform.position = new Vector3(_mPostion.x, _mPostion.y + -_length / 2, 0);
         character.transform.parent = gameObject.transform;
 

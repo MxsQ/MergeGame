@@ -6,9 +6,12 @@ using UnityEngine;
 
 public class HeroController
 {
-
     Role _hero;
     public int HeroType;
+
+    public HeroController()
+    {
+    }
 
     public void setTo(GameObject hero, int herotype)
     {

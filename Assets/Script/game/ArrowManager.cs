@@ -21,7 +21,7 @@ public class ArrowManager : MonoBehaviour
         _instance = this;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         var changTime = Time.deltaTime;
         List<TheArrow> hittedArrow = new List<TheArrow>();
@@ -60,7 +60,8 @@ public class TheArrow
         Arrow = arrow;
         _targetPs = targetPs;
         _speed = (targetPs - arrow.transform.position);
-        Vector3 rotate = new Vector3(0, 0, angle(targetPs, arrow.transform.position) - 90);
+        //Vector3 rotate = new Vector3(0, 0, angle(targetPs, arrow.transform.position) - 90);
+        Vector3 rotate = new Vector3(0, 0, Calculator.angle(arrow.transform.position, targetPs) - 90);
         arrow.transform.rotation = Quaternion.Euler(rotate);
     }
 
@@ -75,11 +76,11 @@ public class TheArrow
         return Mathf.Abs(ps.x - _targetPs.x) < 10 && Mathf.Abs(ps.y - _targetPs.y) < 10;
     }
 
-    private float angle(Vector3 from, Vector3 to)
-    {
-        var v = Vector3.Dot(from.normalized, to.normalized);
-        float angle = Mathf.Acos(v);
-        angle *= Mathf.Rad2Deg;
-        return angle;
-    }
+    //private float angle(Vector3 from, Vector3 to)
+    //{
+    //    var v = Vector3.Dot(from.normalized, to.normalized);
+    //    float angle = Mathf.Acos(v);
+    //    angle *= Mathf.Rad2Deg;
+    //    return angle;
+    //}
 }
