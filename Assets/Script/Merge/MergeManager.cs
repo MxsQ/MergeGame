@@ -10,19 +10,33 @@ public class MergeManager : MonoBehaviour
     //[SerializeField] GameObject warriorPrafab;
     [SerializeField] CharacterScriptableObject WorriorCharaterConfig;
     [SerializeField] CharacterScriptableObject ArchorCharaterConfig;
-    [SerializeField] Character archor;
 
     private TOUCH_STATE _curTouchState = TOUCH_STATE.IDLE;
     private MergeItem _curItem;
 
+    private bool _inGame;
+
+    private static MergeManager _instance;
+    public static MergeManager Instance
+    {
+        get { return _instance; }
+    }
+
 
     private void Awake()
     {
+        _instance = this;
         Debug.Log("awake");
+        GameManagers.OnGameStart += () => { _inGame = true; };
+        GameManagers.OnGameEnd += OnGameEnd;
     }
 
     void Update()
     {
+        if (_inGame)
+        {
+            return;
+        }
         var touchPs = GetScreenPosition();
         if (_curTouchState == TOUCH_STATE.START)
         {
@@ -32,26 +46,45 @@ public class MergeManager : MonoBehaviour
         else if (_curTouchState == TOUCH_STATE.MOUVE)
         {
             Log.D("touch move: " + touchPs);
-            _curItem?.MoveTo(touchPs);
+            if (_curItem == null || !_curItem.HasCharesctor)
+            {
+                return;
+            }
+            _curItem.MoveTo(touchPs);
         }
         else if (_curTouchState == TOUCH_STATE.END)
         {
-            if (_curItem == null)
+            if (_curItem == null || !_curItem.HasCharesctor)
             {
                 return;
             }
 
             var mergeTarget = findBy(touchPs);
-            if (_curItem == mergeTarget || !_curItem.canbeMerge(mergeTarget))
+            if (_curItem != mergeTarget && mergeTarget != null && _curItem.canbeMerge(mergeTarget))
             {
-                _curItem?.MoveToOriginal();
-            }
-            else
-            {
+                // merge
                 int newLevel = mergeTarget.CharacterLevel + 1;
                 GameObject newCharacter = getCharacterBy(mergeTarget.CharacterType, newLevel);
                 mergeTarget.mergetCharactor(newCharacter);
                 _curItem.Reset();
+            }
+            else if (_curItem != mergeTarget && mergeTarget != null && !mergeTarget.HasCharesctor)
+            {
+                // move to new position
+                _curItem.MoveToOriginal();
+                mergeTarget.MoveFrom(_curItem);
+            }
+            else if (_curItem != mergeTarget && mergeTarget != null && mergeTarget.CanbeExchangePosition(_curItem))
+            {
+                // exchange each position
+                mergeTarget.ExchangeTo(_curItem);
+                _curItem.MoveToOriginal();
+                mergeTarget.MoveToOriginal();
+            }
+            else
+            {
+                // move to original position
+                _curItem.MoveToOriginal();
             }
 
             _curItem = null;
@@ -172,6 +205,18 @@ public class MergeManager : MonoBehaviour
             }
         }
         return cur;
+    }
+
+    private void OnGameEnd()
+    {
+        _inGame = false;
+        foreach (MergeItem i in mergeItems)
+        {
+            if (i.HasCharesctor)
+            {
+                i.MoveToOriginal();
+            }
+        }
     }
 
     enum TOUCH_STATE

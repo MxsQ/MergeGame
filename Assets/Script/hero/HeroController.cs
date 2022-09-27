@@ -9,8 +9,12 @@ public class HeroController
     Role _hero;
     public int HeroType;
 
+    private bool _inGame;
+
     public HeroController()
     {
+        GameManagers.OnGameStart += () => { _inGame = true; };
+        GameManagers.OnGameEnd += onGameEnd;
     }
 
     public void setTo(GameObject hero, int herotype)
@@ -38,10 +42,20 @@ public class HeroController
 
     public void Update()
     {
+        if (!_inGame)
+        {
+            return;
+        }
         if (_hero == null)
         {
             return;
         }
         _hero.Update();
+    }
+
+    public void onGameEnd()
+    {
+        _inGame = false;
+        _hero?.Idle();
     }
 }

@@ -15,12 +15,15 @@ public abstract class Role
 
     protected float _changeTime = 0;
 
+    protected int _damage = 100;
+
     public Role(Character character)
     {
         _character = character;
         _parent = _character.transform.parent.gameObject;
         _parentOriginPs = _parent.transform.position;
         character.GetReady();
+        Register();
     }
 
     public abstract void Update();
@@ -30,8 +33,18 @@ public abstract class Role
         _isDestroy = true;
         _character.transform.parent = null;
         GameObject.Destroy(_character);
+        unRegister();
     }
 
+    public void Idle()
+    {
+        _character.Animator.SetInteger("Charge", 0);
+        _character.SetState(CharacterState.Ready);
+    }
+
+    protected abstract GameObject findTarget();
+    protected abstract void Register();
+    protected abstract void unRegister();
 }
 
 public class WorriorHero : Role
@@ -55,17 +68,18 @@ public class WorriorHero : Role
         }
 
         _changeTime += Time.deltaTime;
-        var enemy = GameManagers.Instance.FindEnemy(_parent.gameObject);
-        var targetPs = enemy.transform.position;
+        var enemy = findTarget();
         if (enemy == null)
         {
             return;
         }
 
+        var targetPs = enemy.transform.position;
+
         if (boxCollider.bounds.Contains(targetPs))
         {
             _character.SetState(CharacterState.Ready);
-            atack();
+            atack(targetPs);
         }
         else
         {
@@ -77,19 +91,32 @@ public class WorriorHero : Role
         //if(Mathf.Abs(enemy.transform.position - _character.transform.position))
     }
 
-    private void atack()
+    protected override GameObject findTarget()
+    {
+        return GameManagers.Instance.FindEnemy(_parent.gameObject);
+    }
+
+    protected override void Register()
+    {
+        GameManagers.Instance.RegisterHero(_character.gameObject);
+    }
+
+    protected override void unRegister()
+    {
+        GameManagers.Instance.UnRegisterHero(_character.gameObject);
+    }
+
+    private void atack(Vector3 target)
     {
         if (_changeTime > 1)
         {
             _character.Slash();
             _changeTime = 0;
+            DamageManagers.Instance.postDamage(target, _damage);
         }
     }
 
-    private void moveToEnemy()
-    {
 
-    }
 }
 
 public class ArchorHero : Role
@@ -228,12 +255,72 @@ public class ArchorHero : Role
         var arrowObject = new GameObject();
         SpriteRenderer spr = arrowObject.AddComponent(typeof(SpriteRenderer)) as SpriteRenderer;
         spr.sprite = arrow;
+        spr.sortingOrder = 10;
         arrowObject.transform.position = new Vector3(originPs.x, originPs.y, originPs.z);
         arrowObject.transform.localScale = new Vector3(25, 25, 0);
-        arrowObject.layer = 31;
 
 
-        GameObject target = GameManagers.Instance.FindEnemy(_character.gameObject);
-        ArrowManager.Instance.Shoot(arrowObject, target.transform.position);
+        GameObject target = findTarget();
+        ArrowManager.Instance.Shoot(arrowObject, target, _damage);
+    }
+
+    protected override GameObject findTarget()
+    {
+        return GameManagers.Instance.FindEnemy(_character.gameObject);
+    }
+
+    protected override void Register()
+    {
+        GameManagers.Instance.RegisterHero(_character.gameObject);
+    }
+
+    protected override void unRegister()
+    {
+        GameManagers.Instance.UnRegisterHero(_character.gameObject);
+    }
+}
+
+public class EvilWorrior : WorriorHero
+{
+    public EvilWorrior(Character character) : base(character)
+    {
+    }
+
+    protected override GameObject findTarget()
+    {
+        return GameManagers.Instance.FindHero(_character.gameObject);
+    }
+
+    protected override void Register()
+    {
+        GameManagers.Instance.RegisterEnemy(_character.gameObject);
+    }
+
+    protected override void unRegister()
+    {
+        GameManagers.Instance.UnRegisterEnemy(_character.gameObject);
+    }
+}
+
+public class EvilArchor : ArchorHero
+{
+    public EvilArchor(Character character) : base(character)
+    {
+
+    }
+
+    protected override GameObject findTarget()
+    {
+        return GameManagers.Instance.FindHero(_character.gameObject);
+    }
+
+    protected override void Register()
+    {
+        GameManagers.Instance.RegisterEnemy(_character.gameObject);
+    }
+
+    protected override void unRegister()
+    {
+        GameManagers.Instance.UnRegisterEnemy(_character.gameObject);
     }
 }

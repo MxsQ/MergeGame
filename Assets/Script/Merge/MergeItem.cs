@@ -61,6 +61,28 @@ public class MergeItem : MonoBehaviour
         _heroController.setTo(character, characterType);
     }
 
+    public void MoveFrom(MergeItem exchangeItem)
+    {
+        setCharector(GameObject.Instantiate(exchangeItem.getCharacter()), exchangeItem.CharacterType, exchangeItem.CharacterLevel);
+        exchangeItem.Reset();
+    }
+
+    public void ExchangeTo(MergeItem exchangeItem)
+    {
+        var A = GameObject.Instantiate(exchangeItem.getCharacter());
+        var AType = exchangeItem.CharacterType;
+        var ALevel = exchangeItem.CharacterLevel;
+
+        var B = GameObject.Instantiate(getCharacter());
+        var BType = CharacterType;
+        var BLevel = CharacterLevel;
+
+        exchangeItem.Reset();
+        Reset();
+        setCharector(A, AType, ALevel);
+        exchangeItem.setCharector(B, BType, BLevel);
+    }
+
     public bool canbeMerge(MergeItem target)
     {
         if (_character == null
@@ -68,6 +90,19 @@ public class MergeItem : MonoBehaviour
             || !HasCharesctor
             || CharacterType != target.CharacterType
             || CharacterLevel != target.CharacterLevel)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public bool CanbeExchangePosition(MergeItem targe)
+    {
+        if (_character == null
+            || targe == null
+            || !HasCharesctor
+            || !targe.HasCharesctor
+            || (targe.CharacterType == CharacterType && targe.CharacterLevel == CharacterLevel))
         {
             return false;
         }
@@ -89,6 +124,11 @@ public class MergeItem : MonoBehaviour
     public void MoveToOriginal()
     {
         _character.transform.position = new Vector3(_mPostion.x, _mPostion.y + -_length / 2, 0);
+    }
+
+    public GameObject getCharacter()
+    {
+        return _character;
     }
 
     public void Reset()

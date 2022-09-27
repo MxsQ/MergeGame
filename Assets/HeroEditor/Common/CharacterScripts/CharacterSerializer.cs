@@ -73,7 +73,12 @@ namespace Assets.HeroEditor.Common.CharacterScripts
 			return JsonConvert.SerializeObject(description);
 		}
 
-		public override void FromJson(string serialized)
+        public static explicit operator Character(GameObject v)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void FromJson(string serialized)
 		{
             if (SpriteCollection == null) throw new Exception("SpriteCollection is not set!");
 

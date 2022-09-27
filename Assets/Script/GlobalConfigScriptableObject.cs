@@ -7,4 +7,5 @@ using UnityEngine.UI;
 public class GlobalConfigScriptableObject : ScriptableObject
 {
     public GameObject Arrow;
+    public GameObject HitText;
 }

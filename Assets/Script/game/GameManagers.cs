@@ -15,6 +15,12 @@ public class GameManagers : MonoBehaviour
     private List<GameObject> _hero = new List<GameObject>();
     private List<GameObject> _enmey = new List<GameObject>();
 
+    public static event Action OnGameStart;
+    public static event Action OnGameEnd;
+
+    public static bool InGame;
+
+
     public static GameManagers Instance
     {
         get { return _instance; }
@@ -27,13 +33,13 @@ public class GameManagers : MonoBehaviour
 
     public GameObject FindEnemy(GameObject referencePs)
     {
-        //return FindClosedTart(_enmey, referencePs);
-        return Target;
+        return FindClosedTart(_enmey, referencePs);
+        //return Target;
     }
 
     public GameObject FindHero(GameObject referencePs)
     {
-        return FindClosedTart(_enmey, referencePs);
+        return FindClosedTart(_hero, referencePs);
     }
 
     private GameObject FindClosedTart(List<GameObject> candidate, GameObject referencePs)
@@ -59,4 +65,16 @@ public class GameManagers : MonoBehaviour
     public void UnRegisterHero(GameObject hero) => _hero.Remove(hero);
     public void RegisterEnemy(GameObject enemy) => _enmey.Add(enemy);
     public void UnRegisterEnemy(GameObject enemy) => _enmey.Remove(enemy);
+
+    public void InvodeGameStart()
+    {
+        InGame = true;
+        OnGameStart.Invoke();
+    }
+
+    public void InvodeGameEnd()
+    {
+        InGame = false;
+        OnGameEnd.Invoke();
+    }
 }

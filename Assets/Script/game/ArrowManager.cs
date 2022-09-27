@@ -33,6 +33,7 @@ public class ArrowManager : MonoBehaviour
             if (a.IsHit())
             {
                 hittedArrow.Add(a);
+                DamageManagers.Instance.postDamage(a._targetPs, a._damage);
             }
         }
 
@@ -43,26 +44,30 @@ public class ArrowManager : MonoBehaviour
         }
     }
 
-    public void Shoot(GameObject arrow, Vector3 targetPs)
+    public void Shoot(GameObject arrow, GameObject target, int damage)
     {
-        _arrows.Add(new TheArrow(arrow, targetPs));
+        _arrows.Add(new TheArrow(arrow, target, damage));
     }
 }
 
 public class TheArrow
 {
     public GameObject Arrow;
-    private Vector3 _targetPs;
+    public Vector3 _targetPs;
+    private GameObject _target;
     private Vector3 _speed;
+    public int _damage;
 
-    public TheArrow(GameObject arrow, Vector3 targetPs)
+    public TheArrow(GameObject arrow, GameObject target, int damage)
     {
         Arrow = arrow;
-        _targetPs = targetPs;
-        _speed = (targetPs - arrow.transform.position);
+        _damage = damage;
+        _target = target;
+        _targetPs = _target.transform.position;
+        _speed = (_targetPs - arrow.transform.position);
 
 
-        Vector3 v = targetPs - arrow.transform.position;
+        Vector3 v = _targetPs - arrow.transform.position;
         var fix = v.y / v.x;
         var angle = Mathf.Atan(fix) * Mathf.Rad2Deg;
 
@@ -71,7 +76,7 @@ public class TheArrow
 
     public void KeepMove(float delta)
     {
-        Arrow.transform.position += delta * _speed;
+        Arrow.transform.position += delta * 2f * _speed;
     }
 
     public bool IsHit()
