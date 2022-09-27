@@ -27,11 +27,11 @@ public class MergeManager : MonoBehaviour
         if (_curTouchState == TOUCH_STATE.START)
         {
             _curItem = findBy(touchPs);
-            //Log.D("touch start: " + touchPs);
+            Log.D("touch start: " + touchPs);
         }
         else if (_curTouchState == TOUCH_STATE.MOUVE)
         {
-            //Log.D("touch move: " + touchPs);
+            Log.D("touch move: " + touchPs);
             _curItem?.MoveTo(touchPs);
         }
         else if (_curTouchState == TOUCH_STATE.END)
@@ -49,13 +49,13 @@ public class MergeManager : MonoBehaviour
             else
             {
                 int newLevel = mergeTarget.CharacterLevel + 1;
-                GameObject newCharacter = getWorriorCharacterBy(newLevel);
+                GameObject newCharacter = getCharacterBy(mergeTarget.CharacterType, newLevel);
                 mergeTarget.mergetCharactor(newCharacter);
                 _curItem.Reset();
             }
 
             _curItem = null;
-            //Log.D("touch end: " + touchPs);
+            Log.D("touch end: " + touchPs);
         }
     }
 
@@ -72,6 +72,16 @@ public class MergeManager : MonoBehaviour
         }
 
         return target;
+    }
+
+    GameObject getCharacterBy(int type, int index)
+    {
+        if (type == HeroConstance.ARCHER)
+        {
+            return getArchorCharacterBy(index);
+        }
+
+        return getWorriorCharacterBy(index);
     }
 
     GameObject getWorriorCharacterBy(int index)

@@ -60,9 +60,13 @@ public class TheArrow
         Arrow = arrow;
         _targetPs = targetPs;
         _speed = (targetPs - arrow.transform.position);
-        //Vector3 rotate = new Vector3(0, 0, angle(targetPs, arrow.transform.position) - 90);
-        Vector3 rotate = new Vector3(0, 0, Calculator.angle(arrow.transform.position, targetPs) - 90);
-        arrow.transform.rotation = Quaternion.Euler(rotate);
+
+
+        Vector3 v = targetPs - arrow.transform.position;
+        var fix = v.y / v.x;
+        var angle = Mathf.Atan(fix) * Mathf.Rad2Deg;
+
+        arrow.transform.localEulerAngles = new Vector3(0, 0, angle);
     }
 
     public void KeepMove(float delta)
@@ -75,12 +79,4 @@ public class TheArrow
         var ps = Arrow.transform.position;
         return Mathf.Abs(ps.x - _targetPs.x) < 10 && Mathf.Abs(ps.y - _targetPs.y) < 10;
     }
-
-    //private float angle(Vector3 from, Vector3 to)
-    //{
-    //    var v = Vector3.Dot(from.normalized, to.normalized);
-    //    float angle = Mathf.Acos(v);
-    //    angle *= Mathf.Rad2Deg;
-    //    return angle;
-    //}
 }

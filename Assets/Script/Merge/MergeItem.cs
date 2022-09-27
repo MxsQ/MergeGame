@@ -65,7 +65,7 @@ public class MergeItem : MonoBehaviour
     {
         if (_character == null
             || CharacterLevel >= MAX_CHARACTER_LEVEL
-            || HasCharesctor
+            || !HasCharesctor
             || CharacterType != target.CharacterType
             || CharacterLevel != target.CharacterLevel)
         {
@@ -98,6 +98,7 @@ public class MergeItem : MonoBehaviour
         GameObject.Destroy(_character);
         _character = null;
         CharacterLevel = 0;
+        _heroController.reset();
     }
 
 }

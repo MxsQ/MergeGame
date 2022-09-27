@@ -19,7 +19,7 @@ public class HeroController
         {
             _hero.Destroy();
         }
-        HeroType = HeroType;
+        HeroType = herotype;
         if (herotype == HeroConstance.ARCHER)
         {
             _hero = new ArchorHero(hero.GetComponent<Character>());
@@ -28,6 +28,12 @@ public class HeroController
         {
             _hero = new WorriorHero(hero.GetComponent<Character>());
         }
+    }
+
+    public void reset()
+    {
+        _hero.Destroy();
+        _hero = null;
     }
 
     public void Update()
