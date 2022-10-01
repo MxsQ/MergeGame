@@ -63,8 +63,8 @@ public class MergeManager : MonoBehaviour
             if (_curItem != mergeTarget && mergeTarget != null && _curItem.canbeMerge(mergeTarget))
             {
                 // merge
-                int newLevel = mergeTarget.CharacterLevel + 1;
-                GameObject newCharacter = getCharacterBy(mergeTarget.CharacterType, newLevel);
+                int newLevel = mergeTarget.CurCharacterData.Level + 1;
+                GameObject newCharacter = getCharacterBy(mergeTarget.CurCharacterData.Type, newLevel);
                 mergeTarget.mergetCharactor(newCharacter);
                 _curItem.Reset();
             }
@@ -184,14 +184,14 @@ public class MergeManager : MonoBehaviour
     {
         //Resources.Load()
         MergeItem cur = selectEmptyItem();
-        cur?.setCharector(getWorriorCharacterBy(0), HeroConstance.WORRIOR);
+        cur?.setCharector(new CharactorData(getWorriorCharacterBy(0), HeroConstance.WORRIOR));
 
     }
 
     public void OnAddArcherClick()
     {
         MergeItem cur = selectEmptyItem();
-        cur?.setCharector(getArchorCharacterBy(0), HeroConstance.ARCHER);
+        cur?.setCharector(new CharactorData(getArchorCharacterBy(0), HeroConstance.ARCHER));
     }
 
     private MergeItem selectEmptyItem()

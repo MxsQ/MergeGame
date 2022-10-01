@@ -11,33 +11,39 @@ public class HeroController
 
     private bool _inGame;
 
+    private GameObject _characterHost;
+
     public HeroController()
     {
         GameManagers.OnGameStart += () => { _inGame = true; };
         GameManagers.OnGameEnd += onGameEnd;
     }
 
-    public void setTo(GameObject hero, int herotype)
+    public void RetTo(CharactorData data)
     {
         if (_hero != null)
         {
             _hero.Destroy();
         }
-        HeroType = herotype;
-        if (herotype == HeroConstance.ARCHER)
+
+        _characterHost = data.Character;
+
+        HeroType = data.Type;
+        if (HeroType == HeroConstance.ARCHER)
         {
-            _hero = new ArchorHero(hero.GetComponent<Character>());
+            _hero = new ArchorHero(data.Character.GetComponent<Character>());
         }
         else
         {
-            _hero = new WorriorHero(hero.GetComponent<Character>());
+            _hero = new WorriorHero(data.Character.GetComponent<Character>());
         }
     }
 
-    public void reset()
+    public void Reset()
     {
         _hero.Destroy();
         _hero = null;
+        GameObject.Destroy(_characterHost);
     }
 
     public void Update()

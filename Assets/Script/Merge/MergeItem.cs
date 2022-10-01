@@ -1,3 +1,5 @@
+using Assets.HeroEditor.Common.CharacterScripts;
+using Assets.HeroEditor.Common.ExampleScripts;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,9 +11,7 @@ public class MergeItem : MonoBehaviour
     private int _length = 90;
     Vector3 _mPostion;
     public bool HasCharesctor { get; set; }
-    private GameObject _character;
-    public int CharacterLevel = 0;
-    public int CharacterType = -1;
+    private CharactorData _data;
     private HeroController _heroController;
 
     private void Awake()
@@ -40,56 +40,59 @@ public class MergeItem : MonoBehaviour
         return false;
     }
 
-    public void setCharector(GameObject character, int characterType, int characterLevel = 0)
+    public void setCharector(CharactorData characterData)
     {
-        CharacterType = characterType;
-        CharacterLevel = characterLevel;
-        if (_character != null)
+
+        if (_data != null)
         {
-            Destroy(_character);
+            Destroy(_data.Character);
         }
 
-
-        _character = character;
+        _data = characterData;
 
         HasCharesctor = true;
 
-        character.transform.localScale = new Vector3(_length * 0.5f, _length * 0.5f, 1);
-        character.transform.position = new Vector3(_mPostion.x, _mPostion.y + -_length / 2, 0);
-        character.transform.parent = gameObject.transform;
+        _data.Character.transform.localScale = new Vector3(_length * 0.5f, _length * 0.5f, 1);
+        _data.Character.transform.position = new Vector3(_mPostion.x, _mPostion.y + -_length / 2, 0);
+        _data.Character.transform.parent = gameObject.transform;
 
-        _heroController.setTo(character, characterType);
+        _heroController.RetTo(_data);
     }
 
+    public CharactorData CurCharacterData
+    {
+        get { return _data; }
+    }
     public void MoveFrom(MergeItem exchangeItem)
     {
-        setCharector(GameObject.Instantiate(exchangeItem.getCharacter()), exchangeItem.CharacterType, exchangeItem.CharacterLevel);
+        var fromData = exchangeItem.CurCharacterData;
+        setCharector(new CharactorData(GameObject.Instantiate(fromData.Character), fromData.Type, fromData.Level));
         exchangeItem.Reset();
     }
 
     public void ExchangeTo(MergeItem exchangeItem)
     {
-        var A = GameObject.Instantiate(exchangeItem.getCharacter());
-        var AType = exchangeItem.CharacterType;
-        var ALevel = exchangeItem.CharacterLevel;
+        var aData = exchangeItem.CurCharacterData;
+        var A = GameObject.Instantiate(aData.Character);
+        var AType = aData.Type;
+        var ALevel = aData.Level;
 
-        var B = GameObject.Instantiate(getCharacter());
-        var BType = CharacterType;
-        var BLevel = CharacterLevel;
+        var B = GameObject.Instantiate(_data.Character);
+        var BType = _data.Type;
+        var BLevel = _data.Level;
 
         exchangeItem.Reset();
         Reset();
-        setCharector(A, AType, ALevel);
-        exchangeItem.setCharector(B, BType, BLevel);
+        setCharector(new CharactorData(A, AType, ALevel));
+        exchangeItem.setCharector(new CharactorData(B, BType, BLevel));
     }
 
     public bool canbeMerge(MergeItem target)
     {
-        if (_character == null
-            || CharacterLevel >= MAX_CHARACTER_LEVEL
+        if (_data.Character == null
+            || _data.Level >= MAX_CHARACTER_LEVEL
             || !HasCharesctor
-            || CharacterType != target.CharacterType
-            || CharacterLevel != target.CharacterLevel)
+            || !_data.IsSame(target.CurCharacterData))
         {
             return false;
         }
@@ -98,11 +101,12 @@ public class MergeItem : MonoBehaviour
 
     public bool CanbeExchangePosition(MergeItem targe)
     {
-        if (_character == null
+        if (_data.Character == null
             || targe == null
             || !HasCharesctor
             || !targe.HasCharesctor
-            || (targe.CharacterType == CharacterType && targe.CharacterLevel == CharacterLevel))
+            || targe.CurCharacterData == null
+            || (targe.CurCharacterData.Type == _data.Type && targe.CurCharacterData.Level == _data.Level))
         {
             return false;
         }
@@ -111,34 +115,33 @@ public class MergeItem : MonoBehaviour
 
     public void mergetCharactor(GameObject character)
     {
-        setCharector(character, _heroController.HeroType, CharacterLevel + 1);
+        setCharector(new CharactorData(character, _data.Type, _data.Level + 1));
     }
 
     public void MoveTo(Vector2 screenPs)
     {
         var ps = Camera.main.ScreenToWorldPoint(screenPs);
 
-        _character.transform.position = new Vector3(ps.x, ps.y + -_length / 2, 0);
+        _data.Character.transform.position = new Vector3(ps.x, ps.y + -_length / 2, 0);
     }
 
     public void MoveToOriginal()
     {
-        _character.transform.position = new Vector3(_mPostion.x, _mPostion.y + -_length / 2, 0);
+        _data.Character.transform.position = new Vector3(_mPostion.x, _mPostion.y + -_length / 2, 0);
     }
 
-    public GameObject getCharacter()
+    public GameObject GetCharacter()
     {
-        return _character;
+        return _data.Character;
     }
 
     public void Reset()
     {
         HasCharesctor = false;
-        _character.transform.parent = null;
-        GameObject.Destroy(_character);
-        _character = null;
-        CharacterLevel = 0;
-        _heroController.reset();
+        //_data.Character.transform.parent = null;
+        //GameObject.Destroy(_data.Character);
+        _heroController.Reset();
+        _data = null;
     }
 
 }

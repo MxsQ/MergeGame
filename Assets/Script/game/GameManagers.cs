@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManagers : MonoBehaviour
 {
@@ -29,6 +30,9 @@ public class GameManagers : MonoBehaviour
     private void Awake()
     {
         _instance = this;
+        DontDestroyOnLoad(this);
+
+        SceneManager.LoadScene("GameScene", LoadSceneMode.Single);
     }
 
     public GameObject FindEnemy(GameObject referencePs)
