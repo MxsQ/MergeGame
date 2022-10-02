@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/HeroEditor/UndeadHeroes [UH].unity
     guid: 5413fbae07cc40238f383cd7ca6ec540
+  - enabled: 1
+    path: Assets/Scenes/PreloadScene.unity
+    guid: 24ae68096435da84ebf79b7b9a9700f6
   m_configObjects: {}

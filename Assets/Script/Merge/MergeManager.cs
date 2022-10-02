@@ -119,8 +119,9 @@ public class MergeManager : MonoBehaviour
 
     GameObject getWorriorCharacterBy(int index)
     {
-        GameObject character = (GameObject)Instantiate(WorriorCharaterConfig.characters[index]);
-        return character;
+        //GameObject character = (GameObject)Instantiate(WorriorCharaterConfig.characters[index]);
+        //return character;
+        return GameManagers.Instance.GetWarriorCharacter(index);
     }
 
     GameObject getArchorCharacterBy(int index)

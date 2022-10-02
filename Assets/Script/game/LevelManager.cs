@@ -2,7 +2,7 @@
 using UnityEngine;
 
 
-public class LevelManager : MonoBehaviour
+public class LevelManager
 {
 
     private static LevelManager _instance;
@@ -11,19 +11,16 @@ public class LevelManager : MonoBehaviour
         get { return _instance; }
     }
 
-    public GameData GameData;
-
-    private int _curLevel = 1;
-
-    private void Awake()
+    public static void CreateManager()
     {
-        _instance = this;
-        GameData = DataParser.ParseFromJson();
-        DontDestroyOnLoad(this);
+        _instance = new LevelManager();
     }
 
-    private void syncCurrentLevel()
-    {
+    public GameData GameData;
+    private int _curLevel = 1;
 
+    private LevelManager()
+    {
+        GameData = DataParser.ParseFromJson();
     }
 }
