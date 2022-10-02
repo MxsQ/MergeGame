@@ -408,7 +408,7 @@ namespace Assets.HeroEditor.Common.EditorScripts
                 if (success)
                 {
                     var json = System.IO.File.ReadAllText(path);
-
+                  
                     Character.FromJson(json);
                 }
             }));

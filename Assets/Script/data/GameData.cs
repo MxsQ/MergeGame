@@ -4,8 +4,7 @@ using static DataParser;
 
 public class GameData
 {
-    public static GameData Instance = null;
-
+ 
     public static float EvilWarriorHPRate = 0.75f;
     public static float EvilWarriorATKRate = 0.3f;
 

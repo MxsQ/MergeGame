@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using Assets.HeroEditor.Common.CharacterScripts;
 using UnityEngine;
 
@@ -14,6 +15,24 @@ public class Test : MonoBehaviour
     {
         Character = FindObjectOfType<Character>();
         Character.Animator.SetBool("Ready", true);
+
+        //TextAsset ta = Resources.Load<TextAsset>("heroJson/hero");
+        //byte[] rb = Encoding.UTF8.GetBytes(ta.text);
+        //    var jsonString = System.IO.File.ReadAllText(Application.dataPath + "/Resources/herojson/hero.json");
+        //    Character.FromJson(jsonString);
+
+        //StartCoroutine(load());
+    }
+
+    //public void load()
+
+    public void load() {
+        //yield return new WaitForSeconds(1);
+
+        var jsonString = System.IO.File.ReadAllText(Application.dataPath + "/Resources/herojson/hero.json");
+        Debug.Log(jsonString);
+        //Character.Initialize();
+        Character.FromJson(jsonString);
     }
 
     public void OnDown()
