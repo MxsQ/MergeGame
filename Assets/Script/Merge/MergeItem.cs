@@ -21,7 +21,8 @@ public class MergeItem : MonoBehaviour
         _heroController = new HeroController();
         //Log.D("position = " + _mPostion);
         //Log.D("word ps = " + Camera.main.WorldToScreenPoint(_mPostion));
-    }
+     
+     }
 
     public void Update()
     {

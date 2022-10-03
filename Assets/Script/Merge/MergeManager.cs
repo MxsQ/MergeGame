@@ -41,11 +41,11 @@ public class MergeManager : MonoBehaviour
         if (_curTouchState == TOUCH_STATE.START)
         {
             _curItem = findBy(touchPs);
-            Log.D("touch start: " + touchPs);
+            //Log.D("touch start: " + touchPs);
         }
         else if (_curTouchState == TOUCH_STATE.MOUVE)
         {
-            Log.D("touch move: " + touchPs);
+            //Log.D("touch move: " + touchPs);
             if (_curItem == null || !_curItem.HasCharesctor)
             {
                 return;
@@ -88,7 +88,7 @@ public class MergeManager : MonoBehaviour
             }
 
             _curItem = null;
-            Log.D("touch end: " + touchPs);
+            //Log.D("touch end: " + touchPs);
         }
     }
 

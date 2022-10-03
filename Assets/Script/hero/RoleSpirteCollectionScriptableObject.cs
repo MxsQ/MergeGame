@@ -10,7 +10,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "character", menuName = "Character/SriteCollectionConfig")]
 public class RoleSpirteCollectionScriptableObject : ScriptableObject
 {
-    public SpriteCollection MegapackCollection;
+    [SerializeField] public SpriteCollection MegapackCollection;
 
-    public SpriteCollection FantasyCollection;
+    [SerializeField] public SpriteCollection FantasyCollection;
 }

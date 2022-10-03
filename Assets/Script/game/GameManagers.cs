@@ -21,8 +21,8 @@ public class GameManagers : MonoBehaviour
     private Dictionary<RoleSkin, List<GameObject>> _roles = new Dictionary<RoleSkin, List<GameObject>>();
     private RoleSkin _curSkin = RoleSkin.WARRIOR_DEFAUL;
 
-    private List<GameObject> _hero = new List<GameObject>();
-    private List<GameObject> _enmey = new List<GameObject>();
+    private List<Role> _hero = new List<Role>();
+    private List<Role> _enmey = new List<Role>();
 
     public static event Action OnGameStart;
     public static event Action OnGameEnd;
@@ -40,30 +40,36 @@ public class GameManagers : MonoBehaviour
     {
         _instance = this;
         DontDestroyOnLoad(this);
+
+    }
+
+    private void OnValidate()
+    {
         BuildCharacter(_curSkin, WarriroSkinConfig);
+        LevelManager.CreateManager();
         SceneManager.LoadScene("GameScene", LoadSceneMode.Single);
     }
 
-    public GameObject FindEnemy(GameObject referencePs)
+    public Role FindEnemy(GameObject referencePs)
     {
         return FindClosedTart(_enmey, referencePs);
         //return Target;
     }
 
-    public GameObject FindHero(GameObject referencePs)
+    public Role FindHero(GameObject referencePs)
     {
         return FindClosedTart(_hero, referencePs);
     }
 
-    private GameObject FindClosedTart(List<GameObject> candidate, GameObject referencePs)
+    private Role FindClosedTart(List<Role> candidate, GameObject referencePs)
     {
 
-        GameObject target = null;
+        Role target = null;
         float distance = int.MaxValue;
         float dis;
-        foreach (GameObject t in candidate)
+        foreach (Role t in candidate)
         {
-            dis = Vector3.Distance(referencePs.transform.position, t.transform.position);
+            dis = Vector3.Distance(referencePs.transform.position, t.Position());
             if (dis < distance)
             {
                 distance = dis;
@@ -74,10 +80,10 @@ public class GameManagers : MonoBehaviour
         return target;
     }
 
-    public void RegisterHero(GameObject hero) => _hero.Add(hero);
-    public void UnRegisterHero(GameObject hero) => _hero.Remove(hero);
-    public void RegisterEnemy(GameObject enemy) => _enmey.Add(enemy);
-    public void UnRegisterEnemy(GameObject enemy) => _enmey.Remove(enemy);
+    public void RegisterHero(Role hero) => _hero.Add(hero);
+    public void UnRegisterHero(Role hero) => _hero.Remove(hero);
+    public void RegisterEnemy(Role enemy) => _enmey.Add(enemy);
+    public void UnRegisterEnemy(Role enemy) => _enmey.Remove(enemy);
 
     private void BuildCharacter(RoleSkin skinType, RoleSkinScriptableObject skinConfig)
     {
@@ -130,6 +136,8 @@ public class GameManagers : MonoBehaviour
     public void InvodeGameEnd()
     {
         InGame = false;
+        _enmey.Clear();
+        _hero.Clear();
         OnGameEnd.Invoke();
     }
 }

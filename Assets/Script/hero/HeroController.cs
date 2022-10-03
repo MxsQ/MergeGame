@@ -15,7 +15,11 @@ public class HeroController
 
     public HeroController()
     {
-        GameManagers.OnGameStart += () => { _inGame = true; };
+        GameManagers.OnGameStart += () =>
+        {
+            _inGame = true;
+            _hero?.Register();
+        };
         GameManagers.OnGameEnd += onGameEnd;
     }
 
@@ -31,11 +35,11 @@ public class HeroController
         HeroType = data.Type;
         if (HeroType == HeroConstance.ARCHER)
         {
-            _hero = new ArchorHero(data.Character.GetComponent<Character>());
+            _hero = new ArcherHero(data.Character.GetComponent<Character>(), LevelManager.Instance.GameData.GetArcherData(data.Level));
         }
         else
         {
-            _hero = new WorriorHero(data.Character.GetComponent<Character>());
+            _hero = new WarriorHero(data.Character.GetComponent<Character>(), LevelManager.Instance.GameData.GetWarriorData(data.Level));
         }
     }
 

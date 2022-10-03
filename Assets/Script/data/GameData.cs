@@ -4,7 +4,7 @@ using static DataParser;
 
 public class GameData
 {
- 
+
     public static float EvilWarriorHPRate = 0.75f;
     public static float EvilWarriorATKRate = 0.3f;
 
@@ -20,7 +20,7 @@ public class GameData
         Debug.Log("warriro info:" + WarriorInfo);
     }
 
-    public RoleData GetEvilArriorData(int level)
+    public RoleData GetEvilWarriorData(int level)
     {
         RoleData roleData = new RoleData();
         roleData.HP = LevelInfo[level].HP;
@@ -29,7 +29,16 @@ public class GameData
         return roleData;
     }
 
-    public RoleData GetArriorData(int level)
+    public RoleData GetEvilArcherData(int level)
+    {
+        RoleData roleData = new RoleData();
+        roleData.HP = LevelInfo[level].HP;
+        roleData.ATK = LevelInfo[level].ATK;
+
+        return roleData;
+    }
+
+    public RoleData GetWarriorData(int level)
     {
         RoleData roleData = new RoleData();
         roleData.HP = WarriorInfo[level].HP;
@@ -38,7 +47,7 @@ public class GameData
         return roleData;
     }
 
-    public RoleData GetEvilArcherData(int level)
+    public RoleData GetArcherData(int level)
     {
         RoleData roleData = new RoleData();
         roleData.HP = ArcherInfo[level].HP;

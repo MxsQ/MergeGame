@@ -11,11 +11,16 @@ public class EvilItem : MonoBehaviour
     private void Awake()
     {
         _originPs = gameObject.transform.position;
+        //GameManagers.OnGameStart += () =>
+        //{
+        //    _role?.Register();
+        //};
     }
 
     public void set(GameObject character)
     {
-        _role = new EvilWorrior(character.GetComponent<Character>());
+        _role = new EvilWarrior(character.GetComponent<Character>(), LevelManager.Instance.GameData.GetEvilWarriorData(1));
+        _role?.Register();
     }
 
     private void Update()

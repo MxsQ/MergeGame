@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09b79dc7d373e8e4284f547d2eadf07d, type: 3}
   m_Name: WarriorDefaultSkin
   m_EditorClassIdentifier: Assembly-CSharp::RoloSkinScriptableObject
-  Directory: DefaultWarriro
+  Directory: DefaultWarrior
   Items:
   - Warrior101
   - Warrior102

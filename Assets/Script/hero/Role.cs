@@ -15,15 +15,18 @@ public abstract class Role
 
     protected float _changeTime = 0;
 
-    protected int _damage = 100;
+    protected int _curHP;
+    protected RoleData _data;
 
-    public Role(Character character)
+
+    public Role(Character character, RoleData data)
     {
+        _data = data;
         _character = character;
         _parent = _character.transform.parent.gameObject;
         _parentOriginPs = _parent.transform.position;
         character.GetReady();
-        Register();
+        //Register();
     }
 
     public abstract void Update();
@@ -33,7 +36,12 @@ public abstract class Role
         _isDestroy = true;
         _character.transform.parent = null;
         GameObject.Destroy(_character);
-        unRegister();
+        //unRegister();
+    }
+
+    public Vector3 Position()
+    {
+        return new Vector3(_character.gameObject.transform.position.x, _character.gameObject.transform.position.y, _character.gameObject.transform.position.z);
     }
 
     public void Idle()
@@ -42,12 +50,17 @@ public abstract class Role
         _character.SetState(CharacterState.Ready);
     }
 
-    protected abstract GameObject findTarget();
-    protected abstract void Register();
-    protected abstract void unRegister();
+    public void BeHit(int damage)
+    {
+        _curHP -= damage;
+    }
+
+    protected abstract Role findTarget();
+    public abstract void Register();
+    public abstract void unRegister();
 }
 
-public class WorriorHero : Role
+public class WarriorHero : Role
 {
     private static int _attackRange = 90;
 
@@ -55,7 +68,7 @@ public class WorriorHero : Role
 
     private int speed = 180;
 
-    public WorriorHero(Character character) : base(character)
+    public WarriorHero(Character character, RoleData data) : base(character, data)
     {
         boxCollider = _parent.GetComponent<BoxCollider2D>();
     }
@@ -74,12 +87,12 @@ public class WorriorHero : Role
             return;
         }
 
-        var targetPs = enemy.transform.position;
+        var targetPs = enemy.Position();
 
         if (boxCollider.bounds.Contains(targetPs))
         {
             _character.SetState(CharacterState.Ready);
-            atack(targetPs);
+            atack(enemy);
         }
         else
         {
@@ -91,35 +104,36 @@ public class WorriorHero : Role
         //if(Mathf.Abs(enemy.transform.position - _character.transform.position))
     }
 
-    protected override GameObject findTarget()
+    protected override Role findTarget()
     {
         return GameManagers.Instance.FindEnemy(_parent.gameObject);
     }
 
-    protected override void Register()
+    public override void Register()
     {
-        GameManagers.Instance.RegisterHero(_character.gameObject);
+        Debug.Log("human do");
+        GameManagers.Instance.RegisterHero(this);
     }
 
-    protected override void unRegister()
+    public override void unRegister()
     {
-        GameManagers.Instance.UnRegisterHero(_character.gameObject);
+        GameManagers.Instance.UnRegisterHero(this);
     }
 
-    private void atack(Vector3 target)
+    private void atack(Role target)
     {
         if (_changeTime > 1)
         {
             _character.Slash();
             _changeTime = 0;
-            DamageManagers.Instance.postDamage(target, _damage);
+            DamageManagers.Instance.postDamage(target.Position(), _data.ATK);
         }
     }
 
 
 }
 
-public class ArchorHero : Role
+public class ArcherHero : Role
 {
     protected Sprite _arrow;
     private int _arrowIndex = 0;
@@ -134,7 +148,7 @@ public class ArchorHero : Role
     bool inIdle = false;
 
 
-    public ArchorHero(Character character) : base(character)
+    public ArcherHero(Character character, RoleData data) : base(character, data)
     {
         _arrow = character.Bow[_arrowIndex];
         _weapon = character.BodyRenderers[3].transform;
@@ -200,7 +214,7 @@ public class ArchorHero : Role
 
         var arm = _arm;
         var weapon = _weapon;
-        var target = GameManagers.Instance.FindEnemy(_character.gameObject).gameObject.transform.position;
+        var target = GameManagers.Instance.FindEnemy(_character.gameObject).Position();
         var angleMax = 180;
         var angleMin = -180;
 
@@ -248,6 +262,12 @@ public class ArchorHero : Role
 
     private void Shoot()
     {
+        Role target = findTarget();
+        if (target == null)
+        {
+            return;
+        }
+
         var originPs = _character.transform.position;
         //_arrow.gameObject.SetActive(true);
         var arrow = GameObject.Instantiate(_arrow);
@@ -260,67 +280,68 @@ public class ArchorHero : Role
         arrowObject.transform.localScale = new Vector3(25, 25, 0);
 
 
-        GameObject target = findTarget();
-        ArrowManager.Instance.Shoot(arrowObject, target, _damage);
+
+        ArrowManager.Instance.Shoot(arrowObject, target, _data.ATK);
     }
 
-    protected override GameObject findTarget()
+    protected override Role findTarget()
     {
         return GameManagers.Instance.FindEnemy(_character.gameObject);
     }
 
-    protected override void Register()
+    public override void Register()
     {
-        GameManagers.Instance.RegisterHero(_character.gameObject);
+        GameManagers.Instance.RegisterHero(this);
     }
 
-    protected override void unRegister()
+    public override void unRegister()
     {
-        GameManagers.Instance.UnRegisterHero(_character.gameObject);
+        GameManagers.Instance.UnRegisterHero(this);
     }
 }
 
-public class EvilWorrior : WorriorHero
+public class EvilWarrior : WarriorHero
 {
-    public EvilWorrior(Character character) : base(character)
+    public EvilWarrior(Character character, RoleData data) : base(character, data)
     {
     }
 
-    protected override GameObject findTarget()
+    protected override Role findTarget()
     {
         return GameManagers.Instance.FindHero(_character.gameObject);
     }
 
-    protected override void Register()
+    public override void Register()
     {
-        GameManagers.Instance.RegisterEnemy(_character.gameObject);
+        Debug.Log("evil do");
+        GameManagers.Instance.RegisterEnemy(this);
     }
 
-    protected override void unRegister()
+    public override void unRegister()
     {
-        GameManagers.Instance.UnRegisterEnemy(_character.gameObject);
+        GameManagers.Instance.UnRegisterEnemy(this);
     }
 }
 
-public class EvilArchor : ArchorHero
+public class EvilArcher : ArcherHero
 {
-    public EvilArchor(Character character) : base(character)
+    public EvilArcher(Character character, RoleData data) : base(character, data)
     {
 
     }
 
-    protected override GameObject findTarget()
+    protected override Role findTarget()
     {
         return GameManagers.Instance.FindHero(_character.gameObject);
     }
 
-    protected override void Register()
+    public override void Register()
     {
-        GameManagers.Instance.RegisterEnemy(_character.gameObject);
+        GameManagers.Instance.RegisterEnemy(this);
     }
 
-    protected override void unRegister()
+    public override void unRegister()
     {
-        GameManagers.Instance.UnRegisterEnemy(_character.gameObject);
+        GameManagers.Instance.UnRegisterEnemy(this);
     }
 }

@@ -44,7 +44,7 @@ public class ArrowManager : MonoBehaviour
         }
     }
 
-    public void Shoot(GameObject arrow, GameObject target, int damage)
+    public void Shoot(GameObject arrow, Role target, int damage)
     {
         _arrows.Add(new TheArrow(arrow, target, damage));
     }
@@ -54,16 +54,16 @@ public class TheArrow
 {
     public GameObject Arrow;
     public Vector3 _targetPs;
-    private GameObject _target;
+    private Role _target;
     private Vector3 _speed;
     public int _damage;
 
-    public TheArrow(GameObject arrow, GameObject target, int damage)
+    public TheArrow(GameObject arrow, Role target, int damage)
     {
         Arrow = arrow;
         _damage = damage;
         _target = target;
-        _targetPs = _target.transform.position;
+        _targetPs = _target.Position();
         _speed = (_targetPs - arrow.transform.position);
 
 
