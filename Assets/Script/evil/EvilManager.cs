@@ -23,6 +23,7 @@ public class EvilManager : MonoBehaviour
     private void Awake()
     {
         GameManagers.OnGameStart += MakeEvilWork;
+        GameManagers.OnGameEnd += MakeEvilReady;
         CreateEvil();
     }
 
@@ -41,4 +42,11 @@ public class EvilManager : MonoBehaviour
     {
         EvilMid1.set(e1);
     }
+
+    private void MakeEvilReady()
+    {
+        EvilMid1.RebuildEviel();
+        CreateEvil();
+    }
+
 }

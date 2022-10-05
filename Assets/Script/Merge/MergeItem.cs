@@ -21,8 +21,8 @@ public class MergeItem : MonoBehaviour
         _heroController = new HeroController();
         //Log.D("position = " + _mPostion);
         //Log.D("word ps = " + Camera.main.WorldToScreenPoint(_mPostion));
-     
-     }
+
+    }
 
     public void Update()
     {
@@ -129,6 +129,7 @@ public class MergeItem : MonoBehaviour
     public void MoveToOriginal()
     {
         _data.Character.transform.position = new Vector3(_mPostion.x, _mPostion.y + -_length / 2, 0);
+        gameObject.transform.position = _mPostion;
     }
 
     public GameObject GetCharacter()
@@ -136,9 +137,15 @@ public class MergeItem : MonoBehaviour
         return _data.Character;
     }
 
+    public CharactorData GetCharacterData()
+    {
+        return _data;
+    }
+
     public void Reset()
     {
         HasCharesctor = false;
+        MoveToOriginal();
         //_data.Character.transform.parent = null;
         //GameObject.Destroy(_data.Character);
         _heroController.Reset();

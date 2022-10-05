@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,16 +23,29 @@ public class DamageManagers : MonoBehaviour
 
     }
 
-    public void postDamage(Vector3 target, int damage)
+    public void postDamage(Vector3 target, int damage, Action onComplete, float delay = 0)
     {
         if (target != null)
         {
-            var o = GameObject.Instantiate(GameManagers.Instance.Config.HitText);
-            o.transform.parent = HitHost.transform;
-            o.transform.position = Camera.main.WorldToScreenPoint(target + new Vector3(90, 180, 0));
-            o.GetComponent<Text>().text = damage.ToString();
-            _textHoders.Add(new TextHolder(o));
+            StartCoroutine(DoHit(delay, () =>
+            {
+                var o = GameObject.Instantiate(GameManagers.Instance.Config.HitText);
+                o.transform.SetParent(HitHost.transform);
+                o.transform.position = Camera.main.WorldToScreenPoint(target + new Vector3(90, 180, 0));
+                o.GetComponent<Text>().text = damage.ToString();
+                _textHoders.Add(new TextHolder(o));
+
+                onComplete?.Invoke();
+            }));
+
         }
+    }
+
+    private IEnumerator DoHit(float delay, Action action)
+    {
+        yield return new WaitForSeconds(delay);
+
+        action.Invoke();
     }
 
     private void Update()

@@ -16,7 +16,9 @@ public class GameManagers : MonoBehaviour
 
     [SerializeField] public RoleSkinScriptableObject WarriroSkinConfig;
 
-    [SerializeField] public GameObject RoleCopyHost;
+    [SerializeField] public GameObject RoleCopyReference;
+
+    [SerializeField] public GameObject RoleHost;
 
     private Dictionary<RoleSkin, List<GameObject>> _roles = new Dictionary<RoleSkin, List<GameObject>>();
     private RoleSkin _curSkin = RoleSkin.WARRIOR_DEFAUL;
@@ -26,9 +28,15 @@ public class GameManagers : MonoBehaviour
 
     public static event Action OnGameStart;
     public static event Action OnGameEnd;
+    public static event Action OnGameWin;
+    public static event Action OnGameFaild;
+    public static event Action<int> OnLevelChange;
 
 
     public static bool InGame;
+    private bool _warFinish;
+
+    public PlayerRecored PlayerRecored;
 
 
     public static GameManagers Instance
@@ -40,7 +48,7 @@ public class GameManagers : MonoBehaviour
     {
         _instance = this;
         DontDestroyOnLoad(this);
-
+        PlayerRecored = new PlayerRecored();
     }
 
     private void OnValidate()
@@ -96,7 +104,7 @@ public class GameManagers : MonoBehaviour
         List<GameObject> roles = new List<GameObject>();
         for (int i = 0; i <= DataParser.MAX_ROLE_LEVEL; i++)
         {
-            roles.Add(Instantiate(RoleCopyHost));
+            roles.Add(Instantiate(RoleCopyReference));
         }
 
         var dir = Application.dataPath + "/Resources/role/" + skinConfig.Directory + "/";
@@ -116,6 +124,7 @@ public class GameManagers : MonoBehaviour
                 var roleJsonString = System.IO.File.ReadAllText(dir + skinConfig.Items[i] + ".json");
                 c.FromJson(roleJsonString);
             }
+            roles[i].gameObject.transform.SetParent(RoleHost.transform);
             DontDestroyOnLoad(roles[i]);
         }
 
@@ -127,17 +136,67 @@ public class GameManagers : MonoBehaviour
         return Instantiate(_roles[_curSkin][level]);
     }
 
-    public void InvodeGameStart()
+    public void InvokeGameStart()
     {
+        _warFinish = false;
         InGame = true;
         OnGameStart.Invoke();
     }
 
-    public void InvodeGameEnd()
+    public void InvokeGameEnd()
     {
         InGame = false;
         _enmey.Clear();
         _hero.Clear();
         OnGameEnd.Invoke();
+        InvokeLevelChange();
+    }
+
+    public void InvokeGameWin()
+    {
+        Debug.Log("win.");
+        OnGameWin.Invoke();
+    }
+
+    public void InvokeGameFaild()
+    {
+        Debug.Log("Faild.");
+        OnGameFaild.Invoke();
+    }
+
+    public void InvokeLevelChange()
+    {
+        OnLevelChange.Invoke(PlayerRecored.Level);
+    }
+
+    public void OnHeroDeath(Role role)
+    {
+        _hero.Remove(role);
+
+        if (_warFinish)
+        {
+            return;
+        }
+        if (_hero.Count <= 0)
+        {
+            InvokeGameFaild();
+            _warFinish = true;
+            //InvodeGameEnd();
+        }
+    }
+
+    public void OnEvilDeath(Role role)
+    {
+        _enmey.Remove(role);
+        if (_warFinish)
+        {
+            return;
+        }
+        if (_enmey.Count <= 0)
+        {
+            InvokeGameWin();
+            _warFinish = true;
+            //InvodeGameEnd();
+        }
     }
 }

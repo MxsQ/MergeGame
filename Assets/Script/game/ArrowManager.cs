@@ -33,12 +33,13 @@ public class ArrowManager : MonoBehaviour
             if (a.IsHit())
             {
                 hittedArrow.Add(a);
-                DamageManagers.Instance.postDamage(a._targetPs, a._damage);
+                DamageManagers.Instance.postDamage(a._targetPs, a._damage, null);
             }
         }
 
         foreach (TheArrow a in hittedArrow)
         {
+            a.Dohit();
             _arrows.Remove(a);
             GameObject.Destroy(a.Arrow);
         }
@@ -83,5 +84,10 @@ public class TheArrow
     {
         var ps = Arrow.transform.position;
         return Mathf.Abs(ps.x - _targetPs.x) < 10 && Mathf.Abs(ps.y - _targetPs.y) < 10;
+    }
+
+    public void Dohit()
+    {
+        _target.BeHit(_damage);
     }
 }

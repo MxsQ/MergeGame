@@ -18,6 +18,9 @@ public abstract class Role
     protected int _curHP;
     protected RoleData _data;
 
+    protected float _atkSpand;
+    protected bool _die = false;
+
 
     public Role(Character character, RoleData data)
     {
@@ -27,6 +30,8 @@ public abstract class Role
         _parentOriginPs = _parent.transform.position;
         character.GetReady();
         //Register();
+        _atkSpand = 1 + (new System.Random().Next(0, 10) - 5) / 100;
+        _curHP = data.HP;
     }
 
     public abstract void Update();
@@ -53,11 +58,18 @@ public abstract class Role
     public void BeHit(int damage)
     {
         _curHP -= damage;
+        if (_curHP <= 0)
+        {
+            _die = true;
+            OnDie();
+        }
+
     }
 
     protected abstract Role findTarget();
     public abstract void Register();
     public abstract void unRegister();
+    public abstract void OnDie();
 }
 
 public class WarriorHero : Role
@@ -81,6 +93,13 @@ public class WarriorHero : Role
         }
 
         _changeTime += Time.deltaTime;
+
+        if (_die)
+        {
+            _character.SetState(CharacterState.DeathF);
+            return;
+        }
+
         var enemy = findTarget();
         if (enemy == null)
         {
@@ -91,6 +110,7 @@ public class WarriorHero : Role
 
         if (boxCollider.bounds.Contains(targetPs))
         {
+            //Debug.Log("target: " + targetPs);
             _character.SetState(CharacterState.Ready);
             atack(enemy);
         }
@@ -111,7 +131,6 @@ public class WarriorHero : Role
 
     public override void Register()
     {
-        Debug.Log("human do");
         GameManagers.Instance.RegisterHero(this);
     }
 
@@ -122,15 +141,19 @@ public class WarriorHero : Role
 
     private void atack(Role target)
     {
-        if (_changeTime > 1)
+        if (_changeTime > _atkSpand)
         {
             _character.Slash();
             _changeTime = 0;
-            DamageManagers.Instance.postDamage(target.Position(), _data.ATK);
+            DamageManagers.Instance.postDamage(target.Position(), _data.ATK, () => { target.BeHit(_data.ATK); }, 0.3f);
         }
     }
 
-
+    public override void OnDie()
+    {
+        GameManagers.Instance.OnHeroDeath(this);
+        //_character.SetState(CharacterState.DeathF);
+    }
 }
 
 public class ArcherHero : Role
@@ -169,30 +192,43 @@ public class ArcherHero : Role
 
         _changeTime += Time.deltaTime;
 
+        if (_die)
+        {
+            _character.SetState(CharacterState.DeathF);
+            return;
+        }
+
+        Role target = findTarget();
+        if (target == null)
+        {
+            _character.Relax();
+            return;
+        }
+
         if (!inChart && !inRelase && !inIdle)
         {
             _character.Animator.SetInteger("Charge", 1);
             inChart = true;
         }
-        else if (inChart && _changeTime > 0.5)
+        else if (inChart && _changeTime > _atkSpand * 0.5)
         {
             _character.Animator.SetInteger("Charge", 2);
             inChart = false;
             inRelase = true;
         }
-        else if (inRelase && _changeTime > 0.8)
+        else if (inRelase && _changeTime > _atkSpand * 0.8)
         {
             _character.Animator.SetInteger("Charge", 0);
             inRelase = false;
             inIdle = true;
         }
-        else if (inIdle && _changeTime > 1)
+        else if (inIdle && _changeTime > _atkSpand)
         {
             inChart = false;
             inRelase = false;
             inIdle = false;
             _changeTime = 0;
-            Shoot();
+            Shoot(target);
         }
 
         //RotateArm();
@@ -260,9 +296,8 @@ public class ArcherHero : Role
         return angle;
     }
 
-    private void Shoot()
+    private void Shoot(Role target)
     {
-        Role target = findTarget();
         if (target == null)
         {
             return;
@@ -298,6 +333,12 @@ public class ArcherHero : Role
     {
         GameManagers.Instance.UnRegisterHero(this);
     }
+
+    public override void OnDie()
+    {
+        GameManagers.Instance.OnHeroDeath(this);
+        //_character.SetState(CharacterState.DeathF);
+    }
 }
 
 public class EvilWarrior : WarriorHero
@@ -313,13 +354,17 @@ public class EvilWarrior : WarriorHero
 
     public override void Register()
     {
-        Debug.Log("evil do");
         GameManagers.Instance.RegisterEnemy(this);
     }
 
     public override void unRegister()
     {
         GameManagers.Instance.UnRegisterEnemy(this);
+    }
+
+    public override void OnDie()
+    {
+        GameManagers.Instance.OnEvilDeath(this);
     }
 }
 
@@ -343,5 +388,10 @@ public class EvilArcher : ArcherHero
     public override void unRegister()
     {
         GameManagers.Instance.UnRegisterEnemy(this);
+    }
+
+    public override void OnDie()
+    {
+        GameManagers.Instance.OnEvilDeath(this);
     }
 }

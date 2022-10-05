@@ -7,10 +7,12 @@ public class EvilItem : MonoBehaviour
 {
     private Vector3 _originPs;
     private Role _role;
+    private GameObject _charecter;
 
     private void Awake()
     {
-        _originPs = gameObject.transform.position;
+        var ps = gameObject.transform.position;
+        _originPs = new Vector3(ps.x, ps.y, ps.z);
         //GameManagers.OnGameStart += () =>
         //{
         //    _role?.Register();
@@ -19,9 +21,28 @@ public class EvilItem : MonoBehaviour
 
     public void set(GameObject character)
     {
-        _role = new EvilWarrior(character.GetComponent<Character>(), LevelManager.Instance.GameData.GetEvilWarriorData(1));
+        _charecter = character;
+        _role = new EvilWarrior(character.GetComponent<Character>(), LevelManager.Instance.GameData.GetEvilWarriorData(GameManagers.Instance.PlayerRecored.Level));
         _role?.Register();
     }
+
+    public void Reset()
+    {
+        if (_charecter != null)
+        {
+            _charecter.transform.position = new Vector3(_originPs.x, _originPs.y, _originPs.z);
+        }
+    }
+
+    public void RebuildEviel()
+    {
+        gameObject.transform.position = _originPs;
+        if (_charecter != null)
+        {
+            Destroy(_charecter);
+        }
+    }
+
 
     private void Update()
     {

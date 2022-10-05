@@ -52,11 +52,7 @@ public class HeroController
 
     public void Update()
     {
-        if (!_inGame)
-        {
-            return;
-        }
-        if (_hero == null)
+        if (!_inGame || _hero == null)
         {
             return;
         }

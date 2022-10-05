@@ -17,10 +17,16 @@ public class LevelManager
     }
 
     public GameData GameData;
-    private int _curLevel = 1;
 
     private LevelManager()
     {
         GameData = DataParser.ParseFromJson();
+        GameManagers.OnGameWin += OnGameWin;
+    }
+
+    private void OnGameWin()
+    {
+        var record = GameManagers.Instance.PlayerRecored;
+        record.Level += 1;
     }
 }

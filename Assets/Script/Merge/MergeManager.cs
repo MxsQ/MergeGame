@@ -16,6 +16,8 @@ public class MergeManager : MonoBehaviour
 
     private bool _inGame;
 
+
+
     private static MergeManager _instance;
     public static MergeManager Instance
     {
@@ -27,7 +29,7 @@ public class MergeManager : MonoBehaviour
     {
         _instance = this;
         Debug.Log("awake");
-        GameManagers.OnGameStart += () => { _inGame = true; };
+        GameManagers.OnGameStart += OnGameStart;
         GameManagers.OnGameEnd += OnGameEnd;
     }
 
@@ -215,9 +217,40 @@ public class MergeManager : MonoBehaviour
         {
             if (i.HasCharesctor)
             {
-                i.MoveToOriginal();
+                //i.MoveToOriginal();
+                i.Reset();
             }
         }
+
+        // rebuid character
+        var record = GameManagers.Instance.PlayerRecored;
+        foreach (KeyValuePair<int, LayInfo> info in record.LayoutInfos)
+        {
+            GameObject character = info.Value.Type == HeroConstance.ARCHER ?
+                getArchorCharacterBy(info.Value.Level) :
+                getWorriorCharacterBy(info.Value.Level);
+            mergeItems[info.Value.Index].setCharector(new CharactorData(character, info.Value.Type, info.Value.Level));
+        }
+    }
+
+    private void RecordLayInfo()
+    {
+        var record = GameManagers.Instance.PlayerRecored;
+        for (int i = 0; i < mergeItems.Length; i++)
+        {
+            var data = mergeItems[i].GetCharacterData();
+            if (data == null)
+            {
+                continue;
+            }
+            record.Record(i, data.Level, data.Type);
+        }
+    }
+
+    private void OnGameStart()
+    {
+        RecordLayInfo();
+        _inGame = true;
     }
 
     enum TOUCH_STATE
