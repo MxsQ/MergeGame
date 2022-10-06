@@ -13,10 +13,6 @@ public class EvilItem : MonoBehaviour
     {
         var ps = gameObject.transform.position;
         _originPs = new Vector3(ps.x, ps.y, ps.z);
-        //GameManagers.OnGameStart += () =>
-        //{
-        //    _role?.Register();
-        //};
     }
 
     public void set(GameObject character)
@@ -52,5 +48,15 @@ public class EvilItem : MonoBehaviour
         }
 
         _role.Update();
+    }
+
+    public int GetRoleHP()
+    {
+        if (_role == null)
+        {
+            return 0;
+        }
+
+        return _role.GetCurHP();
     }
 }

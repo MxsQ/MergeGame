@@ -8,4 +8,12 @@ public class GlobalConfigScriptableObject : ScriptableObject
 {
     public GameObject Arrow;
     public GameObject HitText;
+
+    public float ArrowSpeedFactory;
+    public float MoveSpeed;
+
+    public int HeroBoxRadius;
+
+    public int EvilMinBoxRadius;
+    public int EvilMaxBoxRadius;
 }

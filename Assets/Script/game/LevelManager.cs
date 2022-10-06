@@ -24,6 +24,11 @@ public class LevelManager
         GameManagers.OnGameWin += OnGameWin;
     }
 
+    public int GetLevelHP()
+    {
+        return GameData.LevelInfo[GameManagers.Instance.PlayerRecored.Level].HP;
+    }
+
     private void OnGameWin()
     {
         var record = GameManagers.Instance.PlayerRecored;

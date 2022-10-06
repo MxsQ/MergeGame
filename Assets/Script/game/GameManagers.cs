@@ -48,7 +48,7 @@ public class GameManagers : MonoBehaviour
     {
         _instance = this;
         DontDestroyOnLoad(this);
-        PlayerRecored = new PlayerRecored();
+        PlayerRecored = PlayerRecored.GetFromLocal();
     }
 
     private void OnValidate()

@@ -55,7 +55,7 @@ public abstract class Role
         _character.SetState(CharacterState.Ready);
     }
 
-    public void BeHit(int damage)
+    public virtual void BeHit(int damage)
     {
         _curHP -= damage;
         if (_curHP <= 0)
@@ -65,6 +65,8 @@ public abstract class Role
         }
 
     }
+
+    public int GetCurHP() { return _curHP; }
 
     protected abstract Role findTarget();
     public abstract void Register();
@@ -78,11 +80,12 @@ public class WarriorHero : Role
 
     private BoxCollider2D boxCollider;
 
-    private int speed = 180;
+    private float speed;
 
     public WarriorHero(Character character, RoleData data) : base(character, data)
     {
         boxCollider = _parent.GetComponent<BoxCollider2D>();
+        speed = GameManagers.Instance.Config.MoveSpeed;
     }
 
     public override void Update()
@@ -366,6 +369,13 @@ public class EvilWarrior : WarriorHero
     {
         GameManagers.Instance.OnEvilDeath(this);
     }
+
+
+    public override void BeHit(int damage)
+    {
+        base.BeHit(damage);
+        EvilManager.Instance.OnEvilBeHit();
+    }
 }
 
 public class EvilArcher : ArcherHero
@@ -393,5 +403,11 @@ public class EvilArcher : ArcherHero
     public override void OnDie()
     {
         GameManagers.Instance.OnEvilDeath(this);
+    }
+
+    public override void BeHit(int damage)
+    {
+        base.BeHit(damage);
+        EvilManager.Instance.OnEvilBeHit();
     }
 }

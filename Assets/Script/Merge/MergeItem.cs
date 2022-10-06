@@ -8,7 +8,7 @@ public class MergeItem : MonoBehaviour
 {
     private int MAX_CHARACTER_LEVEL = 8;
 
-    private int _length = 90;
+    private int _length;
     Vector3 _mPostion;
     public bool HasCharesctor { get; set; }
     private CharactorData _data;
@@ -19,6 +19,7 @@ public class MergeItem : MonoBehaviour
         HasCharesctor = false;
         _mPostion = gameObject.transform.position;
         _heroController = new HeroController();
+        _length = GameManagers.Instance.Config.HeroBoxRadius;
         //Log.D("position = " + _mPostion);
         //Log.D("word ps = " + Camera.main.WorldToScreenPoint(_mPostion));
 

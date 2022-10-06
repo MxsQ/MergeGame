@@ -58,6 +58,7 @@ public class TheArrow
     private Role _target;
     private Vector3 _speed;
     public int _damage;
+    private float _speedFactory;
 
     public TheArrow(GameObject arrow, Role target, int damage)
     {
@@ -66,6 +67,7 @@ public class TheArrow
         _target = target;
         _targetPs = _target.Position();
         _speed = (_targetPs - arrow.transform.position);
+        _speedFactory = GameManagers.Instance.Config.ArrowSpeedFactory;
 
 
         Vector3 v = _targetPs - arrow.transform.position;
@@ -77,7 +79,7 @@ public class TheArrow
 
     public void KeepMove(float delta)
     {
-        Arrow.transform.position += delta * 2f * _speed;
+        Arrow.transform.position += delta * _speedFactory * _speed;
     }
 
     public bool IsHit()

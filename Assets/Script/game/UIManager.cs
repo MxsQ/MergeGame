@@ -19,6 +19,15 @@ public class UIManager : MonoBehaviour
         GameManagers.OnLevelChange += level => { LevelText.text = "Level " + level.ToString(); };
         GameManagers.OnGameWin += OnGameWin;
         GameManagers.OnGameFaild += OnGameFaild;
+
+        StartCoroutine(DelayWorkOnAwake());
+    }
+
+    private IEnumerator DelayWorkOnAwake()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        LevelText.text = "Level " + GameManagers.Instance.PlayerRecored.Level.ToString();
     }
 
     public void OnAddWarriorClick()

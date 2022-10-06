@@ -31,7 +31,11 @@ public class MergeManager : MonoBehaviour
         Debug.Log("awake");
         GameManagers.OnGameStart += OnGameStart;
         GameManagers.OnGameEnd += OnGameEnd;
+
+        StartCoroutine(DeleyToRestore());
     }
+
+
 
     void Update()
     {
@@ -213,6 +217,11 @@ public class MergeManager : MonoBehaviour
     private void OnGameEnd()
     {
         _inGame = false;
+        RestoreHeroLay();
+    }
+
+    private void RestoreHeroLay()
+    {
         foreach (MergeItem i in mergeItems)
         {
             if (i.HasCharesctor)
@@ -233,9 +242,17 @@ public class MergeManager : MonoBehaviour
         }
     }
 
+    private IEnumerator DeleyToRestore()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        RestoreHeroLay();
+    }
+
     private void RecordLayInfo()
     {
         var record = GameManagers.Instance.PlayerRecored;
+        record.ClearLayInfo();
         for (int i = 0; i < mergeItems.Length; i++)
         {
             var data = mergeItems[i].GetCharacterData();
@@ -245,6 +262,7 @@ public class MergeManager : MonoBehaviour
             }
             record.Record(i, data.Level, data.Type);
         }
+        record.SaveToLocal();
     }
 
     private void OnGameStart()

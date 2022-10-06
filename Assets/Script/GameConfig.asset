@@ -14,3 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Arrow: {fileID: 1846010953453456, guid: 971d61eacf474871bfa0e3a415b5bb11, type: 3}
   HitText: {fileID: 9086245011336220868, guid: 2c167398797b843a6a13b82f1ea3457b, type: 3}
+  ArrowSpeedFactory: 2
+  MoveSpeed: 180
+  HeroBoxRadius: 90
+  EvilMinBoxRadius: 100
+  EvilMaxBoxRadius: 120
