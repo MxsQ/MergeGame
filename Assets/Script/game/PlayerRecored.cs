@@ -10,9 +10,12 @@ public class PlayerRecored
     private static string RECORD = "record";
 
     public int Level = 1;
-    public int Coins;
+    public double Coins = 0;
+    public int WarriorCount = 0;
+    public int ArcherCount = 0;
+    //public float CurWarriorPrice;
+    //public float CurArchorPrice;
     public Dictionary<int, LayInfo> LayoutInfos = new Dictionary<int, LayInfo>();
-
     public string LayJson;
 
     private PlayerRecored() { }

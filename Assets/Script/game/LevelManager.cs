@@ -22,6 +22,8 @@ public class LevelManager
     {
         GameData = DataParser.ParseFromJson();
         GameManagers.OnGameWin += OnGameWin;
+
+        Debug.Log("coins:" + GameData.LevelInfo[1].coins.ToString());
     }
 
     public int GetLevelHP()
@@ -33,5 +35,27 @@ public class LevelManager
     {
         var record = GameManagers.Instance.PlayerRecored;
         record.Level += 1;
+    }
+
+    public float GetLevelCoins(int level)
+    {
+        return GameData.LevelInfo[level].coins;
+    }
+
+    // @count what total count now is.
+    public float GetRolePriceBy(int count)
+    {
+        if (count == 0)
+        {
+            return 0;
+        }
+        else if (count == 1)
+        {
+            return 100;
+        }
+        else
+        {
+            return Mathf.Round(100 * Mathf.Pow(1.1f, count - 1));
+        }
     }
 }

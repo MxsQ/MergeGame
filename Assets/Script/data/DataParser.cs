@@ -102,6 +102,7 @@ public class DataParser
         public int level;
         public int HP;
         public int ATK;
+        public float coins;
     }
 
     [Serializable]

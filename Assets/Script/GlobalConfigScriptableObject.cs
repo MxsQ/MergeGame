@@ -9,6 +9,7 @@ public class GlobalConfigScriptableObject : ScriptableObject
     public GameObject Arrow;
     public GameObject HitText;
 
+    public float ArrowSizeScale;
     public float ArrowSpeedFactory;
     public float MoveSpeed;
 

@@ -35,6 +35,11 @@ public class EvilManager : MonoBehaviour
         _instance = this;
         GameManagers.OnGameStart += MakeEvilWork;
         GameManagers.OnGameEnd += MakeEvilReady;
+        GameManagers.OnGameWin += () =>
+        {
+            var scale = BloodBar.transform.localScale;
+            BloodBar.transform.localScale = new Vector3(0, scale.y, scale.z);
+        };
         CreateEvil();
     }
 
@@ -65,11 +70,19 @@ public class EvilManager : MonoBehaviour
 
     public void OnEvilBeHit()
     {
+
+        float percent = GetCurrentHPPercent();
+        var scale = BloodBar.transform.localScale;
+        //Debug.Log("maxHP=" + maxHP + "  curHP=" + curHP);
+        BloodBar.transform.localScale = new Vector3(_bloodBarSize * percent, scale.y, scale.z);
+    }
+
+    public float GetCurrentHPPercent()
+    {
         int maxHP = LevelManager.Instance.GetLevelHP();
         int curHP = EvilMid1.GetRoleHP();
         float percent = curHP * 1.0f / maxHP;
-        var scale = BloodBar.transform.localScale;
-        Debug.Log("maxHP=" + maxHP + "  curHP=" + curHP);
-        BloodBar.transform.localScale = new Vector3(_bloodBarSize * percent, scale.y, scale.z);
+
+        return percent;
     }
 }

@@ -150,6 +150,7 @@ public class GameManagers : MonoBehaviour
         _hero.Clear();
         OnGameEnd.Invoke();
         InvokeLevelChange();
+        PlayerRecored.SaveToLocal();
     }
 
     public void InvokeGameWin()

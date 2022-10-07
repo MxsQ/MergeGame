@@ -315,7 +315,8 @@ public class ArcherHero : Role
         spr.sprite = arrow;
         spr.sortingOrder = 10;
         arrowObject.transform.position = new Vector3(originPs.x, originPs.y, originPs.z);
-        arrowObject.transform.localScale = new Vector3(25, 25, 0);
+        var scale = GameManagers.Instance.Config.ArrowSizeScale;
+        arrowObject.transform.localScale = new Vector3(scale, scale, 0);
 
 
 

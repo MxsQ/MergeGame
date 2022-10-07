@@ -189,7 +189,18 @@ public class MergeManager : MonoBehaviour
 
     public void OnAddWarriorClick()
     {
-        //Resources.Load()
+        var record = GameManagers.Instance.PlayerRecored;
+        var price = LevelManager.Instance.GetRolePriceBy(record.WarriorCount);
+        if (price > record.Coins)
+        {
+            return;
+        }
+
+        record.Coins -= price;
+        record.WarriorCount += 1;
+        UIManager.Instance.ChangeWarriorPriceShow();
+        UIManager.Instance.ChangePlayerCoinsShow();
+
         MergeItem cur = selectEmptyItem();
         cur?.setCharector(new CharactorData(getWorriorCharacterBy(0), HeroConstance.WORRIOR));
 
@@ -197,6 +208,18 @@ public class MergeManager : MonoBehaviour
 
     public void OnAddArcherClick()
     {
+        var record = GameManagers.Instance.PlayerRecored;
+        var price = LevelManager.Instance.GetRolePriceBy(record.ArcherCount);
+        if (price > record.Coins)
+        {
+            return;
+        }
+
+        record.Coins -= price;
+        record.ArcherCount += 1;
+        UIManager.Instance.ChangeArcherPriceShow();
+        UIManager.Instance.ChangePlayerCoinsShow();
+
         MergeItem cur = selectEmptyItem();
         cur?.setCharector(new CharactorData(getArchorCharacterBy(0), HeroConstance.ARCHER));
     }
