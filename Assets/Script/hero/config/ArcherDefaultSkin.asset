@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09b79dc7d373e8e4284f547d2eadf07d, type: 3}
+  m_Name: ArcherDefaultSkin
+  m_EditorClassIdentifier: 
+  Directory: DefaultArcher
+  Items:
+  - Archer101
+  - Archer102
+  - Archer103
+  - Archer104
+  - Archer105
+  - Archer106
+  - Archer107
+  - Archer108
+  - Archer109

@@ -1,9 +1,13 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 
 public class LevelManager
 {
+
+    private const int CAPTAIN_SPAN = 5;
+    private const int BOSS_SPAN = 10;
 
     private static LevelManager _instance;
     public static LevelManager Instance
@@ -57,5 +61,32 @@ public class LevelManager
         {
             return Mathf.Round(100 * Mathf.Pow(1.1f, count - 1));
         }
+    }
+
+    public List<GameObject> GetLevelEvils()
+    {
+        var gameManager = GameManagers.Instance;
+
+        var level = gameManager.PlayerRecored.Level;
+        int configIndex = level / 10;
+        int underLevel = level % 10;
+
+        string[] esInfo = gameManager.LevelsConfigs[configIndex].Evils[underLevel].Split('-');
+        List<GameObject> es = new List<GameObject>();
+        foreach (string k in esInfo)
+        {
+            var evil = gameManager.GetEvil(k);
+            es.Add(evil);
+
+            var scale = level % BOSS_SPAN == 0
+                ? gameManager.Config.EvilMaxBoxRadius
+                : gameManager.Config.EvilMinBoxRadius;
+
+            evil.transform.localScale = new Vector3(scale, scale, 1);
+            evil.transform.localEulerAngles = new Vector3(0, -180, 0);
+        }
+
+
+        return es;
     }
 }

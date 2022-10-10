@@ -14,17 +14,24 @@ public class GameManagers : MonoBehaviour
 
     [SerializeField] public RoleSpirteCollectionScriptableObject RoleSpirteCollection;
 
-    [SerializeField] public RoleSkinScriptableObject WarriroSkinConfig;
+    [SerializeField] public RoleSkinScriptableObject[] WarriorSkin;
+
+    [SerializeField] public RoleSkinScriptableObject[] ArcherSkin;
 
     [SerializeField] public GameObject RoleCopyReference;
 
     [SerializeField] public GameObject RoleHost;
 
+    [SerializeField] public LevelScriptableObject[] LevelsConfigs;
+
     private Dictionary<RoleSkin, List<GameObject>> _roles = new Dictionary<RoleSkin, List<GameObject>>();
-    private RoleSkin _curSkin = RoleSkin.WARRIOR_DEFAUL;
+    private RoleSkin _curWarriorSkin = RoleSkin.WARRIOR_DEFAUL;
+    private RoleSkin _curArcherSkin = RoleSkin.ARCHER_DEFAUL;
 
     private List<Role> _hero = new List<Role>();
     private List<Role> _enmey = new List<Role>();
+
+    private Dictionary<string, GameObject> _evils = new Dictionary<string, GameObject>();
 
     public static event Action OnGameStart;
     public static event Action OnGameEnd;
@@ -38,7 +45,6 @@ public class GameManagers : MonoBehaviour
 
     public PlayerRecored PlayerRecored;
 
-
     public static GameManagers Instance
     {
         get { return _instance; }
@@ -48,14 +54,21 @@ public class GameManagers : MonoBehaviour
     {
         _instance = this;
         DontDestroyOnLoad(this);
+
         PlayerRecored = PlayerRecored.GetFromLocal();
+        LevelManager.CreateManager();
+
+        BuildHero(_curWarriorSkin, WarriorSkin[0]);
+        BuildHero(_curArcherSkin, ArcherSkin[0]);
+        BuildEvil(LevelsConfigs[0]);
+        SceneManager.LoadScene("GameScene", LoadSceneMode.Single);
     }
 
-    private void OnValidate()
+    private IEnumerator DeleyWork(float delay, Action work)
     {
-        BuildCharacter(_curSkin, WarriroSkinConfig);
-        LevelManager.CreateManager();
-        SceneManager.LoadScene("GameScene", LoadSceneMode.Single);
+        yield return new WaitForSeconds(delay);
+
+        work?.Invoke();
     }
 
     public Role FindEnemy(GameObject referencePs)
@@ -93,7 +106,7 @@ public class GameManagers : MonoBehaviour
     public void RegisterEnemy(Role enemy) => _enmey.Add(enemy);
     public void UnRegisterEnemy(Role enemy) => _enmey.Remove(enemy);
 
-    private void BuildCharacter(RoleSkin skinType, RoleSkinScriptableObject skinConfig)
+    private void BuildHero(RoleSkin skinType, RoleSkinScriptableObject skinConfig)
     {
         if (_roles.ContainsKey(skinType))
         {
@@ -112,18 +125,7 @@ public class GameManagers : MonoBehaviour
         {
             roles[i].gameObject.transform.position = new Vector3(10, 10, 0);
             Character c = roles[i].GetComponent<Character>();
-            try
-            {
-                c.SpriteCollection = Instantiate(RoleSpirteCollection.MegapackCollection);
-                var roleJsonString = System.IO.File.ReadAllText(dir + skinConfig.Items[i] + ".json");
-                c.FromJson(roleJsonString);
-            }
-            catch (Exception e)
-            {
-                c.SpriteCollection = Instantiate(RoleSpirteCollection.FantasyCollection);
-                var roleJsonString = System.IO.File.ReadAllText(dir + skinConfig.Items[i] + ".json");
-                c.FromJson(roleJsonString);
-            }
+            fullCharacter(c, dir + skinConfig.Items[i] + ".json");
             roles[i].gameObject.transform.SetParent(RoleHost.transform);
             DontDestroyOnLoad(roles[i]);
         }
@@ -131,9 +133,62 @@ public class GameManagers : MonoBehaviour
         _roles.Add(skinType, roles);
     }
 
+    private void BuildEvil(LevelScriptableObject levelConfig)
+    {
+        var dir = Application.dataPath + "/Resources/role/" + levelConfig.Dir + "/";
+        for (int i = 0; i < HeroConstance.LEVEL_SERIES_SIZE; i++)
+        {
+            string[] es = levelConfig.Evils[i].Split('-');
+            for (int j = 0; j < es.Length; j++)
+            {
+                var key = es[j];
+                if (_evils.ContainsKey(key))
+                {
+                    continue;
+                }
+                var evil = Instantiate(RoleCopyReference);
+                evil.gameObject.transform.position = new Vector3(10, 10, 0);
+                evil.gameObject.transform.SetParent(RoleHost.transform);
+                _evils.Add(key, evil);
+                Character c = evil.GetComponent<Character>();
+                fullCharacter(c, dir + key + ".json");
+
+                DontDestroyOnLoad(evil);
+            }
+
+        }
+
+    }
+
+    private void fullCharacter(Character character, string filePath)
+    {
+        var roleJsonString = System.IO.File.ReadAllText(filePath);
+        try
+        {
+            character.SpriteCollection = Instantiate(RoleSpirteCollection.MegapackCollection);
+            character.FromJson(roleJsonString);
+        }
+        catch (Exception e)
+        {
+            character.SpriteCollection = Instantiate(RoleSpirteCollection.FantasyCollection);
+            character.FromJson(roleJsonString);
+        }
+
+    }
+
     public GameObject GetWarriorCharacter(int level)
     {
-        return Instantiate(_roles[_curSkin][level]);
+        return Instantiate(_roles[_curWarriorSkin][level]);
+    }
+
+    public GameObject GetArcherCharacter(int level)
+    {
+        return Instantiate(_roles[_curArcherSkin][level]);
+    }
+
+    public GameObject GetEvil(string key)
+    {
+        return Instantiate(_evils[key]);
     }
 
     public void InvokeGameStart()

@@ -117,7 +117,7 @@ public class MergeManager : MonoBehaviour
     {
         if (type == HeroConstance.ARCHER)
         {
-            return getArchorCharacterBy(index);
+            return getArcherCharacterBy(index);
         }
 
         return getWorriorCharacterBy(index);
@@ -130,10 +130,9 @@ public class MergeManager : MonoBehaviour
         return GameManagers.Instance.GetWarriorCharacter(index);
     }
 
-    GameObject getArchorCharacterBy(int index)
+    GameObject getArcherCharacterBy(int index)
     {
-        GameObject character = (GameObject)Instantiate(ArchorCharaterConfig.characters[index]);
-        return character;
+        return GameManagers.Instance.GetArcherCharacter(index); ;
     }
 
     Vector2 GetScreenPosition()
@@ -221,7 +220,7 @@ public class MergeManager : MonoBehaviour
         UIManager.Instance.ChangePlayerCoinsShow();
 
         MergeItem cur = selectEmptyItem();
-        cur?.setCharector(new CharactorData(getArchorCharacterBy(0), HeroConstance.ARCHER));
+        cur?.setCharector(new CharactorData(getArcherCharacterBy(0), HeroConstance.ARCHER));
     }
 
     private MergeItem selectEmptyItem()
@@ -259,7 +258,7 @@ public class MergeManager : MonoBehaviour
         foreach (KeyValuePair<int, LayInfo> info in record.LayoutInfos)
         {
             GameObject character = info.Value.Type == HeroConstance.ARCHER ?
-                getArchorCharacterBy(info.Value.Level) :
+                getArcherCharacterBy(info.Value.Level) :
                 getWorriorCharacterBy(info.Value.Level);
             mergeItems[info.Value.Index].setCharector(new CharactorData(character, info.Value.Type, info.Value.Level));
         }

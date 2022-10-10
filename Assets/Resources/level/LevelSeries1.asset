@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff0e6fb10473b4be6b91436e0536641e, type: 3}
+  m_Name: LevelSeries1
+  m_EditorClassIdentifier: 
+  Dir: EvilSeries1
+  Evils:
+  - Evil110
+  - Evil210
+  - Evil310
+  - Evil410
+  - Evil510
+  - Evil110-Evil210
+  - Evil110-Evil310
+  - Evil110-Evil410
+  - Evil110-Evil510
+  - Evil110-Evil110
