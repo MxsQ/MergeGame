@@ -101,6 +101,8 @@ public class EvilManager : MonoBehaviour
     {
         int maxHP = LevelManager.Instance.GetLevelHP();
         int curHP = EvilMid1.GetRoleHP();
+        curHP += EvilMid2.GetRoleHP();
+        curHP += EvilBig1.GetRoleHP();
         float percent = curHP * 1.0f / maxHP;
 
         return percent;

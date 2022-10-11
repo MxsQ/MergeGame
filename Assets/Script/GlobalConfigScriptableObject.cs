@@ -17,4 +17,9 @@ public class GlobalConfigScriptableObject : ScriptableObject
 
     public int EvilMinBoxRadius;
     public int EvilMaxBoxRadius;
+
+    public float EvilWarriorHPFacotr;
+    public float EvilWarriorATKFactor;
+    public float EvilArcherHPFactor;
+    public float EvilArcherATKFactor;
 }

@@ -23,8 +23,9 @@ public class GameData
     public RoleData GetEvilWarriorData(int level)
     {
         RoleData roleData = new RoleData();
-        roleData.HP = LevelInfo[level].HP;
-        roleData.ATK = LevelInfo[level].ATK;
+        var factors = LevelManager.Instance.LevelFactor;
+        roleData.HP = (int)(LevelInfo[level].HP * factors.EvilWarriorHPFactor);
+        roleData.ATK = (int)(LevelInfo[level].ATK * factors.EvilWarriorATKFactor);
 
         return roleData;
     }
@@ -32,8 +33,9 @@ public class GameData
     public RoleData GetEvilArcherData(int level)
     {
         RoleData roleData = new RoleData();
-        roleData.HP = LevelInfo[level].HP;
-        roleData.ATK = LevelInfo[level].ATK;
+        var factors = LevelManager.Instance.LevelFactor;
+        roleData.HP = (int)(LevelInfo[level].HP * factors.EvilArcherHPFactor);
+        roleData.ATK = (int)(LevelInfo[level].ATK * factors.EvilArcherATKFactor);
 
         return roleData;
     }

@@ -129,21 +129,46 @@ public class UIManager : MonoBehaviour
 
     public void ChangePlayerCoinsShow()
     {
-        PlayerCoinsText.text = "Coins: " + GameManagers.Instance.PlayerRecored.Coins.ToString();
+        PlayerCoinsText.text = "Coins: " + GetCoinStringWithUnit(GameManagers.Instance.PlayerRecored.Coins);
     }
 
     public void ChangeWarriorPriceShow()
     {
-        AddWarriorText.text = "+战士：" + LevelManager.Instance.GetRolePriceBy(GameManagers.Instance.PlayerRecored.WarriorCount).ToString();
+        AddWarriorText.text = "+战士：" + GetCoinStringWithUnit(LevelManager.Instance.GetRolePriceBy(GameManagers.Instance.PlayerRecored.WarriorCount));
     }
 
     public void ChangeArcherPriceShow()
     {
-        AddArcherText.text = "+弓箭手：" + LevelManager.Instance.GetRolePriceBy(GameManagers.Instance.PlayerRecored.ArcherCount).ToString();
+        AddArcherText.text = "+弓箭手：" + GetCoinStringWithUnit(LevelManager.Instance.GetRolePriceBy(GameManagers.Instance.PlayerRecored.ArcherCount));
     }
 
     private void ChangeGainCoinsShow(double coins)
     {
-        GainConisText.text = "Gain: " + coins.ToString();
+        GainConisText.text = "Gain: " + GetCoinStringWithUnit(coins);
+    }
+
+
+    private string[] _coinUnit = new string[] { "", "K", "M", "G", "T", "P", "E" };
+
+    private string GetCoinStringWithUnit(double coin)
+    {
+        double showNum = coin;
+        var unitIndex = 0;
+        while (showNum > 1000)
+        {
+            showNum /= 1000;
+            unitIndex++;
+        }
+
+        if (unitIndex == 0)
+        {
+            return showNum.ToString();
+        }
+        else if (showNum * 10 % 10 == 0)
+        {
+            return showNum.ToString("0") + " " + _coinUnit[unitIndex];
+        }
+
+        return showNum.ToString("0.0") + " " + _coinUnit[unitIndex];
     }
 }

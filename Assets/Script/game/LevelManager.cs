@@ -21,6 +21,7 @@ public class LevelManager
     }
 
     public GameData GameData;
+    private LevelFactor _curLevelFactor = new LevelFactor();
 
     private LevelManager()
     {
@@ -73,6 +74,10 @@ public class LevelManager
 
         string[] esInfo = gameManager.LevelsConfigs[configIndex].Evils[underLevel].Split('-');
         List<GameObject> es = new List<GameObject>();
+
+        bool hasArcher = false;
+        bool hasWarrior = false;
+
         foreach (string k in esInfo)
         {
             var evil = gameManager.GetEvil(k);
@@ -84,9 +89,59 @@ public class LevelManager
 
             evil.transform.localScale = new Vector3(scale, scale, 1);
             evil.transform.localEulerAngles = new Vector3(0, -180, 0);
+
+            if (k.Contains("A"))
+            {
+                hasArcher = true;
+            }
+            else
+            {
+                hasWarrior = true;
+            }
+            Debug.Log("now evil key = " + k);
+        }
+
+        Debug.Log("hasArcher:" + hasArcher.ToString() + " hasWarriro:" + hasWarrior.ToString());
+
+        // config HP and ATk factor
+        _curLevelFactor = new LevelFactor();
+        if (es.Count > 1)
+        {
+            if (hasArcher && hasWarrior)
+            {
+                _curLevelFactor.EvilWarriorHPFactor = gameManager.Config.EvilWarriorHPFacotr;
+                _curLevelFactor.EvilWarriorATKFactor = gameManager.Config.EvilWarriorATKFactor;
+                _curLevelFactor.EvilArcherHPFactor = gameManager.Config.EvilArcherHPFactor;
+                _curLevelFactor.EvilWarriorATKFactor = gameManager.Config.EvilArcherATKFactor;
+            }
+            else if (hasWarrior)
+            {
+                _curLevelFactor.EvilWarriorHPFactor = 0.5f;
+                _curLevelFactor.EvilWarriorATKFactor = gameManager.Config.EvilWarriorATKFactor;
+            }
+            else
+            {
+                _curLevelFactor.EvilArcherHPFactor = 0.5f;
+                _curLevelFactor.EvilWarriorATKFactor = gameManager.Config.EvilArcherATKFactor;
+            }
         }
 
 
         return es;
     }
+
+    public LevelFactor LevelFactor
+    {
+        get { return _curLevelFactor; }
+    }
+}
+
+
+public class LevelFactor
+{
+    public float EvilWarriorHPFactor = 1;
+    public float EvilWarriorATKFactor = 1;
+
+    public float EvilArcherHPFactor = 1;
+    public float EvilArcherATKFactor = 1;
 }
