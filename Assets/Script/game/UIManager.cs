@@ -129,17 +129,17 @@ public class UIManager : MonoBehaviour
 
     public void ChangePlayerCoinsShow()
     {
-        PlayerCoinsText.text = "Coins: " + GetCoinStringWithUnit(GameManagers.Instance.PlayerRecored.Coins);
+        PlayerCoinsText.text = GetCoinStringWithUnit(GameManagers.Instance.PlayerRecored.Coins);
     }
 
     public void ChangeWarriorPriceShow()
     {
-        AddWarriorText.text = "+战士：" + GetCoinStringWithUnit(LevelManager.Instance.GetRolePriceBy(GameManagers.Instance.PlayerRecored.WarriorCount));
+        AddWarriorText.text = GetCoinStringWithUnit(LevelManager.Instance.GetRolePriceBy(GameManagers.Instance.PlayerRecored.WarriorCount));
     }
 
     public void ChangeArcherPriceShow()
     {
-        AddArcherText.text = "+弓箭手：" + GetCoinStringWithUnit(LevelManager.Instance.GetRolePriceBy(GameManagers.Instance.PlayerRecored.ArcherCount));
+        AddArcherText.text = GetCoinStringWithUnit(LevelManager.Instance.GetRolePriceBy(GameManagers.Instance.PlayerRecored.ArcherCount));
     }
 
     private void ChangeGainCoinsShow(double coins)

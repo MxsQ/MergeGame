@@ -20,7 +20,7 @@ public class EvilManager : MonoBehaviour
     //private GameObject e2;
     //private GameObject e3;
 
-    private int _bloodBarSize = 1000;
+    private int _bloodBarSize = 750;
 
     //private const int MID_SCALE = 100;
     private static EvilManager _instance;
