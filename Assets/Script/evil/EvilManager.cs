@@ -92,6 +92,7 @@ public class EvilManager : MonoBehaviour
     {
 
         float percent = GetCurrentHPPercent();
+        percent = percent < 0 ? 0 : percent;
         var scale = BloodBar.transform.localScale;
         //Debug.Log("maxHP=" + maxHP + "  curHP=" + curHP);
         BloodBar.transform.localScale = new Vector3(_bloodBarSize * percent, scale.y, scale.z);

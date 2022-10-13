@@ -114,8 +114,8 @@ public class UIManager : MonoBehaviour
     {
         _inGame = false; HeroPanel.SetActive(true);
         _waitAddCoins = 0;
-        ChangeArcherBtnShow();
         ChangeWarriorBtnShow();
+        ChangeArcherBtnShow();
         ChangePlayerCoinsShow();
 
     }

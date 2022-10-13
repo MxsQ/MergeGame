@@ -20,3 +20,7 @@ MonoBehaviour:
   HeroBoxRadius: 90
   EvilMinBoxRadius: 100
   EvilMaxBoxRadius: 120
+  EvilWarriorHPFacotr: 0.7
+  EvilWarriorATKFactor: 0.72
+  EvilArcherHPFactor: 0.5
+  EvilArcherATKFactor: 1.2
