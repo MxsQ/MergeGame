@@ -197,7 +197,8 @@ public class MergeManager : MonoBehaviour
 
         record.Coins -= price;
         record.WarriorCount += 1;
-        UIManager.Instance.ChangeWarriorPriceShow();
+        UIManager.Instance.ChangeWarriorBtnShow();
+        UIManager.Instance.ChangeArcherBtnShow();
         UIManager.Instance.ChangePlayerCoinsShow();
 
         MergeItem cur = selectEmptyItem();
@@ -216,7 +217,8 @@ public class MergeManager : MonoBehaviour
 
         record.Coins -= price;
         record.ArcherCount += 1;
-        UIManager.Instance.ChangeArcherPriceShow();
+        UIManager.Instance.ChangeArcherBtnShow();
+        UIManager.Instance.ChangeWarriorBtnShow();
         UIManager.Instance.ChangePlayerCoinsShow();
 
         MergeItem cur = selectEmptyItem();

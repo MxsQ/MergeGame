@@ -2,18 +2,30 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
     [SerializeField] GameObject HeroPanel;
+    [SerializeField] GameObject TopPanel;
     [SerializeField] Text LevelText;
     [SerializeField] Text PlayerCoinsText;
+    [SerializeField] GameObject AddWarriorByCoinView;
+    [SerializeField] GameObject AddWarriorByRewardView;
+    [SerializeField] GameObject AddArcherByCoinView;
+    [SerializeField] GameObject AddArcherByRewardView;
     [SerializeField] Text AddWarriorText;
     [SerializeField] Text AddArcherText;
     [SerializeField] GameObject FinishPanel;
     [SerializeField] Text FinishPrompt;
     [SerializeField] Text GainConisText;
+
+    [SerializeField] Image[] Dots;
+    [SerializeField] Sprite InProgressDot;
+    [SerializeField] Sprite PassProgressDot;
+    [SerializeField] Sprite UnreachProgressDot;
+
 
     private bool _inGame;
     private int _curLevel;
@@ -31,15 +43,15 @@ public class UIManager : MonoBehaviour
 
         GameManagers.OnGameStart += OnGameStart;
         GameManagers.OnGameEnd += OnGameEnd;
-        GameManagers.OnLevelChange += level => { LevelText.text = "Level " + level.ToString(); };
+        GameManagers.OnLevelChange += OnLevelChange;
         GameManagers.OnGameWin += OnGameWin;
         GameManagers.OnGameFaild += OnGameFaild;
 
-        LevelText.text = "Level " + GameManagers.Instance.PlayerRecored.Level.ToString();
+        //LevelText.text = "Level " + GameManagers.Instance.PlayerRecored.Level.ToString();
         ChangePlayerCoinsShow();
-        ChangeWarriorPriceShow();
-        ChangeArcherPriceShow();
-
+        ChangeWarriorBtnShow();
+        ChangeArcherBtnShow();
+        OnLevelChange(GameManagers.Instance.PlayerRecored.Level);
 
         StartCoroutine(DelayWorkOnAwake());
     }
@@ -56,10 +68,21 @@ public class UIManager : MonoBehaviour
         MergeManager.Instance.OnAddWarriorClick();
     }
 
+    public void OnAddWarriorByRewardClick()
+    {
+
+    }
+
     public void OnAddArcherClick()
     {
         MergeManager.Instance.OnAddArcherClick();
     }
+
+    public void OnAddArcherByRewardClick()
+    {
+
+    }
+
 
     public void OnGameStartClick()
     {
@@ -78,6 +101,7 @@ public class UIManager : MonoBehaviour
         _waitAddCoins = 0;
         ChangePlayerCoinsShow();
         GameManagers.Instance.InvokeGameEnd();
+        TopPanel.SetActive(true);
     }
 
     private void OnGameStart()
@@ -90,6 +114,10 @@ public class UIManager : MonoBehaviour
     {
         _inGame = false; HeroPanel.SetActive(true);
         _waitAddCoins = 0;
+        ChangeArcherBtnShow();
+        ChangeWarriorBtnShow();
+        ChangePlayerCoinsShow();
+
     }
 
     private void OnGameWin()
@@ -97,6 +125,7 @@ public class UIManager : MonoBehaviour
         StartCoroutine(DeleyAction(1f, () =>
         {
             FinishPanel.SetActive(true);
+            TopPanel.SetActive(false);
         }));
 
         FinishPrompt.text = "Win";
@@ -111,6 +140,7 @@ public class UIManager : MonoBehaviour
         StartCoroutine(DeleyAction(1f, () =>
         {
             FinishPanel.SetActive(true);
+            TopPanel.SetActive(false);
         }));
 
         FinishPrompt.text = "Faild";
@@ -132,14 +162,38 @@ public class UIManager : MonoBehaviour
         PlayerCoinsText.text = GetCoinStringWithUnit(GameManagers.Instance.PlayerRecored.Coins);
     }
 
-    public void ChangeWarriorPriceShow()
+    public void ChangeWarriorBtnShow()
     {
-        AddWarriorText.text = GetCoinStringWithUnit(LevelManager.Instance.GetRolePriceBy(GameManagers.Instance.PlayerRecored.WarriorCount));
+        var price = LevelManager.Instance.GetRolePriceBy(GameManagers.Instance.PlayerRecored.WarriorCount);
+        var playerCoins = GameManagers.Instance.PlayerRecored.Coins;
+        AddWarriorText.text = GetCoinStringWithUnit(price);
+        if (playerCoins >= price)
+        {
+            AddWarriorByCoinView.SetActive(true);
+            AddWarriorByRewardView.SetActive(false);
+        }
+        else
+        {
+            AddWarriorByCoinView.SetActive(false);
+            AddWarriorByRewardView.SetActive(true);
+        }
     }
 
-    public void ChangeArcherPriceShow()
+    public void ChangeArcherBtnShow()
     {
+        var price = LevelManager.Instance.GetRolePriceBy(GameManagers.Instance.PlayerRecored.WarriorCount);
+        var playerCoins = GameManagers.Instance.PlayerRecored.Coins;
         AddArcherText.text = GetCoinStringWithUnit(LevelManager.Instance.GetRolePriceBy(GameManagers.Instance.PlayerRecored.ArcherCount));
+        if (playerCoins >= price)
+        {
+            AddArcherByCoinView.SetActive(true);
+            AddArcherByRewardView.SetActive(false);
+        }
+        else
+        {
+            AddArcherByCoinView.SetActive(false);
+            AddArcherByRewardView.SetActive(true);
+        }
     }
 
     private void ChangeGainCoinsShow(double coins)
@@ -170,5 +224,37 @@ public class UIManager : MonoBehaviour
         }
 
         return showNum.ToString("0.0") + " " + _coinUnit[unitIndex];
+    }
+
+    private void OnLevelChange(int level)
+    {
+        LevelText.text = "Level " + level.ToString();
+
+        var curLevelIndex = level % 10;
+
+        //if (level < 10 && curLevelIndex == 0)
+        //{
+        //    foreach (Image img in Dots)
+        //    {
+        //        img.sprite = GameObject.Instantiate(UnreachProgressDot);
+        //    }
+        //}
+        //else
+        //{
+        for (int i = 0; i < curLevelIndex - 1; i++)
+        {
+            Dots[i].sprite = GameObject.Instantiate(PassProgressDot);
+        }
+
+        Dots[curLevelIndex - 1].sprite = GameObject.Instantiate(InProgressDot);
+
+        for (int i = curLevelIndex; i < 9; i++)
+        {
+            Dots[i].sprite = GameObject.Instantiate(UnreachProgressDot);
+        }
+        //}
+
+
+
     }
 }
