@@ -190,7 +190,7 @@ public class MergeManager : MonoBehaviour
     {
         var record = GameManagers.Instance.PlayerRecored;
         var price = LevelManager.Instance.GetRolePriceBy(record.WarriorCount);
-        if (price > record.Coins)
+        if (price > record.Coins && HasPosition())
         {
             return;
         }
@@ -210,7 +210,7 @@ public class MergeManager : MonoBehaviour
     {
         var record = GameManagers.Instance.PlayerRecored;
         var price = LevelManager.Instance.GetRolePriceBy(record.ArcherCount);
-        if (price > record.Coins)
+        if (price > record.Coins && HasPosition())
         {
             return;
         }
@@ -223,6 +223,18 @@ public class MergeManager : MonoBehaviour
 
         MergeItem cur = selectEmptyItem();
         cur?.setCharector(new CharactorData(getArcherCharacterBy(0), HeroConstance.ARCHER));
+    }
+
+    private bool HasPosition()
+    {
+        foreach (MergeItem item in mergeItems)
+        {
+            if (!item.HasCharesctor)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private MergeItem selectEmptyItem()
