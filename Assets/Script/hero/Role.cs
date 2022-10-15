@@ -147,6 +147,7 @@ public class WarriorHero : Role
         if (_changeTime > _atkSpand)
         {
             _character.Slash();
+            AudioManager.Instance.PlayAttack();
             _changeTime = 0;
             DamageManagers.Instance.postDamage(target.Position(), _data.ATK, () => { target.BeHit(_data.ATK); }, 0.3f);
         }
@@ -305,6 +306,7 @@ public class ArcherHero : Role
         {
             return;
         }
+        AudioManager.Instance.PlayShoot();
 
         var originPs = _character.transform.position;
         //_arrow.gameObject.SetActive(true);
@@ -321,6 +323,8 @@ public class ArcherHero : Role
 
 
         ArrowManager.Instance.Shoot(arrowObject, target, _data.ATK);
+
+
     }
 
     protected override Role findTarget()
@@ -368,6 +372,7 @@ public class EvilWarrior : WarriorHero
 
     public override void OnDie()
     {
+        AudioManager.Instance.PlayEvilDie();
         GameManagers.Instance.OnEvilDeath(this);
     }
 
@@ -403,6 +408,7 @@ public class EvilArcher : ArcherHero
 
     public override void OnDie()
     {
+        AudioManager.Instance.PlayEvilDie();
         GameManagers.Instance.OnEvilDeath(this);
     }
 

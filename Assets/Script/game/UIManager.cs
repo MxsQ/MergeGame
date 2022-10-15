@@ -228,6 +228,7 @@ public class UIManager : MonoBehaviour
 
     private void OnLevelChange(int level)
     {
+        Debug.Log("to level " + level.ToString());
         LevelText.text = "Level " + level.ToString();
 
         var curLevelIndex = level % 10;
@@ -241,6 +242,16 @@ public class UIManager : MonoBehaviour
         //}
         //else
         //{
+
+        if (curLevelIndex == 0)
+        {
+            foreach (Image d in Dots)
+            {
+                d.sprite = GameObject.Instantiate(PassProgressDot);
+            }
+            return;
+        }
+
         for (int i = 0; i < curLevelIndex - 1; i++)
         {
             Dots[i].sprite = GameObject.Instantiate(PassProgressDot);
