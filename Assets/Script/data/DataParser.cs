@@ -13,7 +13,7 @@ public class DataParser
 {
     //private string VALUE_PATH = Application.dataPath + "/Resources/excel/Value.xlsx";
 
-    public static readonly int MAX_GAME_LEVEL = 12;
+    public static readonly int MAX_GAME_LEVEL = 20;
     public static readonly int MAX_ROLE_LEVEL = 8;
     public static readonly int EVIL_HP_INDEX = 1;
     public static readonly int EVIL_ATK_INDEX = 2;
@@ -82,6 +82,7 @@ public class DataParser
 
         for (int i = 0; i <= MAX_ROLE_LEVEL; i++)
         {
+            var d = data.warrior[i];
             gameData.WarriorInfo[data.warrior[i].level] = data.warrior[i];
             gameData.ArcherInfo[data.archer[i].level] = data.archer[i];
         }

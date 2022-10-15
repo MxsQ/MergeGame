@@ -168,7 +168,7 @@ MonoBehaviour:
   RoleHost: {fileID: 728393325}
   LevelsConfigs:
   - {fileID: 11400000, guid: b1ae7e523dde44e84a1f5757a3d2f5a3, type: 2}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 260b2ae9fb4734f58a2b31eab7bed5a6, type: 2}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
