@@ -59,6 +59,20 @@ public class HeroController
         _hero.Update();
     }
 
+    public void LateUpdate()
+    {
+        if (!_inGame || _hero == null)
+        {
+            return;
+        }
+
+        if (_hero is ArcherHero)
+        {
+            ((ArcherHero)_hero).LateUpdate();
+        }
+
+    }
+
     public void onGameEnd()
     {
         _inGame = false;

@@ -30,6 +30,11 @@ public class MergeItem : MonoBehaviour
         _heroController.Update();
     }
 
+    public void LateUpdate()
+    {
+        _heroController.LateUpdate();
+    }
+
     public bool InZone(Vector2 screenPs)
     {
         var ps = Camera.main.ScreenToWorldPoint(screenPs);

@@ -59,6 +59,7 @@ public class EvilItem : MonoBehaviour
         _role.Update();
     }
 
+
     public int GetRoleHP()
     {
         if (_role == null)

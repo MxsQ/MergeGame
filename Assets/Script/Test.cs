@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Assets.HeroEditor.Common.CharacterScripts;
+using Assets.HeroEditor.Common.CharacterScripts.Firearms;
 using UnityEngine;
 
 public class Test : MonoBehaviour
@@ -11,22 +13,85 @@ public class Test : MonoBehaviour
     bool down = false;
     bool up = false;
 
-    public void OnValidate()
+    Transform _weapon;
+    Transform _arm;
+
+    public Transform TestArm;
+
+    public void Awake()
     {
         Character = FindObjectOfType<Character>();
-        Character.Animator.SetBool("Ready", true);
+        //Character.Animator.SetBool("Ready", true);
 
-        //TextAsset ta = Resources.Load<TextAsset>("heroJson/hero");
-        //byte[] rb = Encoding.UTF8.GetBytes(ta.text);
-        //    var jsonString = System.IO.File.ReadAllText(Application.dataPath + "/Resources/herojson/hero.json");
-        //    Character.FromJson(jsonString);
+        Character.GetReady();
 
-        //StartCoroutine(load());
+        _weapon = Character.BowRenderers[3].transform;
+        CharacterBodySculptor sculptor = Character.gameObject.GetComponent<CharacterBodySculptor>();
+        _arm = sculptor.ArmR[0];
+
+        //_arm.transform.localEulerAngles = new Vector3(0, 0, 100);
+    }
+
+    private float AngleToTarget;
+    private float AngleToArm;
+
+    public void RotateArm(Transform arm, Transform weapon, Vector2 target, float angleMin, float angleMax) // TODO: Very hard to understand logic.
+    {
+
+
+        target = arm.transform.InverseTransformPoint(target);
+        //Debug.Log("new position" + target);
+
+        var angleToTarget = Vector2.SignedAngle(Vector2.right, target);
+        var angleToArm = Vector2.SignedAngle(weapon.right, arm.transform.right) * Math.Sign(weapon.lossyScale.x);
+        var fix = weapon.InverseTransformPoint(arm.transform.position).y / target.magnitude;
+
+        AngleToTarget = angleToTarget;
+        AngleToArm = angleToArm;
+
+        if (fix < -1) fix = -1;
+        else if (fix > 1) fix = 1;
+
+        var angleFix = Mathf.Asin(fix) * Mathf.Rad2Deg;
+        var angle = angleToTarget + angleFix + arm.transform.localEulerAngles.z;
+
+        angle = NormalizeAngle(angle);
+
+        if (angle > angleMax)
+        {
+            angle = angleMax;
+        }
+        else if (angle < angleMin)
+        {
+            angle = angleMin;
+        }
+
+        if (float.IsNaN(angle))
+        {
+            Debug.LogWarning(angle);
+        }
+
+        arm.transform.localEulerAngles = new Vector3(0, 0, angle + angleToArm);
+    }
+
+    private void LateUpdate()
+    {
+        RotateArm(TestArm, _weapon, Camera.main.ScreenToWorldPoint(Input.mousePosition), -40, 40);
+
+    }
+
+    private static float NormalizeAngle(float angle)
+    {
+        while (angle > 180) angle -= 360;
+        while (angle < -180) angle += 360;
+
+        return angle;
     }
 
     //public void load()
 
-    public void load() {
+    public void load()
+    {
         //yield return new WaitForSeconds(1);
 
         var jsonString = System.IO.File.ReadAllText(Application.dataPath + "/Resources/herojson/hero.json");
@@ -38,8 +103,11 @@ public class Test : MonoBehaviour
     public void OnDown()
     {
         Debug.Log("call down");
-        //down = true;
+        ////down = true;
         Character.Animator.SetInteger("Charge", 1);
+
+
+        //TestArm.transform.localEulerAngles = new Vector3(0, 0, 100);
     }
 
     public void OnUP()

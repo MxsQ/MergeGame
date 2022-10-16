@@ -1,4 +1,5 @@
 ﻿using Assets.HeroEditor.Common.CharacterScripts;
+using Assets.HeroEditor.Common.CharacterScripts.Firearms;
 using System;
 using System.Collections;
 using System.Linq;
@@ -169,6 +170,8 @@ public class ArcherHero : Role
 
     private Transform _arm;
     private Transform _weapon;
+    private Vector3 _nextShootTarget;
+    private bool _hasShootTarget = false;
 
     bool inChart = false;
     bool inRelase = false;
@@ -181,10 +184,9 @@ public class ArcherHero : Role
         _weapon = character.BodyRenderers[3].transform;
         CharacterBodySculptor sculptor = character.gameObject.GetComponent<CharacterBodySculptor>();
         _arm = sculptor.ArmL;
-        //_arm.localEulerAngles = new Vector3(0, 0, 90);
-        int i = 1;
-        _arm.transform.rotation = Quaternion.EulerRotation(0, 0, 90);
+
     }
+
 
 
     public override void Update()
@@ -206,8 +208,12 @@ public class ArcherHero : Role
         if (target == null)
         {
             _character.Relax();
+            _hasShootTarget = false;
             return;
         }
+
+        _hasShootTarget = true;
+        _nextShootTarget = target.Position();
 
         if (!inChart && !inRelase && !inIdle)
         {
@@ -238,34 +244,44 @@ public class ArcherHero : Role
         //RotateArm();
     }
 
-    private void RotateArm()
+    public void LateUpdate()
     {
-        //var target = GameManagers.Instance.FindEnemy(_character.gameObject);
-        //if (target != null)
-        //{
-        //    var angleToTarget = Vector2.SignedAngle(Vector2.right, target.transform.position);
-        //    var v = target.transform.position - _weapon.position;
-        //    var fix = v.y / v.x;
-        //    var angle = Mathf.Atan(fix) * Mathf.Rad2Deg;
+        var state = _character.GetState();
+        if (state == CharacterState.DeathB || state == CharacterState.DeathF)
+        {
+            return;
+        }
 
-        //    _arm.transform.localEulerAngles = new Vector3(0, 0, angle);
+        Debug.Log("adjust position");
+        if (_hasShootTarget)
+        {
+            RotateArm(_arm, _weapon, _nextShootTarget, -40, 40);
+        }
+        else
+        {
+            RotateArm(_arm, _weapon, _arm.position + 1000 * Vector3.right, -40, 40);
+        }
+    }
 
-        //}
 
-        var arm = _arm;
-        var weapon = _weapon;
-        var target = GameManagers.Instance.FindEnemy(_character.gameObject).Position();
-        var angleMax = 180;
-        var angleMin = -180;
+
+
+    private float AngleToTarget;
+    private float AngleToArm;
+
+    public void RotateArm(Transform arm, Transform weapon, Vector2 target, float angleMin, float angleMax) // TODO: Very hard to understand logic.
+    {
+
 
         target = arm.transform.InverseTransformPoint(target);
+        //Debug.Log("new position" + target);
 
         var angleToTarget = Vector2.SignedAngle(Vector2.right, target);
         var angleToArm = Vector2.SignedAngle(weapon.right, arm.transform.right) * Math.Sign(weapon.lossyScale.x);
         var fix = weapon.InverseTransformPoint(arm.transform.position).y / target.magnitude;
 
-        //AngleToTarget = angleToTarget;
-        //AngleToArm = angleToArm;
+        AngleToTarget = angleToTarget;
+        AngleToArm = angleToArm;
 
         if (fix < -1) fix = -1;
         else if (fix > 1) fix = 1;

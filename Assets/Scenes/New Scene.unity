@@ -226,6 +226,11 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!4 &152492265 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4314069016542968, guid: bd7e0972e5cee427083a47f1ca774267, type: 3}
+  m_PrefabInstance: {fileID: 1468146315}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &264323535
 GameObject:
   m_ObjectHideFlags: 0
@@ -419,6 +424,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bda1c8a9fcd734bddae570b8cc7158b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TestArm: {fileID: 152492265}
 --- !u!4 &682499002
 Transform:
   m_ObjectHideFlags: 0
