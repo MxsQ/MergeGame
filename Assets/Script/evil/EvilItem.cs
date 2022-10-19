@@ -15,15 +15,29 @@ public class EvilItem : MonoBehaviour
         _originPs = new Vector3(ps.x, ps.y, ps.z);
     }
 
-    public void set(GameObject character)
+    public void set(EnemyUnit unit)
     {
+        var character = unit.o;
         character.transform.parent = gameObject.transform;
         character.transform.localPosition = new Vector3(0, 0, 0);
 
         _charecter = character;
-        _role = new EvilWarrior(character.GetComponent<Character>(), LevelManager.Instance.GameData.GetEvilWarriorData(GameManagers.Instance.PlayerRecored.Level));
+        if (unit.type == HeroConstance.WORRIOR)
+        {
+            _role = new EvilWarrior(character.GetComponent<Character>(),
+                        LevelManager.Instance.GameData.GetEvilWarriorData(GameManagers.Instance.PlayerRecored.Level));
+        }
+        else
+        {
+            _role = new EvilArcher(character.GetComponent<Character>(),
+                       LevelManager.Instance.GameData.GetEvilArcherData(GameManagers.Instance.PlayerRecored.Level));
+        }
+
+
         _role?.Register();
         gameObject.SetActive(true);
+
+        _role.GetReady();
     }
 
     public void Reset()
@@ -58,6 +72,22 @@ public class EvilItem : MonoBehaviour
 
         _role.Update();
     }
+
+    public void LateUpdate()
+    {
+
+        if (!GameManagers.InGame || _role == null)
+        {
+            return;
+        }
+
+        if (_role is ArcherHero)
+        {
+            ((ArcherHero)_role).LateUpdate();
+        }
+
+    }
+
 
 
     public int GetRoleHP()

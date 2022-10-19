@@ -39,7 +39,14 @@ public class LevelManager
     private void OnGameWin()
     {
         var record = GameManagers.Instance.PlayerRecored;
+        var before = record.Level / 10;
         record.Level += 1;
+        var after = record.Level / 10;
+
+        if (after > before)
+        {
+            GameManagers.Instance.BuildNextSeriesEvil(after);
+        }
     }
 
     public float GetLevelCoins(int level)
@@ -64,24 +71,27 @@ public class LevelManager
         }
     }
 
-    public List<GameObject> GetLevelEvils()
+    public List<EnemyUnit> GetLevelEvils()
     {
         var gameManager = GameManagers.Instance;
 
-        var level = gameManager.PlayerRecored.Level;
+        var level = gameManager.PlayerRecored.Level - 1;
         int configIndex = level / 10;
         int underLevel = level % 10;
 
         string[] esInfo = gameManager.LevelsConfigs[configIndex].Evils[underLevel].Split('-');
-        List<GameObject> es = new List<GameObject>();
+        List<EnemyUnit> es = new List<EnemyUnit>();
 
         bool hasArcher = false;
         bool hasWarrior = false;
 
         foreach (string k in esInfo)
         {
+            Debug.Log("load " + k);
             var evil = gameManager.GetEvil(k);
-            es.Add(evil);
+            EnemyUnit unit = new EnemyUnit();
+            unit.o = evil;
+
 
             var scale = level % BOSS_SPAN == 0
                 ? gameManager.Config.EvilMaxBoxRadius
@@ -93,11 +103,15 @@ public class LevelManager
             if (k.Contains("A"))
             {
                 hasArcher = true;
+                unit.type = HeroConstance.ARCHER;
             }
             else
             {
                 hasWarrior = true;
+                unit.type = HeroConstance.WORRIOR;
             }
+
+            es.Add(unit);
             Debug.Log("now evil key = " + k);
         }
 
@@ -134,6 +148,7 @@ public class LevelManager
     {
         get { return _curLevelFactor; }
     }
+
 }
 
 
@@ -144,4 +159,10 @@ public class LevelFactor
 
     public float EvilArcherHPFactor = 1;
     public float EvilArcherATKFactor = 1;
+}
+
+public class EnemyUnit
+{
+    public GameObject o;
+    public int type;
 }

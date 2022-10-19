@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff0e6fb10473b4be6b91436e0536641e, type: 3}
   m_Name: LevelSeries2
   m_EditorClassIdentifier: 
-  Dir: EvilSeries2
+  Dir: EvilSeries1
   Evils:
   - Evil210
   - Evil310

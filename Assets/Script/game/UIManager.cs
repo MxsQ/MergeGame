@@ -18,8 +18,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] Text AddWarriorText;
     [SerializeField] Text AddArcherText;
     [SerializeField] GameObject FinishPanel;
-    [SerializeField] Text FinishPrompt;
     [SerializeField] Text GainConisText;
+    [SerializeField] Text PlayerConinsTextInFinishUI;
 
     [SerializeField] Image[] Dots;
     [SerializeField] Sprite InProgressDot;
@@ -52,6 +52,7 @@ public class UIManager : MonoBehaviour
         ChangeWarriorBtnShow();
         ChangeArcherBtnShow();
         OnLevelChange(GameManagers.Instance.PlayerRecored.Level);
+
 
         StartCoroutine(DelayWorkOnAwake());
     }
@@ -128,7 +129,6 @@ public class UIManager : MonoBehaviour
             TopPanel.SetActive(false);
         }));
 
-        FinishPrompt.text = "Win";
         float percent = 1.0f - EvilManager.Instance.GetCurrentHPPercent();
         _waitAddCoins = Mathf.Round(LevelManager.Instance.GetLevelCoins(_curLevel) * percent);
         Debug.Log(percent + "   " + _waitAddCoins);
@@ -143,7 +143,6 @@ public class UIManager : MonoBehaviour
             TopPanel.SetActive(false);
         }));
 
-        FinishPrompt.text = "Faild";
         float percent = 1.0f - EvilManager.Instance.GetCurrentHPPercent();
         _waitAddCoins = Mathf.Round(LevelManager.Instance.GetLevelCoins(_curLevel) * percent);
         Debug.Log(percent + "   " + _waitAddCoins);
@@ -198,7 +197,8 @@ public class UIManager : MonoBehaviour
 
     private void ChangeGainCoinsShow(double coins)
     {
-        GainConisText.text = "Gain: " + GetCoinStringWithUnit(coins);
+        PlayerConinsTextInFinishUI.text = GetCoinStringWithUnit(GameManagers.Instance.PlayerRecored.Coins);
+        GainConisText.text = "+" + GetCoinStringWithUnit(coins);
     }
 
 

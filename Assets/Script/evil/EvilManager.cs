@@ -51,7 +51,7 @@ public class EvilManager : MonoBehaviour
         EvilMid2.Reset();
         EvilBig1.Reset();
 
-        List<GameObject> es = LevelManager.Instance.GetLevelEvils();
+        List<EnemyUnit> es = LevelManager.Instance.GetLevelEvils();
         if (es.Count == 2)
         {
             EvilMid1.set(es[0]);

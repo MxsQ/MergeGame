@@ -37,6 +37,11 @@ public abstract class Role
 
     public abstract void Update();
 
+    public void GetReady()
+    {
+        _character.GetReady();
+    }
+
     public void Destroy()
     {
         _isDestroy = true;
@@ -332,7 +337,8 @@ public class ArcherHero : Role
         SpriteRenderer spr = arrowObject.AddComponent(typeof(SpriteRenderer)) as SpriteRenderer;
         spr.sprite = arrow;
         spr.sortingOrder = 10;
-        arrowObject.transform.position = new Vector3(originPs.x, originPs.y, originPs.z);
+        var rePosition = _arm.transform.position;
+        arrowObject.transform.position = new Vector3(rePosition.x, rePosition.y, rePosition.z);
         var scale = GameManagers.Instance.Config.ArrowSizeScale;
         arrowObject.transform.localScale = new Vector3(scale, scale, 0);
 

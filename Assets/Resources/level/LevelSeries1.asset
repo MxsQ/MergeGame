@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Dir: EvilSeries1
   Evils:
+  - Evil101
+  - Evil102
+  - AEvil103
+  - Evil104
+  - Evil105-AEvil103
+  - AEvil106
+  - Evil107
+  - Evil108
+  - Evil108-AEvil109
   - Evil110
-  - Evil210
-  - Evil310
-  - Evil410
-  - Evil510
-  - Evil110-Evil210
-  - Evil110-Evil310
-  - Evil110-Evil410
-  - Evil110-Evil510
-  - Evil110-Evil110

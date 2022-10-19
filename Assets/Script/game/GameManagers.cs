@@ -60,7 +60,7 @@ public class GameManagers : MonoBehaviour
 
         BuildHero(_curWarriorSkin, WarriorSkin[0]);
         BuildHero(_curArcherSkin, ArcherSkin[0]);
-        BuildEvil(LevelsConfigs[0]);
+        BuildEvil(LevelsConfigs[PlayerRecored.Level / 10]);
         SceneManager.LoadScene("GameScene", LoadSceneMode.Single);
     }
 
@@ -127,10 +127,16 @@ public class GameManagers : MonoBehaviour
             Character c = roles[i].GetComponent<Character>();
             fullCharacter(c, dir + skinConfig.Items[i] + ".json");
             roles[i].gameObject.transform.SetParent(RoleHost.transform);
+            roles[i].gameObject.SetActive(false);
             DontDestroyOnLoad(roles[i]);
         }
 
         _roles.Add(skinType, roles);
+    }
+
+    public void BuildNextSeriesEvil(int seriesIndex)
+    {
+        BuildEvil(LevelsConfigs[seriesIndex]);
     }
 
     private void BuildEvil(LevelScriptableObject levelConfig)
@@ -149,6 +155,7 @@ public class GameManagers : MonoBehaviour
                 var evil = Instantiate(RoleCopyReference);
                 evil.gameObject.transform.position = new Vector3(10, 10, 0);
                 evil.gameObject.transform.SetParent(RoleHost.transform);
+                evil.gameObject.SetActive(false);
                 _evils.Add(key, evil);
                 Character c = evil.GetComponent<Character>();
                 fullCharacter(c, dir + key + ".json");
@@ -178,17 +185,23 @@ public class GameManagers : MonoBehaviour
 
     public GameObject GetWarriorCharacter(int level)
     {
-        return Instantiate(_roles[_curWarriorSkin][level]);
+        var c = Instantiate(_roles[_curWarriorSkin][level]);
+        c.gameObject.SetActive(true);
+        return c;
     }
 
     public GameObject GetArcherCharacter(int level)
     {
-        return Instantiate(_roles[_curArcherSkin][level]);
+        var c = Instantiate(_roles[_curArcherSkin][level]);
+        c.gameObject.SetActive(true);
+        return c;
     }
 
     public GameObject GetEvil(string key)
     {
-        return Instantiate(_evils[key]);
+        var c = Instantiate(_evils[key]);
+        c.gameObject.SetActive(true);
+        return c;
     }
 
     public void InvokeGameStart()
