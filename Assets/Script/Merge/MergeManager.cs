@@ -6,11 +6,14 @@ using UnityEngine;
 public class MergeManager : MonoBehaviour
 {
 
-    [SerializeField] MergeItem[] mergeItems;
+
+    [SerializeField] GameObject HeroPlacePrefab;
+    [SerializeField] GameObject HeroPs;
     //[SerializeField] GameObject warriorPrafab;
     [SerializeField] CharacterScriptableObject WorriorCharaterConfig;
     [SerializeField] CharacterScriptableObject ArchorCharaterConfig;
 
+    MergeItem[] mergeItems = new MergeItem[15];
     private TOUCH_STATE _curTouchState = TOUCH_STATE.IDLE;
     private MergeItem _curItem;
 
@@ -31,6 +34,8 @@ public class MergeManager : MonoBehaviour
         Debug.Log("awake");
         GameManagers.OnGameStart += OnGameStart;
         GameManagers.OnGameEnd += OnGameEnd;
+
+        buildBoard();
 
         StartCoroutine(DeleyToRestore());
     }
@@ -69,10 +74,11 @@ public class MergeManager : MonoBehaviour
             if (_curItem != mergeTarget && mergeTarget != null && _curItem.canbeMerge(mergeTarget))
             {
                 // merge
-                int newLevel = mergeTarget.CurCharacterData.Level + 1;
-                GameObject newCharacter = getCharacterBy(mergeTarget.CurCharacterData.Type, newLevel);
-                mergeTarget.mergetCharactor(newCharacter);
-                _curItem.Reset();
+                DoMerger(mergeTarget);
+                //int newLevel = mergeTarget.CurCharacterData.Level + 1;
+                //GameObject newCharacter = getCharacterBy(mergeTarget.CurCharacterData.Type, newLevel);
+                //mergeTarget.mergetCharactor(newCharacter);
+                //_curItem.Reset();
             }
             else if (_curItem != mergeTarget && mergeTarget != null && !mergeTarget.HasCharesctor)
             {
@@ -95,6 +101,68 @@ public class MergeManager : MonoBehaviour
 
             _curItem = null;
             //Log.D("touch end: " + touchPs);
+        }
+    }
+
+    private void DoMerger(MergeItem mergeTarget)
+    {
+        int newLevel = mergeTarget.CurCharacterData.Level + 1;
+        var type = mergeTarget.CurCharacterData.Type;
+        GameObject newCharacter = getCharacterBy(type, newLevel);
+        mergeTarget.mergetCharactor(newCharacter);
+        _curItem.Reset();
+
+        var record = GameManagers.Instance.PlayerRecored;
+        if (type == HeroConstance.ARCHER)
+        {
+            if (newLevel > record.MaxArcherLevel)
+            {
+                record.IncreaseArcherLevel();
+            }
+        }
+        else
+        {
+            if (newLevel > record.MaxWarriorLevel)
+            {
+                record.IncreaseWarriorLevel();
+            }
+        }
+    }
+
+    private void buildBoard()
+    {
+        float itemSize = 120;
+        float yOffset = -itemSize * 2.5f;
+        for (int i = 0; i < 5; i++)
+        {
+            // first line
+            GameObject item = GameObject.Instantiate(HeroPlacePrefab);
+            MergeItem mergeItem = item.GetComponentInChildren<MergeItem>();
+            mergeItems[i] = mergeItem;
+            item.transform.parent = HeroPs.transform;
+            item.transform.localPosition = new Vector3(-itemSize * 1.5f, itemSize * i + yOffset, 0);
+        }
+
+        for (int i = 0; i < 5; i++)
+        {
+            // second line
+            var index = i + 5;
+            GameObject item = GameObject.Instantiate(HeroPlacePrefab);
+            MergeItem mergeItem = item.GetComponentInChildren<MergeItem>();
+            mergeItems[index] = mergeItem;
+            item.transform.parent = HeroPs.transform;
+            item.transform.localPosition = new Vector3(0, itemSize * i + yOffset, 0);
+        }
+
+        for (int i = 0; i < 5; i++)
+        {
+            // third line
+            var index = i + 10;
+            GameObject item = GameObject.Instantiate(HeroPlacePrefab);
+            MergeItem mergeItem = item.GetComponentInChildren<MergeItem>();
+            mergeItems[index] = mergeItem;
+            item.transform.parent = HeroPs.transform;
+            item.transform.localPosition = new Vector3(itemSize * 1.5f, itemSize * i + yOffset, 0);
         }
     }
 
@@ -260,6 +328,7 @@ public class MergeManager : MonoBehaviour
     {
         foreach (MergeItem i in mergeItems)
         {
+            i.RefereshPosiont();
             if (i.HasCharesctor)
             {
                 //i.MoveToOriginal();

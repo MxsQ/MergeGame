@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: GameConfig
   m_EditorClassIdentifier: 
   Arrow: {fileID: 1846010953453456, guid: 971d61eacf474871bfa0e3a415b5bb11, type: 3}
-  HitText: {fileID: 9086245011336220868, guid: 2c167398797b843a6a13b82f1ea3457b, type: 3}
+  HitText: {fileID: 8530535867252956275, guid: 5d0426a104f594ac8a5a5d12912b7665, type: 3}
   ArrowSizeScale: 30
   ArrowSpeedFactory: 2.5
   MoveSpeed: 180
-  HeroBoxRadius: 90
+  HeroBoxRadius: 100
   EvilMinBoxRadius: 100
   EvilMaxBoxRadius: 120
   EvilWarriorHPFacotr: 0.7

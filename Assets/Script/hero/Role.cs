@@ -117,6 +117,7 @@ public class WarriorHero : Role
 
         var targetPs = enemy.Position();
 
+        //Debug.Log("my position=" + _character.gameObject.transform.position + "   target position=" + targetPs);
         if (boxCollider.bounds.Contains(targetPs))
         {
             //Debug.Log("target: " + targetPs);

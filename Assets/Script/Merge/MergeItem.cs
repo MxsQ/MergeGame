@@ -6,6 +6,11 @@ using UnityEngine;
 
 public class MergeItem : MonoBehaviour
 {
+
+    [SerializeField] SpriteRenderer EmptyBG;
+    [SerializeField] SpriteRenderer OccupyBG;
+    [SerializeField] SpriteRenderer Light;
+
     private int MAX_CHARACTER_LEVEL = 8;
 
     private int _length;
@@ -17,12 +22,17 @@ public class MergeItem : MonoBehaviour
     private void Awake()
     {
         HasCharesctor = false;
-        _mPostion = gameObject.transform.position;
+
         _heroController = new HeroController();
         _length = GameManagers.Instance.Config.HeroBoxRadius;
-        //Log.D("position = " + _mPostion);
+        Log.D("position = " + _mPostion);
         //Log.D("word ps = " + Camera.main.WorldToScreenPoint(_mPostion));
 
+    }
+
+    public void RefereshPosiont()
+    {
+        _mPostion = gameObject.transform.parent.position;
     }
 
     public void Update()
@@ -50,6 +60,7 @@ public class MergeItem : MonoBehaviour
     public void setCharector(CharactorData characterData)
     {
 
+
         if (_data != null)
         {
             Destroy(_data.Character);
@@ -60,8 +71,8 @@ public class MergeItem : MonoBehaviour
         HasCharesctor = true;
 
         _data.Character.transform.localScale = new Vector3(_length * 0.5f, _length * 0.5f, 1);
-        _data.Character.transform.position = new Vector3(_mPostion.x, _mPostion.y + -_length / 2, 0);
         _data.Character.transform.parent = gameObject.transform;
+        _data.Character.transform.position = new Vector3(_mPostion.x, _mPostion.y - 20, 0);
 
         _heroController.RetTo(_data);
     }
@@ -134,7 +145,7 @@ public class MergeItem : MonoBehaviour
 
     public void MoveToOriginal()
     {
-        _data.Character.transform.position = new Vector3(_mPostion.x, _mPostion.y + -_length / 2, 0);
+        _data.Character.transform.position = new Vector3(_mPostion.x, _mPostion.y - 20, 0);
         gameObject.transform.position = _mPostion;
     }
 

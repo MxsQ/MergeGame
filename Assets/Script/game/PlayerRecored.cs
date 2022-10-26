@@ -13,6 +13,8 @@ public class PlayerRecored
     public double Coins = 0;
     public int WarriorCount = 0;
     public int ArcherCount = 0;
+    public int MaxWarriorLevel = 0;
+    public int MaxArcherLevel = 0;
     //public float CurWarriorPrice;
     //public float CurArchorPrice;
     public Dictionary<int, LayInfo> LayoutInfos = new Dictionary<int, LayInfo>();
@@ -43,6 +45,17 @@ public class PlayerRecored
         PlayerPrefs.SetString(RECORD, "");
     }
 
+    public void IncreaseWarriorLevel()
+    {
+        MaxWarriorLevel += 1;
+        SaveToLocal();
+    }
+
+    public void IncreaseArcherLevel()
+    {
+        MaxArcherLevel += 1;
+        SaveToLocal();
+    }
 
     public void SaveToLocal()
     {

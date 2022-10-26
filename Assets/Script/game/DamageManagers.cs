@@ -32,7 +32,7 @@ public class DamageManagers : MonoBehaviour
                 var o = GameObject.Instantiate(GameManagers.Instance.Config.HitText);
                 o.transform.SetParent(HitHost.transform);
                 o.transform.position = Camera.main.WorldToScreenPoint(target + new Vector3(90, 180, 0));
-                o.GetComponent<Text>().text = damage.ToString();
+                o.GetComponentInChildren<Text>().text = damage.ToString();
                 _textHoders.Add(new TextHolder(o));
 
                 onComplete?.Invoke();

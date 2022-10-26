@@ -1,12 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    [SerializeField] GameObject WarPage;
     [SerializeField] GameObject HeroPanel;
     [SerializeField] GameObject TopPanel;
     [SerializeField] Text LevelText;
@@ -17,9 +19,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject AddArcherByRewardView;
     [SerializeField] Text AddWarriorText;
     [SerializeField] Text AddArcherText;
-    [SerializeField] GameObject FinishPanel;
-    [SerializeField] Text GainConisText;
-    [SerializeField] Text PlayerConinsTextInFinishUI;
+
+    [SerializeField] ClearUIManager ClearUI;
+    [SerializeField] SkinManager SkinUI;
+
 
     [SerializeField] Image[] Dots;
     [SerializeField] Sprite InProgressDot;
@@ -97,12 +100,28 @@ public class UIManager : MonoBehaviour
 
     public void OnNextClick()
     {
-        FinishPanel.SetActive(false);
+        ClearUI.Hide();
         GameManagers.Instance.PlayerRecored.Coins += _waitAddCoins;
         _waitAddCoins = 0;
         ChangePlayerCoinsShow();
         GameManagers.Instance.InvokeGameEnd();
         TopPanel.SetActive(true);
+    }
+
+    public void OnShowSkinPageClick()
+    {
+        WarPage.SetActive(false);
+        TopPanel.SetActive(false);
+        HeroPanel.SetActive(false);
+        SkinUI.Show();
+    }
+
+    public void OnCloseSkinPageClick()
+    {
+        WarPage.SetActive(true);
+        TopPanel.SetActive(true);
+        HeroPanel.SetActive(true);
+        SkinUI.Hide();
     }
 
     private void OnGameStart()
@@ -125,28 +144,27 @@ public class UIManager : MonoBehaviour
     {
         StartCoroutine(DeleyAction(1f, () =>
         {
-            FinishPanel.SetActive(true);
-            TopPanel.SetActive(false);
+            ShowClearUI();
         }));
-
-        float percent = 1.0f - EvilManager.Instance.GetCurrentHPPercent();
-        _waitAddCoins = Mathf.Round(LevelManager.Instance.GetLevelCoins(_curLevel) * percent);
-        Debug.Log(percent + "   " + _waitAddCoins);
-        ChangeGainCoinsShow(_waitAddCoins);
     }
 
     private void OnGameFaild()
     {
         StartCoroutine(DeleyAction(1f, () =>
         {
-            FinishPanel.SetActive(true);
-            TopPanel.SetActive(false);
+            ShowClearUI();
         }));
+    }
 
+    private void ShowClearUI()
+    {
         float percent = 1.0f - EvilManager.Instance.GetCurrentHPPercent();
         _waitAddCoins = Mathf.Round(LevelManager.Instance.GetLevelCoins(_curLevel) * percent);
         Debug.Log(percent + "   " + _waitAddCoins);
-        ChangeGainCoinsShow(_waitAddCoins);
+
+        TopPanel.SetActive(false);
+        ClearUI.Show(true, _waitAddCoins);
+
     }
 
     private IEnumerator DeleyAction(float deley, Action work)
@@ -158,14 +176,14 @@ public class UIManager : MonoBehaviour
 
     public void ChangePlayerCoinsShow()
     {
-        PlayerCoinsText.text = GetCoinStringWithUnit(GameManagers.Instance.PlayerRecored.Coins);
+        PlayerCoinsText.text = TextUtils.GetCoinStringWithUnit(GameManagers.Instance.PlayerRecored.Coins);
     }
 
     public void ChangeWarriorBtnShow()
     {
         var price = LevelManager.Instance.GetRolePriceBy(GameManagers.Instance.PlayerRecored.WarriorCount);
         var playerCoins = GameManagers.Instance.PlayerRecored.Coins;
-        AddWarriorText.text = GetCoinStringWithUnit(price);
+        AddWarriorText.text = TextUtils.GetCoinStringWithUnit(price);
         if (playerCoins >= price)
         {
             AddWarriorByCoinView.SetActive(true);
@@ -182,7 +200,7 @@ public class UIManager : MonoBehaviour
     {
         var price = LevelManager.Instance.GetRolePriceBy(GameManagers.Instance.PlayerRecored.WarriorCount);
         var playerCoins = GameManagers.Instance.PlayerRecored.Coins;
-        AddArcherText.text = GetCoinStringWithUnit(LevelManager.Instance.GetRolePriceBy(GameManagers.Instance.PlayerRecored.ArcherCount));
+        AddArcherText.text = TextUtils.GetCoinStringWithUnit(LevelManager.Instance.GetRolePriceBy(GameManagers.Instance.PlayerRecored.ArcherCount));
         if (playerCoins >= price)
         {
             AddArcherByCoinView.SetActive(true);
@@ -193,37 +211,6 @@ public class UIManager : MonoBehaviour
             AddArcherByCoinView.SetActive(false);
             AddArcherByRewardView.SetActive(true);
         }
-    }
-
-    private void ChangeGainCoinsShow(double coins)
-    {
-        PlayerConinsTextInFinishUI.text = GetCoinStringWithUnit(GameManagers.Instance.PlayerRecored.Coins);
-        GainConisText.text = "+" + GetCoinStringWithUnit(coins);
-    }
-
-
-    private string[] _coinUnit = new string[] { "", "K", "M", "G", "T", "P", "E" };
-
-    private string GetCoinStringWithUnit(double coin)
-    {
-        double showNum = coin;
-        var unitIndex = 0;
-        while (showNum > 1000)
-        {
-            showNum /= 1000;
-            unitIndex++;
-        }
-
-        if (unitIndex == 0)
-        {
-            return showNum.ToString();
-        }
-        else if (showNum * 10 % 10 == 0)
-        {
-            return showNum.ToString("0") + " " + _coinUnit[unitIndex];
-        }
-
-        return showNum.ToString("0.0") + " " + _coinUnit[unitIndex];
     }
 
     private void OnLevelChange(int level)

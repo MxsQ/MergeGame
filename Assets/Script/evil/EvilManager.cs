@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EvilManager : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class EvilManager : MonoBehaviour
     [SerializeField] EvilItem EvilMid2;
     [SerializeField] EvilItem EvilBig1;
 
-    [SerializeField] GameObject BloodBar;
+    [SerializeField] Image BloodBar;
 
     [SerializeField] GameObject Evil;
 
@@ -20,7 +21,7 @@ public class EvilManager : MonoBehaviour
     //private GameObject e2;
     //private GameObject e3;
 
-    private int _bloodBarSize = 750;
+    private int _bloodBarSize = 400;
 
     //private const int MID_SCALE = 100;
     private static EvilManager _instance;
@@ -34,7 +35,7 @@ public class EvilManager : MonoBehaviour
     {
         _instance = this;
         GameManagers.OnGameStart += OnGameStart;
-        GameManagers.OnGameEnd += LoadEvil;
+        GameManagers.OnGameEnd += OnGameEnd;
         GameManagers.OnGameWin += () =>
         {
             var scale = BloodBar.transform.localScale;
@@ -75,11 +76,21 @@ public class EvilManager : MonoBehaviour
     //    e1 = evil;
     //}
 
+    private void OnGameEnd()
+    {
+        LoadEvil();
+        var sizeDate = BloodBar.rectTransform.sizeDelta;
+        BloodBar.rectTransform.sizeDelta = new Vector2(_bloodBarSize, sizeDate.y);
+    }
+
     private void OnGameStart()
     {
         //EvilMid1.set(e1);
-        var scale = BloodBar.transform.localScale;
-        BloodBar.transform.localScale = new Vector3(_bloodBarSize, scale.y, scale.z);
+        //var scale = BloodBar.transform.localScale;
+        //BloodBar.transform.localScale = new Vector3(_bloodBarSize, scale.y, scale.z);
+
+        //var sizeDate = BloodBar.rectTransform.sizeDelta;
+        //BloodBar.rectTransform.sizeDelta = new Vector2(_bloodBarSize , sizeDate.y);
     }
 
     private void MakeEvilReady()
@@ -95,7 +106,8 @@ public class EvilManager : MonoBehaviour
         percent = percent < 0 ? 0 : percent;
         var scale = BloodBar.transform.localScale;
         //Debug.Log("maxHP=" + maxHP + "  curHP=" + curHP);
-        BloodBar.transform.localScale = new Vector3(_bloodBarSize * percent, scale.y, scale.z);
+        var sizeDate = BloodBar.rectTransform.sizeDelta;
+        BloodBar.rectTransform.sizeDelta = new Vector2(_bloodBarSize * percent, sizeDate.y);
     }
 
     public float GetCurrentHPPercent()
