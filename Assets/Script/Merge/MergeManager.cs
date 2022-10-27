@@ -34,6 +34,7 @@ public class MergeManager : MonoBehaviour
         Debug.Log("awake");
         GameManagers.OnGameStart += OnGameStart;
         GameManagers.OnGameEnd += OnGameEnd;
+        GameManagers.OnSkinChange += (skin) => OnSkinChange();
 
         buildBoard();
 
@@ -344,6 +345,24 @@ public class MergeManager : MonoBehaviour
                 getArcherCharacterBy(info.Value.Level) :
                 getWorriorCharacterBy(info.Value.Level);
             mergeItems[info.Value.Index].setCharector(new CharactorData(character, info.Value.Type, info.Value.Level));
+        }
+    }
+
+    private void OnSkinChange()
+    {
+        foreach (MergeItem i in mergeItems)
+        {
+            i.RefereshPosiont();
+            if (i.HasCharesctor)
+            {
+                var level = i.CurCharacterData.Level;
+                var type = i.CurCharacterData.Type;
+                i.Reset();
+                GameObject character = type == HeroConstance.ARCHER ?
+               getArcherCharacterBy(level) :
+               getWorriorCharacterBy(level);
+                i.setCharector(new CharactorData(character, type, level));
+            }
         }
     }
 

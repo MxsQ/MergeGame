@@ -157,11 +157,11 @@ MonoBehaviour:
   WarriorSkin:
   - {fileID: 11400000, guid: 46d4cbab86498c44da2491f548f0e70d, type: 2}
   - {fileID: 11400000, guid: 1a2cdb2e1b10f4eefaede3017790a221, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 632576171958147298b6c1a893010fa2, type: 2}
+  - {fileID: 11400000, guid: de0789a92adfc44daa3d6e55adf9e5de, type: 2}
   ArcherSkin:
   - {fileID: 11400000, guid: ca7c58f6524354f62bd2fb4a99dc0bdc, type: 2}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: c22beb955ee354ebe901ff2bd225dcde, type: 2}
   - {fileID: 0}
   - {fileID: 0}
   RoleCopyReference: {fileID: 1109987028385428, guid: bd7e0972e5cee427083a47f1ca774267, type: 3}
@@ -182,6 +182,8 @@ MonoBehaviour:
     Coins: 0
     WarriorCount: 0
     ArcherCount: 0
+    MaxWarriorLevel: 0
+    MaxArcherLevel: 0
     LayJson: 
 --- !u!4 &61911666
 Transform:

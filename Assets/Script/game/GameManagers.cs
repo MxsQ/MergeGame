@@ -38,6 +38,7 @@ public class GameManagers : MonoBehaviour
     public static event Action OnGameWin;
     public static event Action OnGameFaild;
     public static event Action<int> OnLevelChange;
+    public static event Action<RoleSkin> OnSkinChange;
 
 
     public static bool InGame;
@@ -52,15 +53,21 @@ public class GameManagers : MonoBehaviour
 
     private void Awake()
     {
+        //Application.targetFrameRate = 2;
         _instance = this;
         DontDestroyOnLoad(this);
 
         PlayerRecored = PlayerRecored.GetFromLocal();
         LevelManager.CreateManager();
 
-        BuildHero(_curWarriorSkin, WarriorSkin[0]);
-        BuildHero(_curArcherSkin, ArcherSkin[0]);
+        BuildHero(RoleSkin.WARRIOR_DEFAUL, WarriorSkin[0]);
+        BuildHero(RoleSkin.WARRIOR_1, WarriorSkin[1]);
+        BuildHero(RoleSkin.WARRIOR_2, WarriorSkin[2]);
+        BuildHero(RoleSkin.WARRIOR_3, WarriorSkin[3]);
+        BuildHero(RoleSkin.ARCHER_DEFAUL, ArcherSkin[0]);
+        BuildHero(RoleSkin.ARCHER_1, ArcherSkin[1]);
         BuildEvil(LevelsConfigs[PlayerRecored.Level / 10]);
+
         SceneManager.LoadScene("GameScene", LoadSceneMode.Single);
     }
 
@@ -190,9 +197,23 @@ public class GameManagers : MonoBehaviour
         return c;
     }
 
+    public GameObject GetWarriorCharacter(int level, RoleSkin skin)
+    {
+        var c = Instantiate(_roles[skin][level]);
+        c.gameObject.SetActive(true);
+        return c;
+    }
+
     public GameObject GetArcherCharacter(int level)
     {
         var c = Instantiate(_roles[_curArcherSkin][level]);
+        c.gameObject.SetActive(true);
+        return c;
+    }
+
+    public GameObject GetArcherCharacter(int level, RoleSkin skin)
+    {
+        var c = Instantiate(_roles[skin][level]);
         c.gameObject.SetActive(true);
         return c;
     }
@@ -236,6 +257,19 @@ public class GameManagers : MonoBehaviour
     public void InvokeLevelChange()
     {
         OnLevelChange.Invoke(PlayerRecored.Level);
+    }
+
+    public void InvokeSkinChange(RoleSkin roleSkin)
+    {
+        if (roleSkin == RoleSkin.ARCHER_1 || roleSkin == RoleSkin.ARCHER_DEFAUL)
+        {
+            _curArcherSkin = roleSkin;
+        }
+        else
+        {
+            _curWarriorSkin = roleSkin;
+        }
+        OnSkinChange.Invoke(roleSkin);
     }
 
     public void OnHeroDeath(Role role)

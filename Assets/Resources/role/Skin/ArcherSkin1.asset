@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09b79dc7d373e8e4284f547d2eadf07d, type: 3}
-  m_Name: WarriorSkin1
+  m_Name: ArcherSkin1
   m_EditorClassIdentifier: 
-  Directory: Warrior1
+  Directory: ArcherSkin1
   Items:
-  - Warrior201
-  - Warrior202
-  - Warrior203
-  - Warrior204
-  - Warrior205
-  - Warrior206
-  - Warrior207
-  - Warrior208
-  - Warrior209
+  - Archer201
+  - Archer202
+  - Archer203
+  - Archer204
+  - Archer205
+  - Archer206
+  - Archer207
+  - Archer208
+  - Archer209
