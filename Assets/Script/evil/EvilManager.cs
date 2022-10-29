@@ -22,6 +22,7 @@ public class EvilManager : MonoBehaviour
     //private GameObject e3;
 
     private int _bloodBarSize = 400;
+    public float BlooadPercent = 100;
 
     //private const int MID_SCALE = 100;
     private static EvilManager _instance;
@@ -104,8 +105,8 @@ public class EvilManager : MonoBehaviour
 
         float percent = GetCurrentHPPercent();
         percent = percent < 0 ? 0 : percent;
-        var scale = BloodBar.transform.localScale;
         //Debug.Log("maxHP=" + maxHP + "  curHP=" + curHP);
+        BlooadPercent = percent;
         var sizeDate = BloodBar.rectTransform.sizeDelta;
         BloodBar.rectTransform.sizeDelta = new Vector2(_bloodBarSize * percent, sizeDate.y);
     }

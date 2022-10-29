@@ -1,10 +1,8 @@
 ﻿using Assets.HeroEditor.Common.CharacterScripts;
 using Assets.HeroEditor.Common.CharacterScripts.Firearms;
 using System;
-using System.Collections;
-using System.Linq;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
+
 
 
 public abstract class Role
@@ -31,7 +29,8 @@ public abstract class Role
         _parentOriginPs = _parent.transform.position;
         character.GetReady();
         //Register();
-        _atkSpand = 1 + (new System.Random().Next(0, 10) - 5) / 100;
+        _atkSpand = 1.0f + (UnityEngine.Random.Range(0, 30) - 15) * 1.0f / 100;
+        //Debug.Log("cahracter atk spand = " + _atkSpand);
         _curHP = data.HP;
     }
 
@@ -258,7 +257,7 @@ public class ArcherHero : Role
             return;
         }
 
-        Debug.Log("adjust position");
+        //Debug.Log("adjust position");
         if (_hasShootTarget)
         {
             RotateArm(_arm, _weapon, _nextShootTarget, -40, 40);

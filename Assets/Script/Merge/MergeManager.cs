@@ -16,6 +16,7 @@ public class MergeManager : MonoBehaviour
     MergeItem[] mergeItems = new MergeItem[15];
     private TOUCH_STATE _curTouchState = TOUCH_STATE.IDLE;
     private MergeItem _curItem;
+    private MergeItem _aboveItem;
 
     private bool _inGame;
 
@@ -63,6 +64,19 @@ public class MergeManager : MonoBehaviour
                 return;
             }
             _curItem.MoveTo(touchPs);
+
+            var newTarget = findBy(touchPs);
+            if (_aboveItem == newTarget)
+            {
+                return;
+            }
+
+            _aboveItem?.HideLight();
+            _aboveItem = newTarget;
+            if (_curItem != _aboveItem && _aboveItem != null && _curItem.canbeMerge(_aboveItem))
+            {
+                _aboveItem.ShowLight();
+            }
         }
         else if (_curTouchState == TOUCH_STATE.END)
         {
@@ -70,6 +84,7 @@ public class MergeManager : MonoBehaviour
             {
                 return;
             }
+
 
             var mergeTarget = findBy(touchPs);
             if (_curItem != mergeTarget && mergeTarget != null && _curItem.canbeMerge(mergeTarget))
@@ -101,6 +116,7 @@ public class MergeManager : MonoBehaviour
             }
 
             _curItem = null;
+            _aboveItem = null;
             //Log.D("touch end: " + touchPs);
         }
     }

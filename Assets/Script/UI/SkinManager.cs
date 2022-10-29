@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class SkinManager : MonoBehaviour
 {
+    private static SkinManager _instance = null;
+
     [SerializeField] GameObject Container;
     [SerializeField] GameObject UI;
     [SerializeField] Booth[] Booths;
@@ -17,7 +19,7 @@ public class SkinManager : MonoBehaviour
 
     private string[] _skinName = new string[] { "Padadin", "Elf Archer", "Assassin", "Berserker", "Undead Archer", "Cavalier" };
 
-    private RoleSkin[] _skins = new RoleSkin[]{
+    public static RoleSkin[] Skins = new RoleSkin[]{
         RoleSkin.WARRIOR_DEFAUL,
         RoleSkin.ARCHER_DEFAUL,
         RoleSkin.WARRIOR_1,
@@ -27,7 +29,17 @@ public class SkinManager : MonoBehaviour
     };
 
     private RoleSkin _curSkin = RoleSkin.WARRIOR_DEFAUL;
-    private int skinIndex = 0;
+    public int SkinIndex = 0;
+
+    public static SkinManager Instance
+    {
+        get { return _instance; }
+    }
+
+    private void Awake()
+    {
+        _instance = this;
+    }
 
     public void Show()
     {
@@ -54,7 +66,7 @@ public class SkinManager : MonoBehaviour
 
         for (int i = 0; i < Indicator.Length; i++)
         {
-            if (i == skinIndex)
+            if (i == SkinIndex)
             {
                 Indicator[i].sprite = Instantiate(SelectImg);
             }
@@ -64,7 +76,7 @@ public class SkinManager : MonoBehaviour
             }
         }
 
-        SkinName.text = _skinName[skinIndex];
+        SkinName.text = _skinName[SkinIndex];
     }
 
     public void Hide()
@@ -75,30 +87,32 @@ public class SkinManager : MonoBehaviour
 
     public void OnShowPreSkin()
     {
-        if (skinIndex == 0)
+        AudioManager.Instance.PlayClick();
+        if (SkinIndex == 0)
         {
             return;
         }
-        skinIndex--;
-        _curSkin = _skins[skinIndex];
+        SkinIndex--;
+        _curSkin = Skins[SkinIndex];
         RefreshBooth();
     }
 
     public void OnShowNextSkin()
     {
-        if (skinIndex >= _skins.Length)
+        AudioManager.Instance.PlayClick();
+        if (SkinIndex >= Skins.Length)
         {
             return;
         }
-        skinIndex++;
-        _curSkin = _skins[skinIndex];
+        SkinIndex++;
+        _curSkin = Skins[SkinIndex];
         RefreshBooth();
     }
 
 
     public void OnSelect()
     {
-        GameManagers.Instance.InvokeSkinChange(_skins[skinIndex]);
+        GameManagers.Instance.InvokeSkinChange(Skins[SkinIndex]);
         UIManager.Instance.OnCloseSkinPageClick();
     }
 }

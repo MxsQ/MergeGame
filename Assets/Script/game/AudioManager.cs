@@ -15,6 +15,9 @@ public class AudioManager : MonoBehaviour
     [SerializeField] AudioSource ShootSource;
     [SerializeField] AudioSource LevelEndSource;
     [SerializeField] AudioSource EvilDieSource;
+    [SerializeField] AudioSource ButtonClickSource;
+    [SerializeField] AudioSource GetCoinsSource;
+    [SerializeField] AudioSource WheelSource;
 
     private static AudioManager _instance;
     public static AudioManager Instance { get { return _instance; } }
@@ -31,19 +34,19 @@ public class AudioManager : MonoBehaviour
     public void PlayAttack()
     {
 
-        if (!AttackSource.isPlaying)
-        {
-            AttackSource.Play();
-        }
+        //if (!AttackSource.isPlaying)
+        //{
+        AttackSource.Play();
+        //}
 
     }
 
     public void PlayShoot()
     {
-        if (!ShootSource.isPlaying)
-        {
-            ShootSource.Play();
-        }
+        //if (!ShootSource.isPlaying)
+        //{
+        ShootSource.Play();
+        //}
     }
 
     private void PlayLevelEndAudio(AudioClip clip)
@@ -83,6 +86,26 @@ public class AudioManager : MonoBehaviour
     {
         Debug.Log("die play");
         EvilDieSource.Play();
+    }
+
+    public void PlayClick()
+    {
+        ButtonClickSource.Play();
+    }
+
+    public void PlayGetCoins()
+    {
+        GetCoinsSource.Play();
+    }
+
+    public void PlayWheel()
+    {
+        WheelSource.Play();
+    }
+
+    public void StopWheel()
+    {
+        WheelSource.Stop();
     }
 
 }

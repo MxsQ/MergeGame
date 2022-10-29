@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject WarPage;
     [SerializeField] GameObject HeroPanel;
     [SerializeField] GameObject TopPanel;
+    [SerializeField] GameObject SkinEntrance;
     [SerializeField] Text LevelText;
     [SerializeField] Text PlayerCoinsText;
     [SerializeField] GameObject AddWarriorByCoinView;
@@ -22,7 +23,6 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] ClearUIManager ClearUI;
     [SerializeField] SkinManager SkinUI;
-
 
     [SerializeField] Image[] Dots;
     [SerializeField] Sprite InProgressDot;
@@ -69,27 +69,30 @@ public class UIManager : MonoBehaviour
 
     public void OnAddWarriorClick()
     {
+        AudioManager.Instance.PlayClick();
         MergeManager.Instance.OnAddWarriorClick();
     }
 
     public void OnAddWarriorByRewardClick()
     {
-
+        AudioManager.Instance.PlayClick();
     }
 
     public void OnAddArcherClick()
     {
+        AudioManager.Instance.PlayClick();
         MergeManager.Instance.OnAddArcherClick();
     }
 
     public void OnAddArcherByRewardClick()
     {
-
+        AudioManager.Instance.PlayClick();
     }
 
 
     public void OnGameStartClick()
     {
+        AudioManager.Instance.PlayClick();
         GameManagers.Instance.InvokeGameStart();
     }
 
@@ -100,16 +103,18 @@ public class UIManager : MonoBehaviour
 
     public void OnNextClick()
     {
-        ClearUI.Hide();
-        GameManagers.Instance.PlayerRecored.Coins += _waitAddCoins;
         _waitAddCoins = 0;
-        ChangePlayerCoinsShow();
-        GameManagers.Instance.InvokeGameEnd();
-        TopPanel.SetActive(true);
+        ClearUI.Hide(() =>
+        {
+            ChangePlayerCoinsShow();
+            GameManagers.Instance.InvokeGameEnd();
+            TopPanel.SetActive(true);
+        });
     }
 
     public void OnShowSkinPageClick()
     {
+        AudioManager.Instance.PlayClick();
         WarPage.SetActive(false);
         TopPanel.SetActive(false);
         HeroPanel.SetActive(false);
@@ -118,6 +123,7 @@ public class UIManager : MonoBehaviour
 
     public void OnCloseSkinPageClick()
     {
+        AudioManager.Instance.PlayClick();
         WarPage.SetActive(true);
         TopPanel.SetActive(true);
         HeroPanel.SetActive(true);
@@ -128,6 +134,7 @@ public class UIManager : MonoBehaviour
     {
         _curLevel = GameManagers.Instance.PlayerRecored.Level;
         _inGame = true; HeroPanel.SetActive(false);
+        SkinEntrance.SetActive(false);
     }
 
     private void OnGameEnd()
@@ -137,7 +144,7 @@ public class UIManager : MonoBehaviour
         ChangeWarriorBtnShow();
         ChangeArcherBtnShow();
         ChangePlayerCoinsShow();
-
+        SkinEntrance.SetActive(true);
     }
 
     private void OnGameWin()

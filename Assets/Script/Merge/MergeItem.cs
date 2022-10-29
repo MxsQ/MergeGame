@@ -1,4 +1,5 @@
 using Assets.HeroEditor.Common.CharacterScripts;
+using Assets.HeroEditor.Common.CommonScripts;
 using Assets.HeroEditor.Common.ExampleScripts;
 using System.Collections;
 using System.Collections.Generic;
@@ -75,6 +76,8 @@ public class MergeItem : MonoBehaviour
         _data.Character.transform.position = new Vector3(_mPostion.x, _mPostion.y - 20, 0);
 
         _heroController.RetTo(_data);
+
+        ShowOcuppyBG();
     }
 
     public CharactorData CurCharacterData
@@ -159,6 +162,37 @@ public class MergeItem : MonoBehaviour
         return _data;
     }
 
+    public void HideAllBG()
+    {
+        EmptyBG.SetActive(false);
+        OccupyBG.SetActive(false);
+        Light.SetActive(false);
+    }
+
+    public void ShowEmptyBG()
+    {
+        EmptyBG.SetActive(true);
+        OccupyBG.SetActive(false);
+        Light.SetActive(false);
+    }
+
+    public void ShowOcuppyBG()
+    {
+        EmptyBG.SetActive(false);
+        OccupyBG.SetActive(true);
+        Light.SetActive(false);
+    }
+
+    public void ShowLight()
+    {
+        Light.SetActive(true);
+    }
+
+    public void HideLight()
+    {
+        Light.SetActive(false);
+    }
+
     public void Reset()
     {
         HasCharesctor = false;
@@ -167,6 +201,8 @@ public class MergeItem : MonoBehaviour
         //GameObject.Destroy(_data.Character);
         _heroController.Reset();
         _data = null;
+
+        ShowEmptyBG();
     }
 
 }

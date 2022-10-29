@@ -68,6 +68,8 @@ public class GameManagers : MonoBehaviour
         BuildHero(RoleSkin.ARCHER_1, ArcherSkin[1]);
         BuildEvil(LevelsConfigs[PlayerRecored.Level / 10]);
 
+        _curWarriorSkin = SkinManager.Skins[PlayerRecored.WarriorSkinIndex];
+        _curArcherSkin = SkinManager.Skins[PlayerRecored.ArcherSkinIndex];
         SceneManager.LoadScene("GameScene", LoadSceneMode.Single);
     }
 
@@ -261,14 +263,18 @@ public class GameManagers : MonoBehaviour
 
     public void InvokeSkinChange(RoleSkin roleSkin)
     {
+        var skinIndex = SkinManager.Instance.SkinIndex;
         if (roleSkin == RoleSkin.ARCHER_1 || roleSkin == RoleSkin.ARCHER_DEFAUL)
         {
             _curArcherSkin = roleSkin;
+            PlayerRecored.ArcherSkinIndex = skinIndex;
         }
         else
         {
             _curWarriorSkin = roleSkin;
+            PlayerRecored.WarriorSkinIndex = skinIndex;
         }
+        PlayerRecored.SaveToLocal();
         OnSkinChange.Invoke(roleSkin);
     }
 

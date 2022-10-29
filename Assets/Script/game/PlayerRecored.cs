@@ -20,6 +20,9 @@ public class PlayerRecored
     public Dictionary<int, LayInfo> LayoutInfos = new Dictionary<int, LayInfo>();
     public string LayJson;
 
+    public int WarriorSkinIndex = 0;
+    public int ArcherSkinIndex = 1;
+
     private PlayerRecored() { }
 
     public void Record(int index, int level, int type)

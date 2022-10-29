@@ -84,7 +84,7 @@ public class TextHolder
     {
         _target = o;
         Animator animator = o.GetComponent<Animator>();
-        int a = UnityEngine.Random.RandomRange(0, 100);
+        int a = UnityEngine.Random.Range(0, 100);
         if (a > 50)
         {
             animator.SetTrigger("Left");
