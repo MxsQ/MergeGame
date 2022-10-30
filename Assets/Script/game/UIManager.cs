@@ -28,6 +28,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] Sprite InProgressDot;
     [SerializeField] Sprite PassProgressDot;
     [SerializeField] Sprite UnreachProgressDot;
+    [SerializeField] SpriteRenderer GameBG;
 
 
     private bool _inGame;
@@ -151,7 +152,7 @@ public class UIManager : MonoBehaviour
     {
         StartCoroutine(DeleyAction(1f, () =>
         {
-            ShowClearUI();
+            ShowClearUI(true);
         }));
     }
 
@@ -159,18 +160,18 @@ public class UIManager : MonoBehaviour
     {
         StartCoroutine(DeleyAction(1f, () =>
         {
-            ShowClearUI();
+            ShowClearUI(false);
         }));
     }
 
-    private void ShowClearUI()
+    private void ShowClearUI(bool win)
     {
         float percent = 1.0f - EvilManager.Instance.GetCurrentHPPercent();
         _waitAddCoins = Mathf.Round(LevelManager.Instance.GetLevelCoins(_curLevel) * percent);
         Debug.Log(percent + "   " + _waitAddCoins);
 
         TopPanel.SetActive(false);
-        ClearUI.Show(true, _waitAddCoins);
+        ClearUI.Show(win, _waitAddCoins);
 
     }
 
@@ -205,7 +206,7 @@ public class UIManager : MonoBehaviour
 
     public void ChangeArcherBtnShow()
     {
-        var price = LevelManager.Instance.GetRolePriceBy(GameManagers.Instance.PlayerRecored.WarriorCount);
+        var price = LevelManager.Instance.GetRolePriceBy(GameManagers.Instance.PlayerRecored.ArcherCount);
         var playerCoins = GameManagers.Instance.PlayerRecored.Coins;
         AddArcherText.text = TextUtils.GetCoinStringWithUnit(LevelManager.Instance.GetRolePriceBy(GameManagers.Instance.PlayerRecored.ArcherCount));
         if (playerCoins >= price)
@@ -227,16 +228,6 @@ public class UIManager : MonoBehaviour
 
         var curLevelIndex = level % 10;
 
-        //if (level < 10 && curLevelIndex == 0)
-        //{
-        //    foreach (Image img in Dots)
-        //    {
-        //        img.sprite = GameObject.Instantiate(UnreachProgressDot);
-        //    }
-        //}
-        //else
-        //{
-
         if (curLevelIndex == 0)
         {
             foreach (Image d in Dots)
@@ -257,9 +248,11 @@ public class UIManager : MonoBehaviour
         {
             Dots[i].sprite = GameObject.Instantiate(UnreachProgressDot);
         }
-        //}
 
-
+        // change bg
+        var levelBG = GameManagers.Instance.LevelBG;
+        var bgIndex = level % 10 % levelBG.Length;
+        GameBG.sprite = GameObject.Instantiate(levelBG[bgIndex]);
 
     }
 }

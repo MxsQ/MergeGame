@@ -1,6 +1,8 @@
 ﻿using Assets.HeroEditor.Common.CharacterScripts;
 using Assets.HeroEditor.Common.CharacterScripts.Firearms;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Information;
 using System;
+using System.Net.NetworkInformation;
 using UnityEngine;
 
 
@@ -20,8 +22,14 @@ public abstract class Role
     protected float _atkSpand;
     protected bool _die = false;
 
+    protected Action OnShoot;
+    protected Action OnAtk;
 
-    public Role(Character character, RoleData data)
+    protected CharacterState DieStatus;
+    protected bool Evil = false;
+
+
+    public Role(Character character, RoleData data, Action shoot = null, Action atk = null)
     {
         _data = data;
         _character = character;
@@ -32,6 +40,13 @@ public abstract class Role
         _atkSpand = 1.0f + (UnityEngine.Random.Range(0, 30) - 15) * 1.0f / 100;
         //Debug.Log("cahracter atk spand = " + _atkSpand);
         _curHP = data.HP;
+
+        OnShoot = shoot;
+        OnAtk = atk;
+
+        int a = UnityEngine.Random.Range(0, 100);
+        DieStatus = a > 50 ? CharacterState.DeathF : CharacterState.DeathB;
+
     }
 
     public abstract void Update();
@@ -87,7 +102,7 @@ public class WarriorHero : Role
 
     private float speed;
 
-    public WarriorHero(Character character, RoleData data) : base(character, data)
+    public WarriorHero(Character character, RoleData data, Action shoot = null, Action atk = null) : base(character, data, shoot, atk)
     {
         boxCollider = _parent.GetComponent<BoxCollider2D>();
         speed = GameManagers.Instance.Config.MoveSpeed;
@@ -104,7 +119,7 @@ public class WarriorHero : Role
 
         if (_die)
         {
-            _character.SetState(CharacterState.DeathF);
+            _character.SetState(DieStatus);
             return;
         }
 
@@ -153,8 +168,15 @@ public class WarriorHero : Role
         if (_changeTime > _atkSpand)
         {
             _character.Slash();
-            AudioManager.Instance.PlayAttack();
+            //AudioManager.Instance.PlayAttack();
+            OnAtk?.Invoke();
+
             _changeTime = 0;
+            if (Evil)
+            {
+                target.BeHit(_data.ATK);
+                return;
+            }
             DamageManagers.Instance.postDamage(target.Position(), _data.ATK, () => { target.BeHit(_data.ATK); }, 0.3f);
         }
     }
@@ -183,7 +205,7 @@ public class ArcherHero : Role
     bool inIdle = false;
 
 
-    public ArcherHero(Character character, RoleData data) : base(character, data)
+    public ArcherHero(Character character, RoleData data, Action shoot = null, Action atk = null) : base(character, data, shoot, atk)
     {
         _arrow = character.Bow[_arrowIndex];
         _weapon = character.BodyRenderers[3].transform;
@@ -205,7 +227,7 @@ public class ArcherHero : Role
 
         if (_die)
         {
-            _character.SetState(CharacterState.DeathF);
+            _character.SetState(DieStatus);
             return;
         }
 
@@ -310,7 +332,11 @@ public class ArcherHero : Role
             Debug.LogWarning(angle);
         }
 
-        arm.transform.localEulerAngles = new Vector3(0, 0, angle + angleToArm);
+        var adjust = !Evil
+            ? angle + angleToArm
+            : -(angle + angleToArm) - (-2 * angle);
+
+        arm.transform.localEulerAngles = new Vector3(0, 0, adjust);
     }
 
     private static float NormalizeAngle(float angle)
@@ -327,7 +353,8 @@ public class ArcherHero : Role
         {
             return;
         }
-        AudioManager.Instance.PlayShoot();
+        //AudioManager.Instance.PlayShoot();
+        OnShoot?.Invoke();
 
         var originPs = _character.transform.position;
         //_arrow.gameObject.SetActive(true);
@@ -342,9 +369,13 @@ public class ArcherHero : Role
         var scale = GameManagers.Instance.Config.ArrowSizeScale;
         arrowObject.transform.localScale = new Vector3(scale, scale, 0);
 
+        if (Evil)
+        {
+            arrowObject.transform.localScale = new Vector3(scale * 1.5f, scale * 1.5f, 0);
+        }
 
 
-        ArrowManager.Instance.Shoot(arrowObject, target, _data.ATK);
+        ArrowManager.Instance.Shoot(arrowObject, target, _data.ATK, Evil);
 
 
     }
@@ -375,6 +406,7 @@ public class EvilWarrior : WarriorHero
 {
     public EvilWarrior(Character character, RoleData data) : base(character, data)
     {
+        Evil = true;
     }
 
     protected override Role findTarget()
@@ -410,7 +442,7 @@ public class EvilArcher : ArcherHero
 {
     public EvilArcher(Character character, RoleData data) : base(character, data)
     {
-
+        Evil = true;
     }
 
     protected override Role findTarget()

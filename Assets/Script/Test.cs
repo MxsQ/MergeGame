@@ -71,7 +71,11 @@ public class Test : MonoBehaviour
             Debug.LogWarning(angle);
         }
 
-        arm.transform.localEulerAngles = new Vector3(0, 0, angle + angleToArm);
+        var adjust = -angle - angleToArm;
+        adjust -= -2 * angle;
+        Debug.Log("angle=" + angle + "  angleToArm=" + angleToArm + "  showAdjust=" + adjust);
+
+        arm.transform.localEulerAngles = new Vector3(0, 0, adjust);
     }
 
     private void LateUpdate()

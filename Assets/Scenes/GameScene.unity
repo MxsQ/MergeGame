@@ -7918,6 +7918,7 @@ MonoBehaviour:
   InProgressDot: {fileID: 21300000, guid: 3abe7c9df26004dc18a6c78b5a5f1755, type: 3}
   PassProgressDot: {fileID: 21300000, guid: fd12ef6c9ed0548bcb9cdadde9dfdb5b, type: 3}
   UnreachProgressDot: {fileID: 21300000, guid: 009898684b3b744c7bba5e4fd298b414, type: 3}
+  GameBG: {fileID: 1924688165}
 --- !u!1 &1792739511
 GameObject:
   m_ObjectHideFlags: 0
@@ -10204,6 +10205,22 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1416937442925562603}
     - target: {fileID: 2871072450669835366, guid: 116c4646c2275418eb278fba975e14b3, type: 3}
+      propertyPath: StatusBG
+      value: 
+      objectReference: {fileID: 1416937442925562607}
+    - target: {fileID: 2871072450669835366, guid: 116c4646c2275418eb278fba975e14b3, type: 3}
+      propertyPath: StatusBar
+      value: 
+      objectReference: {fileID: 1416937442925562608}
+    - target: {fileID: 2871072450669835366, guid: 116c4646c2275418eb278fba975e14b3, type: 3}
+      propertyPath: WinBarImg
+      value: 
+      objectReference: {fileID: 21300000, guid: 95b71a02fdcc440e1a470cc9c8964b80, type: 3}
+    - target: {fileID: 2871072450669835366, guid: 116c4646c2275418eb278fba975e14b3, type: 3}
+      propertyPath: LoseBarImg
+      value: 
+      objectReference: {fileID: 21300000, guid: cd5e41d2b4de5ba419d2e93d843a1df9, type: 3}
+    - target: {fileID: 2871072450669835366, guid: 116c4646c2275418eb278fba975e14b3, type: 3}
       propertyPath: TotalDpsBar
       value: 
       objectReference: {fileID: 1416937442925562606}
@@ -10211,6 +10228,14 @@ PrefabInstance:
       propertyPath: WheelCenter
       value: 
       objectReference: {fileID: 1416937442925562602}
+    - target: {fileID: 2871072450669835366, guid: 116c4646c2275418eb278fba975e14b3, type: 3}
+      propertyPath: WinStatusBG
+      value: 
+      objectReference: {fileID: 21300000, guid: 5dc98e5c283df4cdd86d3819d40b8e97, type: 3}
+    - target: {fileID: 2871072450669835366, guid: 116c4646c2275418eb278fba975e14b3, type: 3}
+      propertyPath: LostStatusBG
+      value: 
+      objectReference: {fileID: 21300000, guid: 1998fc17e0bcc124d8f97fdbedd7367d, type: 3}
     - target: {fileID: 2871072450669835366, guid: 116c4646c2275418eb278fba975e14b3, type: 3}
       propertyPath: TotalDpsText
       value: 
@@ -10267,6 +10292,28 @@ MonoBehaviour:
 --- !u!114 &1416937442925562606 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1416937441920745834, guid: 116c4646c2275418eb278fba975e14b3, type: 3}
+  m_PrefabInstance: {fileID: 1416937442925562600}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1416937442925562607 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1416937442751469570, guid: 116c4646c2275418eb278fba975e14b3, type: 3}
+  m_PrefabInstance: {fileID: 1416937442925562600}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1416937442925562608 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1416937441659264609, guid: 116c4646c2275418eb278fba975e14b3, type: 3}
   m_PrefabInstance: {fileID: 1416937442925562600}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}

@@ -33,7 +33,10 @@ public class ArrowManager : MonoBehaviour
             if (a.IsHit())
             {
                 hittedArrow.Add(a);
-                DamageManagers.Instance.postDamage(a._targetPs, a._damage, null);
+                if (!a.fromEvil)
+                {
+                    DamageManagers.Instance.postDamage(a._targetPs, a._damage, null);
+                }
             }
         }
 
@@ -45,9 +48,9 @@ public class ArrowManager : MonoBehaviour
         }
     }
 
-    public void Shoot(GameObject arrow, Role target, int damage)
+    public void Shoot(GameObject arrow, Role target, int damage, bool fromEvil)
     {
-        _arrows.Add(new TheArrow(arrow, target, damage));
+        _arrows.Add(new TheArrow(arrow, target, damage, fromEvil));
     }
 }
 
@@ -56,34 +59,54 @@ public class TheArrow
     public GameObject Arrow;
     public Vector3 _targetPs;
     private Role _target;
-    private Vector3 _speed;
+    private Vector3 _direction;
     public int _damage;
-    private float _speedFactory;
+    public bool fromEvil;
+
     private float _maxFlyTime;
     private float _flyTime = 0;
+    private Vector3 _speed;
 
-    public TheArrow(GameObject arrow, Role target, int damage)
+    public TheArrow(GameObject arrow, Role target, int damage, bool evil)
     {
         Arrow = arrow;
         _damage = damage;
         _target = target;
+        fromEvil = evil;
         _targetPs = _target.Position();
-        _speed = (_targetPs - arrow.transform.position);
-        _speedFactory = GameManagers.Instance.Config.ArrowSpeedFactory;
-        _maxFlyTime = 1.0f / _speedFactory;
+
+        var disV = _targetPs - arrow.transform.position;
+        var x = (_targetPs.x - arrow.transform.position.x);
+        var y = (_targetPs.y - arrow.transform.position.y);
+        var dis = Mathf.Sqrt(x * x + y * y);
+        var speedFactory = GameManagers.Instance.Config.ArrowSpeedFactory;
+        var speed = GameManagers.Instance.Config.ArrowSpeed * speedFactory;
+        _direction = disV.normalized;
+
+        _maxFlyTime = dis / speed / speedFactory;
+        Debug.Log("distance=" + dis);
+        _speed = disV / _maxFlyTime;
 
 
         Vector3 v = _targetPs - arrow.transform.position;
         var fix = v.y / v.x;
         var angle = Mathf.Atan(fix) * Mathf.Rad2Deg;
 
-        arrow.transform.localEulerAngles = new Vector3(0, 0, angle);
+        if (!fromEvil)
+        {
+            arrow.transform.localEulerAngles = new Vector3(0, 0, angle);
+        }
+        else
+        {
+            arrow.transform.localEulerAngles = new Vector3(0, 0, angle + 180);
+        }
+
     }
 
     public void KeepMove(float delta)
     {
         _flyTime += delta;
-        Arrow.transform.position += delta * _speedFactory * _speed;
+        Arrow.transform.position += delta * _speed;
     }
 
     public bool IsHit()

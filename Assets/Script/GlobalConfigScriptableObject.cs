@@ -11,6 +11,7 @@ public class GlobalConfigScriptableObject : ScriptableObject
 
     public float ArrowSizeScale;
     public float ArrowSpeedFactory;
+    public float ArrowSpeed;
     public float MoveSpeed;
 
     public int HeroBoxRadius;

@@ -177,6 +177,12 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  LevelBG:
+  - {fileID: 21300000, guid: d7a86e4f359198b4a8486b7a2823b39b, type: 3}
+  - {fileID: 21300000, guid: 7ed3c58f7fcaf43ce825027a213cc7b3, type: 3}
+  - {fileID: 21300000, guid: 4b97d44535f6745099c1d846c655effb, type: 3}
+  - {fileID: 21300000, guid: 19f6558485e175c468965b1ce4736ef5, type: 3}
+  - {fileID: 21300000, guid: 89868fb9dd86a834db4b340f73ceb84b, type: 3}
   PlayerRecored:
     Level: 1
     Coins: 0
@@ -185,6 +191,8 @@ MonoBehaviour:
     MaxWarriorLevel: 0
     MaxArcherLevel: 0
     LayJson: 
+    WarriorSkinIndex: 0
+    ArcherSkinIndex: 1
 --- !u!4 &61911666
 Transform:
   m_ObjectHideFlags: 0

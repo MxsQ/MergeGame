@@ -24,6 +24,8 @@ public class GameManagers : MonoBehaviour
 
     [SerializeField] public LevelScriptableObject[] LevelsConfigs;
 
+    [SerializeField] public Sprite[] LevelBG;
+
     private Dictionary<RoleSkin, List<GameObject>> _roles = new Dictionary<RoleSkin, List<GameObject>>();
     private RoleSkin _curWarriorSkin = RoleSkin.WARRIOR_DEFAUL;
     private RoleSkin _curArcherSkin = RoleSkin.ARCHER_DEFAUL;

@@ -16,6 +16,14 @@ public class ClearUIManager : MonoBehaviour
     [SerializeField] GameObject Pointer;
     [SerializeField] Transform WheelCenter;
 
+    [SerializeField] Image StatusBar;
+    [SerializeField] Image StatusBG;
+    [SerializeField] Sprite WinBarImg;
+    [SerializeField] Sprite WinStatusBG;
+    [SerializeField] Sprite LoseBarImg;
+    [SerializeField] Sprite LostStatusBG;
+
+
     private bool _inRoll = false;
     private float _palstance = 270;
     private float _roteAngle = 0;
@@ -68,6 +76,16 @@ public class ClearUIManager : MonoBehaviour
     public void Show(bool win, float waitAddCoins)
     {
         _waitAddCoins = waitAddCoins;
+        if (win)
+        {
+            StatusBar.sprite = GameObject.Instantiate(WinBarImg);
+            StatusBG.sprite = GameObject.Instantiate(WinStatusBG);
+        }
+        else
+        {
+            StatusBar.sprite = GameObject.Instantiate(LoseBarImg);
+            StatusBG.sprite = GameObject.Instantiate(LostStatusBG);
+        }
 
         FinishPanel.SetActive(true);
         ClearUIAnimator.SetTrigger("Show");

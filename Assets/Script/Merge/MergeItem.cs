@@ -12,6 +12,9 @@ public class MergeItem : MonoBehaviour
     [SerializeField] SpriteRenderer OccupyBG;
     [SerializeField] SpriteRenderer Light;
 
+    [SerializeField] AudioSource ATKSource;
+    [SerializeField] AudioSource ShootSource;
+
     private int MAX_CHARACTER_LEVEL = 8;
 
     private int _length;
@@ -24,7 +27,7 @@ public class MergeItem : MonoBehaviour
     {
         HasCharesctor = false;
 
-        _heroController = new HeroController();
+        _heroController = new HeroController(ShootSource, ATKSource);
         _length = GameManagers.Instance.Config.HeroBoxRadius;
         Log.D("position = " + _mPostion);
         //Log.D("word ps = " + Camera.main.WorldToScreenPoint(_mPostion));
