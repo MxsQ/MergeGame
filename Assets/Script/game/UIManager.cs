@@ -251,7 +251,7 @@ public class UIManager : MonoBehaviour
 
         // change bg
         var levelBG = GameManagers.Instance.LevelBG;
-        var bgIndex = level % 10 % levelBG.Length;
+        var bgIndex = level / 10 % levelBG.Length;
         GameBG.sprite = GameObject.Instantiate(levelBG[bgIndex]);
 
     }
