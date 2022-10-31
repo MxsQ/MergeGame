@@ -25,8 +25,8 @@ ARCHER_HP = "Archer-HP"
 ARCHER_ATK = "Archer-ATK"
 OUT_COINS = "OutCoins"
 
-TOTAL_LEVEL = 20
-TOTAL_HERO_LEVEL = 9;
+TOTAL_LEVEL = 100
+TOTAL_HERO_LEVEL = 9
 
 data = pd.read_excel("Value.xlsx")
 # print(data)
