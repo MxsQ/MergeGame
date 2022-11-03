@@ -153,6 +153,7 @@ public class GameManagers : MonoBehaviour
     private void BuildEvil(LevelScriptableObject levelConfig)
     {
         var dir = Application.dataPath + "/Resources/role/" + levelConfig.Dir + "/";
+        Debug.Log("build evile from " + dir);
         for (int i = 0; i < HeroConstance.LEVEL_SERIES_SIZE; i++)
         {
             string[] es = levelConfig.Evils[i].Split('-');

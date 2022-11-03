@@ -39,8 +39,8 @@ public class EvilManager : MonoBehaviour
         GameManagers.OnGameEnd += OnGameEnd;
         GameManagers.OnGameWin += () =>
         {
-            var scale = BloodBar.transform.localScale;
-            BloodBar.transform.localScale = new Vector3(0, scale.y, scale.z);
+            var sizeDate = BloodBar.rectTransform.sizeDelta;
+            BloodBar.rectTransform.sizeDelta = new Vector2(0, sizeDate.y);
         };
 
         LoadEvil();

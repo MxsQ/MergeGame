@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Assets.HeroEditor.Common.CharacterScripts;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using UnityEngine;
 
 public class MergeManager : MonoBehaviour
@@ -286,7 +287,7 @@ public class MergeManager : MonoBehaviour
         UIManager.Instance.ChangeArcherBtnShow();
         UIManager.Instance.ChangePlayerCoinsShow();
 
-        MergeItem cur = selectEmptyItem();
+        MergeItem cur = selectEmptyItem(true);
         cur?.setCharector(new CharactorData(getWorriorCharacterBy(0), HeroConstance.WORRIOR));
 
     }
@@ -322,16 +323,32 @@ public class MergeManager : MonoBehaviour
         return false;
     }
 
-    private MergeItem selectEmptyItem()
+    private MergeItem selectEmptyItem(bool fromRail = false)
     {
         MergeItem cur = null;
-        foreach (MergeItem t in mergeItems)
+        if (fromRail)
         {
-            if (!t.HasCharesctor)
+            for (int i = mergeItems.Length - 1; i >= 0; i--)
             {
-                cur = t;
+                if (!mergeItems[i].HasCharesctor)
+                {
+                    cur = mergeItems[i];
+                    break;
+                }
             }
         }
+        else
+        {
+            foreach (MergeItem t in mergeItems)
+            {
+                if (!t.HasCharesctor)
+                {
+                    cur = t;
+                    break;
+                }
+            }
+        }
+
         return cur;
     }
 

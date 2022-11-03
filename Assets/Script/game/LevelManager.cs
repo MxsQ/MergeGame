@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using OfficeOpenXml.Packaging.Ionic.Zlib;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -38,15 +39,21 @@ public class LevelManager
 
     private void OnGameWin()
     {
-        var record = GameManagers.Instance.PlayerRecored;
-        var before = record.Level / 10;
-        record.Level += 1;
-        var after = record.Level / 10;
+        //var record = GameManagers.Instance.PlayerRecored;
+        //var before = record.Level / 10;
+        //record.Level += 1;
+        //var after = record.Level / 10;
 
-        if (after > before)
-        {
-            GameManagers.Instance.BuildNextSeriesEvil(after);
-        }
+        //if (after > before)
+        //{
+        //    GameManagers.Instance.BuildNextSeriesEvil(after);
+        //}
+
+        var record = GameManagers.Instance.PlayerRecored;
+        var seriesInedx = record.Level / 10;
+        record.Level += 1;
+        GameManagers.Instance.BuildNextSeriesEvil(seriesInedx);
+
     }
 
     public float GetLevelCoins(int level)

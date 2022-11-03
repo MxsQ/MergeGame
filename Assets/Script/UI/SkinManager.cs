@@ -50,7 +50,18 @@ public class SkinManager : MonoBehaviour
 
     public void RefreshBooth()
     {
-        for (int i = 0; i < Booths.Length; i++)
+        var showIndex = 0;
+        var record = GameManagers.Instance.PlayerRecored;
+        if (SkinIndex == 1 || SkinIndex == 4)
+        {
+            showIndex = record.MaxArcherLevel;
+        }
+        else
+        {
+            showIndex = record.MaxWarriorLevel;
+        }
+
+        for (int i = 0; i <= showIndex; i++)
         {
             GameObject hero;
             if (_curSkin == RoleSkin.ARCHER_1 || _curSkin == RoleSkin.ARCHER_DEFAUL)
@@ -64,6 +75,12 @@ public class SkinManager : MonoBehaviour
             Booths[i].ShowRole(hero);
         }
 
+        for (int i = showIndex + 1; i < Booths.Length; i++)
+        {
+            Booths[i].Lock();
+        }
+
+        // change indicator
         for (int i = 0; i < Indicator.Length; i++)
         {
             if (i == SkinIndex)
@@ -100,7 +117,7 @@ public class SkinManager : MonoBehaviour
     public void OnShowNextSkin()
     {
         AudioManager.Instance.PlayClick();
-        if (SkinIndex >= Skins.Length)
+        if (SkinIndex >= Skins.Length - 1)
         {
             return;
         }

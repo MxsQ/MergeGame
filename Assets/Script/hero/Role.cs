@@ -13,6 +13,7 @@ public abstract class Role
     protected GameObject _parent;
     protected Vector3 _parentOriginPs;
     protected bool _isDestroy = false;
+    protected Vector3 _roleOffSet = new Vector3(0, -30, 0);
 
     protected float _changeTime = 0;
 
@@ -129,7 +130,7 @@ public class WarriorHero : Role
             return;
         }
 
-        var targetPs = enemy.Position();
+        var targetPs = enemy.Position() - _roleOffSet;
 
         //Debug.Log("my position=" + _character.gameObject.transform.position + "   target position=" + targetPs);
         if (boxCollider.bounds.Contains(targetPs))
@@ -375,7 +376,7 @@ public class ArcherHero : Role
         }
 
 
-        ArrowManager.Instance.Shoot(arrowObject, target, _data.ATK, Evil);
+        ArrowManager.Instance.Shoot(arrowObject, target, _data.ATK, Evil, _roleOffSet);
 
 
     }

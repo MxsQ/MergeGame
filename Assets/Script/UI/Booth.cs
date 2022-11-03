@@ -31,4 +31,17 @@ public class Booth : MonoBehaviour
         _role = role;
     }
 
+    public void Lock()
+    {
+        if (_role != null)
+        {
+            _role.transform.parent = null;
+            Destroy(_role);
+        }
+
+        SelectBG.SetActive(false);
+        LockBG.SetActive(true);
+        NormalBG.SetActive(false);
+    }
+
 }

@@ -119,6 +119,7 @@ public class UIManager : MonoBehaviour
         WarPage.SetActive(false);
         TopPanel.SetActive(false);
         HeroPanel.SetActive(false);
+        SkinEntrance.SetActive(false);
         SkinUI.Show();
     }
 
@@ -128,6 +129,7 @@ public class UIManager : MonoBehaviour
         WarPage.SetActive(true);
         TopPanel.SetActive(true);
         HeroPanel.SetActive(true);
+        SkinEntrance.SetActive(true);
         SkinUI.Hide();
     }
 

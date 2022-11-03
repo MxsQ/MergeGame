@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Assets.HeroEditor.Common.ExampleScripts;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -48,9 +50,9 @@ public class ArrowManager : MonoBehaviour
         }
     }
 
-    public void Shoot(GameObject arrow, Role target, int damage, bool fromEvil)
+    public void Shoot(GameObject arrow, Role target, int damage, bool fromEvil, Vector3 offset)
     {
-        _arrows.Add(new TheArrow(arrow, target, damage, fromEvil));
+        _arrows.Add(new TheArrow(arrow, target, damage, fromEvil, offset));
     }
 }
 
@@ -67,13 +69,13 @@ public class TheArrow
     private float _flyTime = 0;
     private Vector3 _speed;
 
-    public TheArrow(GameObject arrow, Role target, int damage, bool evil)
+    public TheArrow(GameObject arrow, Role target, int damage, bool evil, Vector3 offset)
     {
         Arrow = arrow;
         _damage = damage;
         _target = target;
         fromEvil = evil;
-        _targetPs = _target.Position();
+        _targetPs = _target.Position() - offset;
 
         var disV = _targetPs - arrow.transform.position;
         var x = (_targetPs.x - arrow.transform.position.x);
@@ -84,7 +86,7 @@ public class TheArrow
         _direction = disV.normalized;
 
         _maxFlyTime = dis / speed / speedFactory;
-        Debug.Log("distance=" + dis);
+        //Debug.Log("distance=" + dis);
         _speed = disV / _maxFlyTime;
 
 

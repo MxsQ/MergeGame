@@ -16,7 +16,7 @@ MonoBehaviour:
   HitText: {fileID: 8530535867252956275, guid: 5d0426a104f594ac8a5a5d12912b7665, type: 3}
   ArrowSizeScale: 40
   ArrowSpeedFactory: 2.5
-  ArrowSpeed: 180
+  ArrowSpeed: 250
   MoveSpeed: 180
   HeroBoxRadius: 100
   EvilMinBoxRadius: 100
