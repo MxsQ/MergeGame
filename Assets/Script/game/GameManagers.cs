@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -46,6 +47,8 @@ public class GameManagers : MonoBehaviour
     public static bool InGame;
     private bool _warFinish;
 
+    private string _resouseDir = "";
+
     public PlayerRecored PlayerRecored;
 
     public static GameManagers Instance
@@ -56,8 +59,13 @@ public class GameManagers : MonoBehaviour
     private void Awake()
     {
         //Application.targetFrameRate = 2;
-        _instance = this;
-        DontDestroyOnLoad(this);
+        if (_instance == null)
+        {
+            _instance = this;
+            DontDestroyOnLoad(this);
+        }
+
+        FullApplicationConfig();
 
         PlayerRecored = PlayerRecored.GetFromLocal();
         LevelManager.CreateManager();
@@ -72,7 +80,9 @@ public class GameManagers : MonoBehaviour
 
         _curWarriorSkin = SkinManager.Skins[PlayerRecored.WarriorSkinIndex];
         _curArcherSkin = SkinManager.Skins[PlayerRecored.ArcherSkinIndex];
+        //StartCoroutine(DeleyWork(5, () => SceneManager.LoadScene("GameScene", LoadSceneMode.Additive)));
         SceneManager.LoadScene("GameScene", LoadSceneMode.Single);
+
     }
 
     private IEnumerator DeleyWork(float delay, Action work)
@@ -80,6 +90,19 @@ public class GameManagers : MonoBehaviour
         yield return new WaitForSeconds(delay);
 
         work?.Invoke();
+    }
+
+    private void FullApplicationConfig()
+    {
+        //#if UNITY_ANDROID
+        //        //_resouseDir = Application.streamingAssetsPath;
+        //        _resouseDir = "jar:file://" + Application.dataPath + "!/assets";
+        //#endif
+
+        //#if UNITY_EDITOR
+        //        _resouseDir = Application.dataPath + "/Resources";
+        //#endif
+        _resouseDir = Application.streamingAssetsPath;
     }
 
     public Role FindEnemy(GameObject referencePs)
@@ -131,12 +154,15 @@ public class GameManagers : MonoBehaviour
             roles.Add(Instantiate(RoleCopyReference));
         }
 
-        var dir = Application.dataPath + "/Resources/role/" + skinConfig.Directory + "/";
+        //var dir = _resouseDir + "/role/" + skinConfig.Directory + "/";
+        var dir = "role/" + skinConfig.Directory + "/";
+
         for (int i = 0; i <= DataParser.MAX_ROLE_LEVEL; i++)
         {
             roles[i].gameObject.transform.position = new Vector3(10, 10, 0);
             Character c = roles[i].GetComponent<Character>();
-            fullCharacter(c, dir + skinConfig.Items[i] + ".json");
+            //fullCharacter(c, dir + skinConfig.Items[i] + ".json");
+            fullCharacter(c, dir + skinConfig.Items[i]);
             roles[i].gameObject.transform.SetParent(RoleHost.transform);
             roles[i].gameObject.SetActive(false);
             DontDestroyOnLoad(roles[i]);
@@ -152,7 +178,10 @@ public class GameManagers : MonoBehaviour
 
     private void BuildEvil(LevelScriptableObject levelConfig)
     {
-        var dir = Application.dataPath + "/Resources/role/" + levelConfig.Dir + "/";
+        //var dir = _resouseDir + "/role/" + levelConfig.Dir + "/";
+
+        var dir = "role/" + levelConfig.Dir + "/";
+
         Debug.Log("build evile from " + dir);
         for (int i = 0; i < HeroConstance.LEVEL_SERIES_SIZE; i++)
         {
@@ -170,7 +199,8 @@ public class GameManagers : MonoBehaviour
                 evil.gameObject.SetActive(false);
                 _evils.Add(key, evil);
                 Character c = evil.GetComponent<Character>();
-                fullCharacter(c, dir + key + ".json");
+                //fullCharacter(c, dir + key + ".json");
+                fullCharacter(c, dir + key);
 
                 DontDestroyOnLoad(evil);
             }
@@ -181,7 +211,21 @@ public class GameManagers : MonoBehaviour
 
     private void fullCharacter(Character character, string filePath)
     {
-        var roleJsonString = System.IO.File.ReadAllText(filePath);
+        //var roleJsonString = System.IO.File.ReadAllText(filePath);
+        //try
+        //{
+        //    character.SpriteCollection = Instantiate(RoleSpirteCollection.MegapackCollection);
+        //    character.FromJson(roleJsonString);
+        //}
+        //catch (Exception e)
+        //{
+        //    character.SpriteCollection = Instantiate(RoleSpirteCollection.FantasyCollection);
+        //    character.FromJson(roleJsonString);
+        //}
+
+        TextAsset ta = Resources.Load<TextAsset>(filePath);
+        byte[] rb = Encoding.UTF8.GetBytes(ta.text);
+        var roleJsonString = UTF8Encoding.UTF8.GetString(rb);
         try
         {
             character.SpriteCollection = Instantiate(RoleSpirteCollection.MegapackCollection);
@@ -192,7 +236,6 @@ public class GameManagers : MonoBehaviour
             character.SpriteCollection = Instantiate(RoleSpirteCollection.FantasyCollection);
             character.FromJson(roleJsonString);
         }
-
     }
 
     public GameObject GetWarriorCharacter(int level)

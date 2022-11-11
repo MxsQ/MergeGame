@@ -28,8 +28,15 @@ public class MergeItem : MonoBehaviour
         HasCharesctor = false;
 
         _heroController = new HeroController(ShootSource, ATKSource);
+        //Log.D("1");
+        //var Manager = GameManagers.Instance;
+        //Log.D("2");
         _length = GameManagers.Instance.Config.HeroBoxRadius;
-        Log.D("position = " + _mPostion);
+        //var config = Manager.Config;
+        //Log.D("3");
+        //_length = config.HeroBoxRadius;
+        //Log.D("4");
+        //Log.D("position = " + _mPostion);
         //Log.D("word ps = " + Camera.main.WorldToScreenPoint(_mPostion));
 
     }

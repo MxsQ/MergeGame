@@ -363,6 +363,7 @@ public class MergeManager : MonoBehaviour
         foreach (MergeItem i in mergeItems)
         {
             i.RefereshPosiont();
+            i.ShowEmptyBG();
             if (i.HasCharesctor)
             {
                 //i.MoveToOriginal();
@@ -412,6 +413,7 @@ public class MergeManager : MonoBehaviour
         record.ClearLayInfo();
         for (int i = 0; i < mergeItems.Length; i++)
         {
+            mergeItems[i].HideAllBG();
             var data = mergeItems[i].GetCharacterData();
             if (data == null)
             {

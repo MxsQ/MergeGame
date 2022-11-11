@@ -22,6 +22,7 @@ public class PlayerRecored
 
     public int WarriorSkinIndex = 0;
     public int ArcherSkinIndex = 1;
+    public string SkinStatus = "110000";
 
     private PlayerRecored() { }
 
@@ -60,6 +61,12 @@ public class PlayerRecored
         SaveToLocal();
     }
 
+    public void SaveNewSkinStatus(string status)
+    {
+        SkinStatus = status;
+        SaveToLocal();
+    }
+
     public void SaveToLocal()
     {
         LayJson = JsonConvert.SerializeObject(LayoutInfos);
@@ -81,6 +88,7 @@ public class PlayerRecored
         playerRecord.LayoutInfos = JsonConvert.DeserializeObject<Dictionary<int, LayInfo>>(playerRecord.LayJson);
         return playerRecord;
     }
+
 }
 
 [Serializable]

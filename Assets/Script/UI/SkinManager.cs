@@ -15,7 +15,13 @@ public class SkinManager : MonoBehaviour
     [SerializeField] Sprite SelectImg;
     [SerializeField] Sprite UnSelectImg;
 
+    [SerializeField] Sprite SkinInuseImg;
+    [SerializeField] Sprite SkinSelectImg;
+
     [SerializeField] Text SkinName;
+    [SerializeField] Image SelectBtn;
+    [SerializeField] Text SelectBtnText;
+    [SerializeField] Image RVForSkinBtn;
 
     private string[] _skinName = new string[] { "Padadin", "Elf Archer", "Assassin", "Berserker", "Undead Archer", "Cavalier" };
 
@@ -30,6 +36,7 @@ public class SkinManager : MonoBehaviour
 
     private RoleSkin _curSkin = RoleSkin.WARRIOR_DEFAUL;
     public int SkinIndex = 0;
+    private char _skinStatus = '0';
 
     public static SkinManager Instance
     {
@@ -94,6 +101,48 @@ public class SkinManager : MonoBehaviour
         }
 
         SkinName.text = _skinName[SkinIndex];
+        _skinStatus = record.SkinStatus[SkinIndex];
+        if (_skinStatus == '0')
+        {
+            SelectBtn.gameObject.SetActive(false);
+            RVForSkinBtn.gameObject.SetActive(true);
+        }
+        else
+        {
+            SelectBtn.gameObject.SetActive(true);
+            RVForSkinBtn.gameObject.SetActive(false);
+
+            if (_curSkin == RoleSkin.ARCHER_1 || _curSkin == RoleSkin.ARCHER_DEFAUL)
+            {
+                // check archer status
+                if (SkinIndex == record.ArcherSkinIndex)
+                {
+                    SelectBtn.sprite = GameObject.Instantiate<Sprite>(SkinInuseImg);
+                    SelectBtnText.text = "InUse";
+                }
+                else
+                {
+                    SelectBtn.sprite = GameObject.Instantiate<Sprite>(SkinSelectImg);
+                    SelectBtnText.text = "Select";
+                }
+            }
+            else
+            {
+                // check warriror status
+                if (SkinIndex == record.WarriorSkinIndex)
+                {
+                    SelectBtn.sprite = GameObject.Instantiate<Sprite>(SkinInuseImg);
+                    SelectBtnText.text = "InUse";
+                }
+                else
+                {
+                    SelectBtn.sprite = GameObject.Instantiate<Sprite>(SkinSelectImg);
+                    SelectBtnText.text = "Select";
+                }
+            }
+
+
+        }
     }
 
     public void Hide()
@@ -131,5 +180,20 @@ public class SkinManager : MonoBehaviour
     {
         GameManagers.Instance.InvokeSkinChange(Skins[SkinIndex]);
         UIManager.Instance.OnCloseSkinPageClick();
+    }
+
+    public void OnRVForSkin()
+    {
+        Ads.Instance.ShowRV(reward =>
+        {
+            if (reward)
+            {
+                var record = GameManagers.Instance.PlayerRecored;
+                string newStatus = record.SkinStatus;
+                newStatus = newStatus.Substring(0, SkinIndex) + "1" + newStatus.Substring(SkinIndex, newStatus.Length - SkinIndex - 1);
+                record.SaveNewSkinStatus(newStatus);
+                RefreshBooth();
+            }
+        });
     }
 }
