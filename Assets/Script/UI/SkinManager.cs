@@ -196,4 +196,11 @@ public class SkinManager : MonoBehaviour
             }
         });
     }
+
+    [System.Serializable]
+    public class Skin
+    {
+        [SerializeField] public RoleSkin ID;
+        [SerializeField] public GameObject[] skin;
+    }
 }

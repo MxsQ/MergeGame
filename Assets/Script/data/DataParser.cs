@@ -89,7 +89,7 @@ public class DataParser
 
         for (int i = 0; i < MAX_GAME_LEVEL; i++)
         {
-            Debug.Log("load " + i);
+            //Debug.Log("load " + i);
             gameData.LevelInfo[data.game[i].level] = data.game[i];
         }
 

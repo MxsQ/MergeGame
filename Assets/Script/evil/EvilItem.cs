@@ -24,8 +24,12 @@ public class EvilItem : MonoBehaviour
         _charecter = character;
         if (unit.type == HeroConstance.WORRIOR)
         {
+            //var level = GameManagers.Instance.PlayerRecored.Level;
+            //var ch = character.GetComponent<Character>();
+            //var data = LevelManager.Instance.GameData;
+            //var d = data.GetEvilWarriorData(level);
             _role = new EvilWarrior(character.GetComponent<Character>(),
-                        LevelManager.Instance.GameData.GetEvilWarriorData(GameManagers.Instance.PlayerRecored.Level));
+                       LevelManager.Instance.GameData.GetEvilWarriorData(GameManagers.Instance.PlayerRecored.Level));
         }
         else
         {
