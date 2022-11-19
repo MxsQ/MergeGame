@@ -99,13 +99,16 @@ public class WarriorHero : Role
 {
     private static int _attackRange = 90;
 
-    private BoxCollider2D boxCollider;
+    protected BoxCollider2D boxCollider;
 
     private float speed;
 
     public WarriorHero(Character character, RoleData data, Action shoot = null, Action atk = null) : base(character, data, shoot, atk)
     {
         boxCollider = _parent.GetComponent<BoxCollider2D>();
+        var boxSizeScale = GameManagers.Instance.Config.HeroCollideRadius;
+        boxCollider.size = new Vector2(boxSizeScale, boxSizeScale);
+
         speed = GameManagers.Instance.Config.MoveSpeed;
     }
 
@@ -407,6 +410,8 @@ public class EvilWarrior : WarriorHero
 {
     public EvilWarrior(Character character, RoleData data) : base(character, data)
     {
+        var boxSizeScale = GameManagers.Instance.Config.EvilCollideRadius;
+        boxCollider.size = new Vector2(boxSizeScale, boxSizeScale);
         Evil = true;
     }
 

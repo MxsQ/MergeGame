@@ -56,8 +56,7 @@ public class UIManager : MonoBehaviour
         ChangeArcherBtnShow();
         OnLevelChange(GameManagers.Instance.PlayerRecored.Level);
 
-
-        StartCoroutine(DelayWorkOnAwake());
+        AudioManager.Instance.PlayNormalBGAudio();
     }
 
     private IEnumerator DelayWorkOnAwake()

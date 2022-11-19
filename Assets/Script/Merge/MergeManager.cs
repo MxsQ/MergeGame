@@ -169,7 +169,7 @@ public class MergeManager : MonoBehaviour
             MergeItem mergeItem = item.GetComponentInChildren<MergeItem>();
             mergeItems[index] = mergeItem;
             item.transform.parent = HeroPs.transform;
-            item.transform.localPosition = new Vector3(0, itemSize * i + yOffset, 0);
+            item.transform.localPosition = new Vector3(-itemSize * .25f, itemSize * i + yOffset, 0);
         }
 
         for (int i = 0; i < 5; i++)
@@ -180,7 +180,7 @@ public class MergeManager : MonoBehaviour
             MergeItem mergeItem = item.GetComponentInChildren<MergeItem>();
             mergeItems[index] = mergeItem;
             item.transform.parent = HeroPs.transform;
-            item.transform.localPosition = new Vector3(itemSize * 1.5f, itemSize * i + yOffset, 0);
+            item.transform.localPosition = new Vector3(itemSize, itemSize * i + yOffset, 0);
         }
     }
 

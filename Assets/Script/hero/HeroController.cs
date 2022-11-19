@@ -13,14 +13,8 @@ public class HeroController
 
     private GameObject _characterHost;
 
-    private AudioSource ATKSource;
-    private AudioSource ShootSource;
-
-    public HeroController(AudioSource shootSource, AudioSource atkSource)
+    public HeroController()
     {
-        ATKSource = atkSource;
-        ShootSource = shootSource;
-
         GameManagers.OnGameStart += () =>
         {
             _inGame = true;
@@ -43,15 +37,21 @@ public class HeroController
         {
             _hero = new ArcherHero(data.Character.GetComponent<Character>(),
                 LevelManager.Instance.GameData.GetArcherData(data.Level),
-                () => { ShootSource.Play(); },
-                () => { ATKSource.Play(); });
+                () => { AudioManager.Instance.PlayShoot(); },
+                () =>
+                {
+                    AudioManager.Instance.PlayAttack();
+                });
         }
         else
         {
             _hero = new WarriorHero(data.Character.GetComponent<Character>(),
                 LevelManager.Instance.GameData.GetWarriorData(data.Level),
-                () => { ShootSource.Play(); },
-                () => { ATKSource.Play(); });
+                () => { AudioManager.Instance.PlayShoot(); },
+                () =>
+                {
+                    AudioManager.Instance.PlayAttack();
+                });
         }
     }
 
