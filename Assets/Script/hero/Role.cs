@@ -47,7 +47,6 @@ public abstract class Role
 
         int a = UnityEngine.Random.Range(0, 100);
         DieStatus = a > 50 ? CharacterState.DeathF : CharacterState.DeathB;
-
     }
 
     public abstract void Update();
@@ -195,6 +194,7 @@ public class WarriorHero : Role
 public class ArcherHero : Role
 {
     protected Sprite _arrow;
+    protected GameObject _arrowParent;
     private int _arrowIndex = 0;
     private int _armIndex = 0;
     private int weaponIndex = 3;
@@ -211,6 +211,7 @@ public class ArcherHero : Role
 
     public ArcherHero(Character character, RoleData data, Action shoot = null, Action atk = null) : base(character, data, shoot, atk)
     {
+        _arrowParent = GameManagers.Instance.Config.ArrowPlace;
         _arrow = character.Bow[_arrowIndex];
         _weapon = character.BodyRenderers[3].transform;
         CharacterBodySculptor sculptor = character.gameObject.GetComponent<CharacterBodySculptor>();
@@ -364,8 +365,17 @@ public class ArcherHero : Role
         //_arrow.gameObject.SetActive(true);
         var arrow = GameObject.Instantiate(_arrow);
 
-        var arrowObject = new GameObject();
-        SpriteRenderer spr = arrowObject.AddComponent(typeof(SpriteRenderer)) as SpriteRenderer;
+        //var arrowObject = new GameObject();
+        //SpriteRenderer spr = arrowObject.AddComponent(typeof(SpriteRenderer)) as SpriteRenderer;
+        //spr.sprite = arrow;
+        //spr.sortingOrder = 10;
+        //var rePosition = _arm.transform.position;
+        //arrowObject.transform.position = new Vector3(rePosition.x, rePosition.y, rePosition.z);
+        //var scale = GameManagers.Instance.Config.ArrowSizeScale;
+        //arrowObject.transform.localScale = new Vector3(scale, scale, 0);
+
+        var arrowObject = GameObject.Instantiate(_arrowParent);
+        SpriteRenderer spr = arrowObject.GetComponent<SpriteRenderer>();
         spr.sprite = arrow;
         spr.sortingOrder = 10;
         var rePosition = _arm.transform.position;
@@ -373,10 +383,15 @@ public class ArcherHero : Role
         var scale = GameManagers.Instance.Config.ArrowSizeScale;
         arrowObject.transform.localScale = new Vector3(scale, scale, 0);
 
+        TrailRenderer trail = arrowObject.GetComponentInChildren<TrailRenderer>();
+        trail.startWidth = 0.25f * scale;
+
+
         if (Evil)
         {
             arrowObject.transform.localScale = new Vector3(scale * 1.5f, scale * 1.5f, 0);
-        }
+            trail.startWidth = 0.25f * scale  * 1.5f;
+        } 
 
 
         ArrowManager.Instance.Shoot(arrowObject, target, _data.ATK, Evil, _roleOffSet);

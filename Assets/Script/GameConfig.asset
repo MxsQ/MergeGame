@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b3b48381a1cb4f678bf4dbd1ae42901, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: 
-  Arrow: {fileID: 1846010953453456, guid: 971d61eacf474871bfa0e3a415b5bb11, type: 3}
+  ArrowPlace: {fileID: 1846010953453456, guid: ee7e89d1d06565a40b8b374426b18f72, type: 3}
   HitText: {fileID: 8530535867252956275, guid: 5d0426a104f594ac8a5a5d12912b7665, type: 3}
   ArrowSizeScale: 40
   ArrowSpeedFactory: 2.5

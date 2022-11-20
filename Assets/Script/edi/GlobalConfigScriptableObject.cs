@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class GlobalConfigScriptableObject : ScriptableObject
 {
     [Header("War Widget")]
-    public GameObject Arrow;
+    public GameObject ArrowPlace;
     public GameObject HitText;
 
     [Header("War Property")]
