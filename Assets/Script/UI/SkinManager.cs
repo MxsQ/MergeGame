@@ -201,6 +201,6 @@ public class SkinManager : MonoBehaviour
     public class Skin
     {
         [SerializeField] public RoleSkin ID;
-        [SerializeField] public GameObject[] skin;
+        [SerializeField] public Sprite[] skin;
     }
 }

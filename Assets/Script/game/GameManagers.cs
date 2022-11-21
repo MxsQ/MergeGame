@@ -25,7 +25,7 @@ public class GameManagers : MonoBehaviour
 
     [SerializeField] public Sprite[] LevelBG;
 
-    [SerializeField] public Skin[] SkinPrefabs;
+    [SerializeField] public Skin[] SkinImage;
 
     private RoleSkin _curWarriorSkin = RoleSkin.WARRIOR_DEFAUL;
     private RoleSkin _curArcherSkin = RoleSkin.ARCHER_DEFAUL;
@@ -140,11 +140,11 @@ public class GameManagers : MonoBehaviour
     public GameObject GetWarriorCharacter(int level, RoleSkin skin)
     {
         GameObject warrior = null;
-        for (int i = 0; i < SkinPrefabs.Length; i++)
+        for (int i = 0; i < SkinImage.Length; i++)
         {
-            if (skin == SkinPrefabs[i].ID)
+            if (skin == SkinImage[i].ID)
             {
-                warrior = Instantiate(SkinPrefabs[i].skin[level]);
+                //warrior = Instantiate(SkinImage[i].skin[level]);
             }
         }
 
@@ -160,11 +160,11 @@ public class GameManagers : MonoBehaviour
     public GameObject GetArcherCharacter(int level, RoleSkin skin)
     {
         GameObject archer = null;
-        for (int i = 0; i < SkinPrefabs.Length; i++)
+        for (int i = 0; i < SkinImage.Length; i++)
         {
-            if (skin == SkinPrefabs[i].ID)
+            if (skin == SkinImage[i].ID)
             {
-                archer = Instantiate(SkinPrefabs[i].skin[level]);
+                //archer = Instantiate(SkinImage[i].skin[level]);
             }
         }
 
