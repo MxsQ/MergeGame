@@ -25,7 +25,7 @@ public class GameManagers : MonoBehaviour
 
     [SerializeField] public Sprite[] LevelBG;
 
-    [SerializeField] public Skin[] SkinImage;
+    [SerializeField] public Skin[] HeroSkin;
 
     private RoleSkin _curWarriorSkin = RoleSkin.WARRIOR_DEFAUL;
     private RoleSkin _curArcherSkin = RoleSkin.ARCHER_DEFAUL;
@@ -131,6 +131,19 @@ public class GameManagers : MonoBehaviour
     public void RegisterEnemy(Role enemy) => _enmey.Add(enemy);
     public void UnRegisterEnemy(Role enemy) => _enmey.Remove(enemy);
 
+    public Skin GetSkin(RoleSkin skin)
+    {
+        Skin target = null;
+        foreach (Skin s in HeroSkin)
+        {
+            if (s.ID == skin)
+            {
+                target = s;
+            }
+        }
+        return target;
+    }
+
 
     public GameObject GetWarriorCharacter(int level)
     {
@@ -140,11 +153,12 @@ public class GameManagers : MonoBehaviour
     public GameObject GetWarriorCharacter(int level, RoleSkin skin)
     {
         GameObject warrior = null;
-        for (int i = 0; i < SkinImage.Length; i++)
+        for (int i = 0; i < HeroSkin.Length; i++)
         {
-            if (skin == SkinImage[i].ID)
+            if (skin == HeroSkin[i].ID)
             {
-                //warrior = Instantiate(SkinImage[i].skin[level]);
+                warrior = Instantiate(HeroSkin[i].prefab[level]);
+                break;
             }
         }
 
@@ -160,11 +174,12 @@ public class GameManagers : MonoBehaviour
     public GameObject GetArcherCharacter(int level, RoleSkin skin)
     {
         GameObject archer = null;
-        for (int i = 0; i < SkinImage.Length; i++)
+        for (int i = 0; i < HeroSkin.Length; i++)
         {
-            if (skin == SkinImage[i].ID)
+            if (skin == HeroSkin[i].ID)
             {
-                //archer = Instantiate(SkinImage[i].skin[level]);
+                archer = Instantiate(HeroSkin[i].prefab[level]);
+                break;
             }
         }
 

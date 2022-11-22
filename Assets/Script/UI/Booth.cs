@@ -1,47 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Booth : MonoBehaviour
 {
-    [SerializeField] GameObject NormalBG;
-    [SerializeField] GameObject SelectBG;
-    [SerializeField] GameObject LockBG;
-    [SerializeField] GameObject ShowPS;
+    [SerializeField] Image Showing;
+    [SerializeField] Sprite LockImage;
 
-    GameObject _role;
-
-    public void ShowRole(GameObject role)
+    public void ShowRole(Sprite role)
     {
-        if (_role != null)
-        {
-            _role.transform.parent = null;
-            Destroy(_role);
-        }
-
-        role.transform.parent = ShowPS.transform;
-        var ps = ShowPS.transform.position;
-        role.transform.position = new Vector3(ps.x, ps.y, ps.z);
-        role.transform.localScale = new Vector3(46, 46, 1);
-
-        SelectBG.SetActive(false);
-        LockBG.SetActive(false);
-        NormalBG.SetActive(true);
-
-        _role = role;
+        Showing.sprite = role;
+        Showing.gameObject.SetActive(true);
     }
 
     public void Lock()
     {
-        if (_role != null)
-        {
-            _role.transform.parent = null;
-            Destroy(_role);
-        }
-
-        SelectBG.SetActive(false);
-        LockBG.SetActive(true);
-        NormalBG.SetActive(false);
+        Showing.sprite = null;
     }
 
 }

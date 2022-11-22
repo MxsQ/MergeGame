@@ -59,6 +59,7 @@ public class SkinManager : MonoBehaviour
     {
         var showIndex = 0;
         var record = GameManagers.Instance.PlayerRecored;
+        var skinConfig = GameManagers.Instance.GetSkin(_curSkin);
         if (SkinIndex == 1 || SkinIndex == 4)
         {
             showIndex = record.MaxArcherLevel;
@@ -79,7 +80,7 @@ public class SkinManager : MonoBehaviour
             {
                 hero = GameManagers.Instance.GetWarriorCharacter(i, _curSkin);
             }
-            Booths[i].ShowRole(hero);
+            Booths[i].ShowRole(Instantiate(skinConfig.skin[i]));
         }
 
         for (int i = showIndex + 1; i < Booths.Length; i++)
@@ -151,6 +152,11 @@ public class SkinManager : MonoBehaviour
         UI.SetActive(false);
     }
 
+    public void OnItemClick(int index)
+    {
+
+    }
+
     public void OnShowPreSkin()
     {
         AudioManager.Instance.PlayClick();
@@ -201,6 +207,7 @@ public class SkinManager : MonoBehaviour
     public class Skin
     {
         [SerializeField] public RoleSkin ID;
+        [SerializeField] public GameObject[] prefab;
         [SerializeField] public Sprite[] skin;
     }
 }
