@@ -6,17 +6,19 @@ using UnityEngine.UI;
 public class Booth : MonoBehaviour
 {
     [SerializeField] Image Showing;
-    [SerializeField] Sprite LockImage;
+    [SerializeField] Image LockImg;
 
     public void ShowRole(Sprite role)
     {
         Showing.sprite = role;
         Showing.gameObject.SetActive(true);
+        LockImg.gameObject.SetActive(false);
     }
 
     public void Lock()
     {
-        Showing.sprite = null;
+        LockImg.gameObject.SetActive(true);
+        Showing.gameObject.SetActive(false);
     }
 
 }

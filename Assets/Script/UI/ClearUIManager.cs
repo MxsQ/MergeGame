@@ -23,7 +23,7 @@ public class ClearUIManager : MonoBehaviour
     [SerializeField] Sprite LoseBarImg;
     [SerializeField] Sprite LostStatusBG;
 
-
+    private bool _gainReward = false;
     private bool _inRoll = false;
     private float _palstance = 270;
     private float _roteAngle = 0;
@@ -32,6 +32,8 @@ public class ClearUIManager : MonoBehaviour
 
     private int[] _mutiples = new int[] { 6, 5, 4, 2, 4, 3, 6, 5, 4, 2, 3, 2 };
     private int indexSpan;
+    private float muiltRewardConis;
+    private bool reward;
 
     private void Update()
     {
@@ -45,8 +47,8 @@ public class ClearUIManager : MonoBehaviour
         Pointer.transform.RotateAround(WheelCenter.position, Vector3.forward, r);
 
         var tmpAnle = (_roteAngle + indexSpan / 2) % 360;
-        float rewardConis = _mutiples[(int)(tmpAnle / indexSpan)] * _waitAddCoins;
-        RewardCoinsText.text = TextUtils.GetCoinsStringWithUnitAndInt(rewardConis);
+        muiltRewardConis = _mutiples[(int)(tmpAnle / indexSpan)] * _waitAddCoins;
+        RewardCoinsText.text = TextUtils.GetCoinsStringWithUnitAndInt(muiltRewardConis);
     }
 
     private void Awake()
@@ -56,11 +58,19 @@ public class ClearUIManager : MonoBehaviour
 
     public void Hide(Action OnClose = null)
     {
+        if (_gainReward)
+        {
+            return;
+        }
+        _gainReward = true;
+
         _inRoll = false;
         _roteAngle = 0;
 
-        AudioManager.Instance.StopWheel();
+        _waitAddCoins = reward ? muiltRewardConis : _waitAddCoins;
+        reward = false;
 
+        AudioManager.Instance.StopWheel();
         AudioManager.Instance.PlayGetCoins();
 
         GameManagers.Instance.PlayerRecored.Coins += _waitAddCoins;
@@ -75,6 +85,8 @@ public class ClearUIManager : MonoBehaviour
 
     public void Show(bool win, float waitAddCoins)
     {
+        _gainReward = false;
+        reward = false;
         _waitAddCoins = waitAddCoins;
         if (win)
         {
@@ -112,6 +124,11 @@ public class ClearUIManager : MonoBehaviour
     public void OnRewardClick()
     {
         AudioManager.Instance.PlayClick();
+        Ads.Instance.ShowRV((theReward) =>
+        {
+            reward = theReward;
+            UIManager.Instance.OnNextClick();
+        });
     }
 
     private void ChangeGainCoinsShow(double coins)

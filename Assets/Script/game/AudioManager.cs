@@ -65,14 +65,14 @@ public class AudioManager : MonoBehaviour
         }
         LevelEndSource.clip = clip;
         LevelEndSource.Play();
-        LevelEndSource.volume = MasterVolumePercent * MaxMusicPercent;
+        LevelEndSource.volume = MasterVolumePercent * MaxMusicPercent * 0.7f;
 
         BGSource.Stop();
     }
 
     public void PlayFightBGAudio()
     {
-        BGSource.volume = MasterVolumePercent * MaxMusicPercent;
+        BGSource.volume = MasterVolumePercent * MaxMusicPercent * 0.8f;
         if (BGSource.isPlaying)
         {
             BGSource.Pause();
@@ -84,7 +84,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlayNormalBGAudio()
     {
-        BGSource.volume = MasterVolumePercent * MaxMusicPercent;
+        BGSource.volume = MasterVolumePercent * MaxMusicPercent * 0.8f;
         if (BGSource.isPlaying)
         {
             BGSource.Pause();

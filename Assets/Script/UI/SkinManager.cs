@@ -11,6 +11,7 @@ public class SkinManager : MonoBehaviour
     [SerializeField] GameObject UI;
     [SerializeField] Booth[] Booths;
     [SerializeField] Image[] Indicator;
+    [SerializeField] Transform Stage;
 
     [SerializeField] Sprite SelectImg;
     [SerializeField] Sprite UnSelectImg;
@@ -22,6 +23,8 @@ public class SkinManager : MonoBehaviour
     [SerializeField] Image SelectBtn;
     [SerializeField] Text SelectBtnText;
     [SerializeField] Image RVForSkinBtn;
+
+    GameObject _curShowRole;
 
     private string[] _skinName = new string[] { "Padadin", "Elf Archer", "Assassin", "Berserker", "Undead Archer", "Cavalier" };
 
@@ -142,8 +145,9 @@ public class SkinManager : MonoBehaviour
                 }
             }
 
-
         }
+
+        OnItemClick(0);
     }
 
     public void Hide()
@@ -154,7 +158,25 @@ public class SkinManager : MonoBehaviour
 
     public void OnItemClick(int index)
     {
+        if (_curShowRole != null)
+        {
+            Destroy(_curShowRole);
+        }
 
+        GameObject role = null;
+        if (_curSkin == RoleSkin.ARCHER_1 || _curSkin == RoleSkin.ARCHER_DEFAUL)
+        {
+            role = GameManagers.Instance.GetArcherCharacter(index, _curSkin);
+        }
+        else
+        {
+            role = GameManagers.Instance.GetWarriorCharacter(index, _curSkin);
+        }
+        var roleT = role.gameObject.transform;
+        roleT.parent = Stage;
+        roleT.localScale = new Vector3(135, 15, 0);
+        roleT.localPosition = new Vector3(0, 0, 0);
+        _curShowRole = role;
     }
 
     public void OnShowPreSkin()

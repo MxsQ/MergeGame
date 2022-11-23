@@ -24,11 +24,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] SkinManager SkinUI;
 
     [SerializeField] Image[] Dots;
+    [SerializeField] Sprite[] BossLogoImage;
     [SerializeField] Sprite InProgressDot;
     [SerializeField] Sprite PassProgressDot;
     [SerializeField] Sprite UnreachProgressDot;
+    [SerializeField] Image BossLogo;
     [SerializeField] SpriteRenderer GameBG;
-
 
     private bool _inGame;
     private int _curLevel;
@@ -253,6 +254,6 @@ public class UIManager : MonoBehaviour
         var levelBG = GameManagers.Instance.LevelBG;
         var bgIndex = level / 10 % levelBG.Length;
         GameBG.sprite = GameObject.Instantiate(levelBG[bgIndex]);
-
+        BossLogo.sprite = Instantiate(BossLogoImage[bgIndex]);
     }
 }

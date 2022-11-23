@@ -65,17 +65,7 @@ public class EvilManager : MonoBehaviour
         }
     }
 
-    //private void CreateEvil()
-    //{
-    //    var minScale = GameManagers.Instance.Config.EvilMinBoxRadius;
-    //    GameObject evil = GameObject.Instantiate(Evil);
-    //    evil.transform.parent = EvilMid1.gameObject.transform;
-    //    evil.transform.localScale = new Vector3(minScale, minScale, 1);
-    //    evil.transform.localEulerAngles = new Vector3(0, -180, 0);
-    //    evil.transform.localPosition = new Vector3(0, -100, 0);
 
-    //    e1 = evil;
-    //}
 
     private void OnGameEnd()
     {
@@ -86,18 +76,14 @@ public class EvilManager : MonoBehaviour
 
     private void OnGameStart()
     {
-        //EvilMid1.set(e1);
-        //var scale = BloodBar.transform.localScale;
-        //BloodBar.transform.localScale = new Vector3(_bloodBarSize, scale.y, scale.z);
-
-        //var sizeDate = BloodBar.rectTransform.sizeDelta;
-        //BloodBar.rectTransform.sizeDelta = new Vector2(_bloodBarSize , sizeDate.y);
+        //EvilMid1.MakeReady();
+        //EvilMid2.MakeReady();
+        //EvilBig1.MakeReady();
     }
 
     private void MakeEvilReady()
     {
-        //EvilMid1.RebuildEviel();
-        //CreateEvil();
+
     }
 
     public void OnEvilBeHit()

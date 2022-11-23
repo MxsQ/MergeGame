@@ -71,17 +71,18 @@ public class PlayerRecored
     {
         LayJson = JsonConvert.SerializeObject(LayoutInfos);
         string json = JsonUtility.ToJson(this);
-        //Debug.Log("cur json :" + json);
+        Debug.Log("cur json :" + json);
         PlayerPrefs.SetString(RECORD, json);
     }
 
     public static PlayerRecored GetFromLocal()
     {
         string json = PlayerPrefs.GetString(RECORD, "");
-        Debug.Log("local json: " + json);
+        //Debug.Log("local json: " + json);
         if (json.Length <= 0)
         {
-            return new PlayerRecored();
+            //return new PlayerRecored();
+            json = "{\"Level\":1,\"Coins\":0.0,\"WarriorCount\":0,\"ArcherCount\":0,\"MaxWarriorLevel\":0,\"MaxArcherLevel\":0,\"LayJson\":\"{\\\"2\\\":{\\\"Index\\\":2,\\\"Level\\\":0,\\\"Type\\\":2},\\\"12\\\":{\\\"Index\\\":12,\\\"Level\\\":0,\\\"Type\\\":1}}\",\"WarriorSkinIndex\":0,\"ArcherSkinIndex\":1,\"SkinStatus\":\"110000\"}";
         }
 
         PlayerRecored playerRecord = JsonUtility.FromJson<PlayerRecored>(json);

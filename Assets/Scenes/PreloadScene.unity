@@ -339,7 +339,11 @@ PrefabInstance:
       objectReference: {fileID: 411990215}
     - target: {fileID: 2653177045253091458, guid: 39daab49c991bd5489021a97ec88574d, type: 3}
       propertyPath: MaxMusicPercent
-      value: 0.7
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2653177045253091458, guid: 39daab49c991bd5489021a97ec88574d, type: 3}
+      propertyPath: SfxVolumePercent
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2653177045253091458, guid: 39daab49c991bd5489021a97ec88574d, type: 3}
       propertyPath: MasterVolumePercent

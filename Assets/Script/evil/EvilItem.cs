@@ -44,6 +44,11 @@ public class EvilItem : MonoBehaviour
         _role.GetReady();
     }
 
+    public void MakeReady()
+    {
+        _role?.GetReady();
+    }
+
     public void Reset()
     {
         gameObject.transform.position = _originPs;
