@@ -59,6 +59,7 @@ public class EvilItem : MonoBehaviour
             _role.Destroy();
             Destroy(_charecter);
             _charecter = null;
+            _role = null;
         }
     }
 
@@ -85,7 +86,7 @@ public class EvilItem : MonoBehaviour
     public void LateUpdate()
     {
 
-        if (!GameManagers.InGame || _role == null)
+        if (!GameManagers.InGame || _role == null || _role.Death)
         {
             return;
         }

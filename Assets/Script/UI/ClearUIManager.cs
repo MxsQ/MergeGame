@@ -124,6 +124,9 @@ public class ClearUIManager : MonoBehaviour
     public void OnRewardClick()
     {
         AudioManager.Instance.PlayClick();
+        AudioManager.Instance.StopWheel();
+        _inRoll = false;
+
         Ads.Instance.ShowRV((theReward) =>
         {
             reward = theReward;

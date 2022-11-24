@@ -522,7 +522,7 @@ MonoBehaviour:
   - Enemy1: {fileID: 8474517506581141542, guid: e940ee4e375bb4d0393482aaaac7279d, type: 3}
     Enemy2: {fileID: 0}
   - Enemy1: {fileID: 8474517506581141542, guid: c40c583a9791a40e4861b87c52a8d42d, type: 3}
-    Enemy2: {fileID: 8474517506581141542, guid: c40c583a9791a40e4861b87c52a8d42d, type: 3}
+    Enemy2: {fileID: 0}
   - Enemy1: {fileID: 8474517506581141542, guid: 9091dfe87c4b24a668e15a23ec06f211, type: 3}
     Enemy2: {fileID: 0}
   - Enemy1: {fileID: 8474517506581141542, guid: ae289f1e6f05f433cb93b600bd4e17df, type: 3}

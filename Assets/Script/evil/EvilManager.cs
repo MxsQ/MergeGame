@@ -54,6 +54,7 @@ public class EvilManager : MonoBehaviour
         EvilBig1.Reset();
 
         List<EnemyUnit> es = LevelManager.Instance.GetLevelEvils();
+        Debug.Log("Load eveil");
         if (es.Count == 2)
         {
             EvilMid1.set(es[0]);
@@ -103,6 +104,12 @@ public class EvilManager : MonoBehaviour
         int curHP = EvilMid1.GetRoleHP();
         curHP += EvilMid2.GetRoleHP();
         curHP += EvilBig1.GetRoleHP();
+
+        //if(EvilMid2)
+
+        //Debug.Log("maxHP=" + maxHP + "  curHP=" + curHP
+        //    + " m1=" + EvilMid1.GetRoleHP() + " m2=" + EvilMid2.GetRoleHP() + " big=" + EvilBig1.GetRoleHP()); ;
+
         float percent = curHP * 1.0f / maxHP;
 
         return percent;

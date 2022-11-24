@@ -73,7 +73,7 @@ public class HeroController
 
     public void LateUpdate()
     {
-        if (!_inGame || _hero == null)
+        if (!_inGame || _hero == null || _hero.Death)
         {
             return;
         }

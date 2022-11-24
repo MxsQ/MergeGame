@@ -96,22 +96,38 @@ public class LevelManager : MonoBehaviour
         var enemy2 = gameManager.GetEvil(levelInfo.Enemy2, scale);
 
         List<EnemyUnit> es = new List<EnemyUnit>();
-        bool hasWarrior = !IsArcher(enemy1);
-        bool hasArcher = false;
+        bool e1IsWarrior = !IsArcher(enemy1);
+        bool e2IsWarrior = false;
 
         EnemyUnit unit1 = new EnemyUnit();
         unit1.o = enemy1;
-        unit1.type = hasWarrior ? HeroConstance.WORRIOR : HeroConstance.ARCHER;
+        unit1.type = e1IsWarrior ? HeroConstance.WORRIOR : HeroConstance.ARCHER;
         es.Add(unit1);
 
         if (enemy2 != null)
         {
-            hasArcher = IsArcher(enemy2);
+            e2IsWarrior = !IsArcher(enemy2);
             EnemyUnit unit2 = new EnemyUnit();
             unit2.o = enemy2;
-            unit2.type = hasArcher ? HeroConstance.ARCHER : HeroConstance.WORRIOR;
+            unit2.type = e2IsWarrior ? HeroConstance.WORRIOR : HeroConstance.ARCHER;
             es.Add(unit2);
         }
+
+        var hasArcher = false;
+        var hasWarrior = false;
+
+        if (enemy2 == null)
+        {
+            hasArcher = !e1IsWarrior;
+            hasWarrior = e1IsWarrior;
+        }
+        else
+        {
+            hasArcher = !e1IsWarrior || !e2IsWarrior;
+            hasWarrior = e1IsWarrior || e2IsWarrior;
+        }
+
+        Debug.Log("es1 is warrior=" + e1IsWarrior + " es2 is warrior=" + (!e2IsWarrior));
 
         RefreshFactor(es, hasArcher, hasWarrior);
 
@@ -122,6 +138,7 @@ public class LevelManager : MonoBehaviour
     private void RefreshFactor(List<EnemyUnit> es, bool hasArcher, bool hasWarrior)
     {
         var gameManager = GameManagers.Instance;
+        //Debug.Log("evil count = " + es.Count);
         if (es.Count > 1)
         {
             if (hasArcher && hasWarrior)
@@ -129,7 +146,7 @@ public class LevelManager : MonoBehaviour
                 _curLevelFactor.EvilWarriorHPFactor = gameManager.Config.EvilWarriorHPFacotr;
                 _curLevelFactor.EvilWarriorATKFactor = gameManager.Config.EvilWarriorATKFactor;
                 _curLevelFactor.EvilArcherHPFactor = gameManager.Config.EvilArcherHPFactor;
-                _curLevelFactor.EvilWarriorATKFactor = gameManager.Config.EvilArcherATKFactor;
+                _curLevelFactor.EvilArcherATKFactor = gameManager.Config.EvilArcherATKFactor;
             }
             else if (hasWarrior)
             {
@@ -142,15 +159,28 @@ public class LevelManager : MonoBehaviour
                 _curLevelFactor.EvilWarriorATKFactor = gameManager.Config.EvilArcherATKFactor;
             }
         }
+        else
+        {
+            _curLevelFactor.EvilWarriorHPFactor = 1f;
+            _curLevelFactor.EvilWarriorATKFactor = 1f;
+            _curLevelFactor.EvilArcherHPFactor = 1f;
+            _curLevelFactor.EvilArcherATKFactor = 1f;
+        }
+        Debug.Log("evil factor: wHP="
+            + _curLevelFactor.EvilWarriorHPFactor
+            + " wATK=" + _curLevelFactor.EvilWarriorATKFactor
+            + " aHP=" + _curLevelFactor.EvilArcherHPFactor
+            + " aATK=" + _curLevelFactor.EvilArcherATKFactor);
     }
 
     private bool IsArcher(GameObject gameObject)
     {
         Character character = gameObject.GetComponentInChildren<Character>();
-        if (character.WeaponType == WeaponType.Melee1H
-            || character.WeaponType == WeaponType.Melee2H
-            || character.WeaponType == WeaponType.MeleePaired
-            || character.WeaponType == WeaponType.Supplies)
+        //if (character.WeaponType == WeaponType.Melee1H
+        //    || character.WeaponType == WeaponType.Melee2H
+        //    || character.WeaponType == WeaponType.MeleePaired
+        //    || character.WeaponType == WeaponType.Supplies)
+        if (character.WeaponType != WeaponType.Bow)
         {
             return false;
         }

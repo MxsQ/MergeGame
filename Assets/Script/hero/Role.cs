@@ -29,6 +29,10 @@ public abstract class Role
     protected CharacterState DieStatus;
     protected bool Evil = false;
 
+    public bool Death
+    {
+        get { return _die; }
+    }
 
     public Role(Character character, RoleData data, Action shoot = null, Action atk = null)
     {
@@ -390,8 +394,8 @@ public class ArcherHero : Role
         if (Evil)
         {
             arrowObject.transform.localScale = new Vector3(scale * 1.5f, scale * 1.5f, 0);
-            trail.startWidth = 0.25f * scale  * 1.5f;
-        } 
+            trail.startWidth = 0.25f * scale * 1.5f;
+        }
 
 
         ArrowManager.Instance.Shoot(arrowObject, target, _data.ATK, Evil, _roleOffSet);
