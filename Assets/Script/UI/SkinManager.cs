@@ -1,5 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +12,8 @@ public class SkinManager : MonoBehaviour
     [SerializeField] Booth[] Booths;
     [SerializeField] Image[] Indicator;
     [SerializeField] Transform Stage;
+    [SerializeField] Transform Stub;
+    [SerializeField] Transform StageLight;
 
     [SerializeField] Sprite SelectImg;
     [SerializeField] Sprite UnSelectImg;
@@ -25,6 +27,7 @@ public class SkinManager : MonoBehaviour
     [SerializeField] Image RVForSkinBtn;
 
     GameObject _curShowRole;
+
 
     private string[] _skinName = new string[] { "Padadin", "Elf Archer", "Assassin", "Berserker", "Undead Archer", "Cavalier" };
 
@@ -74,15 +77,6 @@ public class SkinManager : MonoBehaviour
 
         for (int i = 0; i <= showIndex; i++)
         {
-            GameObject hero;
-            if (_curSkin == RoleSkin.ARCHER_1 || _curSkin == RoleSkin.ARCHER_DEFAUL)
-            {
-                hero = GameManagers.Instance.GetArcherCharacter(i, _curSkin);
-            }
-            else
-            {
-                hero = GameManagers.Instance.GetWarriorCharacter(i, _curSkin);
-            }
             Booths[i].ShowRole(Instantiate(skinConfig.skin[i]));
         }
 
@@ -172,11 +166,14 @@ public class SkinManager : MonoBehaviour
         {
             role = GameManagers.Instance.GetWarriorCharacter(index, _curSkin);
         }
+        Stage.position = new Vector3(Stub.position.x, Stub.position.y, 0);
         var roleT = role.gameObject.transform;
         roleT.parent = Stage;
-        roleT.localScale = new Vector3(135, 15, 0);
-        roleT.localPosition = new Vector3(0, 0, 0);
+        roleT.localScale = new Vector3(135, 135, 0);
+        roleT.position = new Vector3(Stub.position.x, Stub.position.y - 40, 0);
         _curShowRole = role;
+
+        StageLight.position = new Vector3(Stub.position.x, Stub.position.y, 0);
     }
 
     public void OnShowPreSkin()

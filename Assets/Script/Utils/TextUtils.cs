@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TextUtils
 {
-    private static string[] _coinUnit = new string[] { "", "K", "M", "G", "T", "P", "E" };
+    private static string[] _coinUnit = new string[] { "", "K", "M", "G", "T", "P", "E", "Z", "Y" };
 
     public static string GetCoinStringWithUnit(double coin)
     {

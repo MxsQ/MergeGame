@@ -9,6 +9,11 @@ public class FakeAdManager : IADManager
     {
     }
 
+    public void onEvent(string msg)
+    {
+
+    }
+
     public void ShowRV(Action<bool> OnComplete)
     {
         OnComplete?.Invoke(true);

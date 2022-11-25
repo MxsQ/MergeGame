@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Ads : MonoBehaviour, IADManager
 {
+
     private static Ads _instance;
 
     public static Ads Instance
@@ -17,8 +18,13 @@ public class Ads : MonoBehaviour, IADManager
     private void Awake()
     {
         _instance = this;
-        _ad = new FakeAdManager();
+        //#if UNITY_ANDROID
+        _ad = new AndroidAdManager();
+        //#else
+        //_ad = new FakeAdManager();
+        //#endif
         _ad.Initialize();
+        DontDestroyOnLoad(this);
     }
 
     public void Initialize()
@@ -29,5 +35,10 @@ public class Ads : MonoBehaviour, IADManager
     public void ShowRV(Action<bool> OnComplete)
     {
         _ad.ShowRV(OnComplete);
+    }
+
+    public void onEvent(string msg)
+    {
+        _ad.onEvent(msg);
     }
 }

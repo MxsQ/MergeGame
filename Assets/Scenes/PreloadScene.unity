@@ -311,6 +311,7 @@ MonoBehaviour:
     WarriorSkinIndex: 0
     ArcherSkinIndex: 1
     SkinStatus: 110000
+  DeathPosition: []
 --- !u!4 &61911666
 Transform:
   m_ObjectHideFlags: 0
@@ -628,7 +629,7 @@ MonoBehaviour:
   - Enemy1: {fileID: 8474517506581141542, guid: ae289f1e6f05f433cb93b600bd4e17df, type: 3}
     Enemy2: {fileID: 0}
   - Enemy1: {fileID: 8474517506581141542, guid: ad9dc32fcb81544ed806f2d50bd27220, type: 3}
-    Enemy2: {fileID: 0}
+    Enemy2: {fileID: 8474517506581141542, guid: ad9dc32fcb81544ed806f2d50bd27220, type: 3}
   - Enemy1: {fileID: 8474517506581141542, guid: 31cbb52817be545739076ee853f34306, type: 3}
     Enemy2: {fileID: 0}
   - Enemy1: {fileID: 8474517506581141542, guid: 1e65177381d404b85bf5b9c3839fc6e2, type: 3}
@@ -638,7 +639,7 @@ MonoBehaviour:
   - Enemy1: {fileID: 8474517506581141542, guid: 0565e9c33dd7542a9952079d86019bb7, type: 3}
     Enemy2: {fileID: 8474517506581141542, guid: 568ec440a9df64c25a8ec0f9a2122438, type: 3}
   - Enemy1: {fileID: 8474517506581141542, guid: 8682dc54c0b6d47b180750e95dd6c45c, type: 3}
-    Enemy2: {fileID: 0}
+    Enemy2: {fileID: 8474517506581141542, guid: c5b5ebd59a96c477dbdee1ea7fb21bbb, type: 3}
 --- !u!4 &399791756
 Transform:
   m_ObjectHideFlags: 0
@@ -791,7 +792,7 @@ GameObject:
   - component: {fileID: 452358122}
   - component: {fileID: 452358123}
   m_Layer: 0
-  m_Name: AdsManager
+  m_Name: MGAdsBridgeObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,8 +1,6 @@
 ﻿using Assets.HeroEditor.Common.CharacterScripts;
-using Assets.HeroEditor.Common.CharacterScripts.Firearms;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Information;
 using System;
-using System.Net.NetworkInformation;
+using System.Collections;
 using UnityEngine;
 
 
@@ -42,7 +40,7 @@ public abstract class Role
         _parentOriginPs = _parent.transform.position;
         character.GetReady();
         //Register();
-        _atkSpand = 1.0f + (UnityEngine.Random.Range(0, 30) - 15) * 1.0f / 100;
+        _atkSpand = 1.0f + (-UnityEngine.Random.Range(0, 15)) * 1.0f / 100;
         //Debug.Log("cahracter atk spand = " + _atkSpand);
         _curHP = data.HP;
 
@@ -81,13 +79,79 @@ public abstract class Role
 
     public virtual void BeHit(int damage)
     {
+        if (_die)
+        {
+            return;
+        }
         _curHP -= damage;
         if (_curHP <= 0)
         {
             _die = true;
             OnDie();
+            if (!Evil)
+            {
+                GameManagers.Instance.StartCoroutine(DeathAnim());
+            }
         }
 
+    }
+
+    IEnumerator DeathAnim()
+    {
+        float maxOffset = 250f;
+        float yOffset = UnityEngine.Random.Range(-maxOffset, maxOffset);
+
+        float xOffset = -UnityEngine.Random.Range(Mathf.Abs(yOffset), maxOffset * 2);
+
+
+        float curTime = Time.time;
+        float maxTime = curTime + 0.5f;
+        float deltaTime = 0f;
+
+        Vector3 originPs = _character.gameObject.transform.position;
+        Vector3 desPs = new Vector3(originPs.x + xOffset, originPs.y + yOffset, originPs.z);
+
+        while (IsOverLayOnDeath(new Vector2(desPs.x, desPs.y)))
+        {
+
+            originPs = _character.gameObject.transform.position;
+            desPs = new Vector3(originPs.x + xOffset, originPs.y + yOffset, originPs.z);
+        }
+;
+
+        yield return new WaitForSeconds(.2f);
+
+        while (curTime < maxTime)
+        {
+            curTime = Time.time;
+            deltaTime += Time.deltaTime;
+            Vector3 newPs = Vector3.Lerp(originPs, desPs, deltaTime);
+            _character.gameObject.transform.position = newPs;
+            yield return null;
+        }
+    }
+
+    private bool IsOverLayOnDeath(Vector2 ps)
+    {
+        var re = GameManagers.Instance.DeathPosition;
+        if (re.Count >= 8)
+        {
+            return false;
+        }
+
+        bool overlay = false;
+        foreach (Vector2 v in re)
+        {
+            float x = ps.x - v.x;
+            float y = ps.y - v.y;
+            if (x * x + y * y < 625)
+            {
+                overlay = true;
+                break;
+            }
+        }
+        re.Add(ps);
+        return overlay;
     }
 
     public int GetCurHP() { return _curHP; }
@@ -248,6 +312,11 @@ public class ArcherHero : Role
             return;
         }
 
+        if (!Evil)
+        {
+            Debug.Log("111111");
+        }
+
         _hasShootTarget = true;
         _nextShootTarget = target.Position();
 
@@ -298,8 +367,6 @@ public class ArcherHero : Role
             RotateArm(_arm, _weapon, _arm.position + 1000 * Vector3.right, -40, 40);
         }
     }
-
-
 
 
     private float AngleToTarget;
@@ -381,7 +448,7 @@ public class ArcherHero : Role
         var arrowObject = GameObject.Instantiate(_arrowParent);
         SpriteRenderer spr = arrowObject.GetComponent<SpriteRenderer>();
         spr.sprite = arrow;
-        spr.sortingOrder = 10;
+        spr.sortingOrder = 600;
         var rePosition = _arm.transform.position;
         arrowObject.transform.position = new Vector3(rePosition.x, rePosition.y, rePosition.z);
         var scale = GameManagers.Instance.Config.ArrowSizeScale;
@@ -399,8 +466,6 @@ public class ArcherHero : Role
 
 
         ArrowManager.Instance.Shoot(arrowObject, target, _data.ATK, Evil, _roleOffSet);
-
-
     }
 
     protected override Role findTarget()
@@ -420,6 +485,7 @@ public class ArcherHero : Role
 
     public override void OnDie()
     {
+        _character.Animator.SetInteger("Charge", 0);
         GameManagers.Instance.OnHeroDeath(this);
         //_character.SetState(CharacterState.DeathF);
     }
@@ -432,6 +498,7 @@ public class EvilWarrior : WarriorHero
         var boxSizeScale = GameManagers.Instance.Config.EvilCollideRadius;
         boxCollider.size = new Vector2(boxSizeScale, boxSizeScale);
         Evil = true;
+        _atkSpand = 1.0f + (UnityEngine.Random.Range(0, 10) - 10) * 1.0f / 100; ;
     }
 
     protected override Role findTarget()
@@ -468,6 +535,7 @@ public class EvilArcher : ArcherHero
     public EvilArcher(Character character, RoleData data) : base(character, data)
     {
         Evil = true;
+        _atkSpand = 1.0f + (UnityEngine.Random.Range(0, 10) - 10) * 1.0f / 100;
     }
 
     protected override Role findTarget()

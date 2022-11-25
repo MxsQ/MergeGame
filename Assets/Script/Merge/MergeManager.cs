@@ -276,7 +276,7 @@ public class MergeManager : MonoBehaviour
     {
         var record = GameManagers.Instance.PlayerRecored;
         var price = LevelManager.Instance.GetRolePriceBy(record.WarriorCount);
-        if (price > record.Coins && HasPosition())
+        if (price > record.Coins || !HasPosition())
         {
             return;
         }
@@ -296,7 +296,7 @@ public class MergeManager : MonoBehaviour
     {
         var record = GameManagers.Instance.PlayerRecored;
         var price = LevelManager.Instance.GetRolePriceBy(record.ArcherCount);
-        if (price > record.Coins && HasPosition())
+        if (price > record.Coins || !HasPosition())
         {
             return;
         }

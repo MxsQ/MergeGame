@@ -49,6 +49,7 @@ public class GameManagers : MonoBehaviour
     private string _resouseDir = "";
 
     public PlayerRecored PlayerRecored;
+    public List<Vector2> DeathPosition = new List<Vector2>();
 
     public static GameManagers Instance
     {
@@ -224,6 +225,7 @@ public class GameManagers : MonoBehaviour
         OnGameEnd.Invoke();
         InvokeLevelChange();
         PlayerRecored.SaveToLocal();
+        DeathPosition.Clear();
     }
 
     public void InvokeGameWin()

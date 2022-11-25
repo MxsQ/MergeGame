@@ -71,7 +71,7 @@ public class PlayerRecored
     {
         LayJson = JsonConvert.SerializeObject(LayoutInfos);
         string json = JsonUtility.ToJson(this);
-        Debug.Log("cur json :" + json);
+        //Debug.Log("cur json :" + json);
         PlayerPrefs.SetString(RECORD, json);
     }
 
@@ -84,6 +84,7 @@ public class PlayerRecored
             //return new PlayerRecored();
             json = "{\"Level\":1,\"Coins\":0.0,\"WarriorCount\":0,\"ArcherCount\":0,\"MaxWarriorLevel\":0,\"MaxArcherLevel\":0,\"LayJson\":\"{\\\"2\\\":{\\\"Index\\\":2,\\\"Level\\\":0,\\\"Type\\\":2},\\\"12\\\":{\\\"Index\\\":12,\\\"Level\\\":0,\\\"Type\\\":1}}\",\"WarriorSkinIndex\":0,\"ArcherSkinIndex\":1,\"SkinStatus\":\"110000\"}";
         }
+        //json = "{\"Level\":69,\"Coins\":0,\"WarriorCount\":209,\"ArcherCount\":210,\"MaxWarriorLevel\":8,\"MaxArcherLevel\":8,\"LayJson\":\"{\\\"0\\\":{\\\"Index\\\":0,\\\"Level\\\":1,\\\"Type\\\":2},\\\"2\\\":{\\\"Index\\\":2,\\\"Level\\\":4,\\\"Type\\\":2},\\\"3\\\":{\\\"Index\\\":3,\\\"Level\\\":6,\\\"Type\\\":2},\\\"4\\\":{\\\"Index\\\":4,\\\"Level\\\":7,\\\"Type\\\":2},\\\"11\\\":{\\\"Index\\\":11,\\\"Level\\\":0,\\\"Type\\\":1},\\\"12\\\":{\\\"Index\\\":12,\\\"Level\\\":4,\\\"Type\\\":1},\\\"13\\\":{\\\"Index\\\":13,\\\"Level\\\":6,\\\"Type\\\":1},\\\"14\\\":{\\\"Index\\\":14,\\\"Level\\\":7,\\\"Type\\\":1}}\",\"WarriorSkinIndex\":0,\"ArcherSkinIndex\":1,\"SkinStatus\":\"110000\"}";
 
         PlayerRecored playerRecord = JsonUtility.FromJson<PlayerRecored>(json);
         playerRecord.LayoutInfos = JsonConvert.DeserializeObject<Dictionary<int, LayInfo>>(playerRecord.LayJson);
