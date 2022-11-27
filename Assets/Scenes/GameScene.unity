@@ -9045,7 +9045,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2092136747
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9082,7 +9082,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a91e743e3fdbc740b122f9d352a03b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DevMode: 0
+  DevMode: 1
   GameDataUI: {fileID: 2092136746}
   WarriorCountText: {fileID: 1917874381}
   ArcherCountText: {fileID: 765639655}

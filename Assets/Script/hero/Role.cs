@@ -40,7 +40,7 @@ public abstract class Role
         _parentOriginPs = _parent.transform.position;
         character.GetReady();
         //Register();
-        _atkSpand = 1.0f + (-UnityEngine.Random.Range(0, 15)) * 1.0f / 100;
+        _atkSpand = 1.0f + (-UnityEngine.Random.Range(-15, 15)) * 1.0f / 100;
         //Debug.Log("cahracter atk spand = " + _atkSpand);
         _curHP = data.HP;
 
@@ -535,7 +535,7 @@ public class EvilArcher : ArcherHero
     public EvilArcher(Character character, RoleData data) : base(character, data)
     {
         Evil = true;
-        _atkSpand = 1.0f + (UnityEngine.Random.Range(0, 10) - 10) * 1.0f / 100;
+        _atkSpand = 1.0f + (UnityEngine.Random.Range(-5, 5)) * 1.0f / 100;
     }
 
     protected override Role findTarget()
