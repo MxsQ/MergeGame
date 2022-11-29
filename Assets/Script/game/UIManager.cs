@@ -75,7 +75,15 @@ public class UIManager : MonoBehaviour
 
     public void OnAddWarriorByRewardClick()
     {
+        Ads.Instance.report("RewardWarrior");
         AudioManager.Instance.PlayClick();
+        Ads.Instance.ShowNativeRv((reward) =>
+        {
+            if (reward)
+            {
+                MergeManager.Instance.OnAddWarriorByReward();
+            }
+        });
     }
 
     public void OnAddArcherClick()
@@ -86,7 +94,15 @@ public class UIManager : MonoBehaviour
 
     public void OnAddArcherByRewardClick()
     {
+        Ads.Instance.report("RewardArcher");
         AudioManager.Instance.PlayClick();
+        Ads.Instance.ShowNativeRv((reward) =>
+        {
+            if (reward)
+            {
+                MergeManager.Instance.OnAddArcherByReward();
+            }
+        });
     }
 
 

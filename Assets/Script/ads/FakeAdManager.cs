@@ -14,6 +14,11 @@ public class FakeAdManager : IADManager
 
     }
 
+    public void ShowNativeRv(Action<bool> OnComplete)
+    {
+        OnComplete?.Invoke(true);
+    }
+
     public void ShowRV(Action<bool> OnComplete)
     {
         OnComplete?.Invoke(true);

@@ -17,7 +17,7 @@ public class RewardVideo : IAndroidAd
         Debug.Log("Reward Video deal with: " + ad.adEvent);
         if (ad.adEvent == LOAD_FAILED_EVENT)
         {
-            GameManagers.Instance.StartCoroutine(TryReload());
+            GameManagers.Instance.StartCoroutine(TryReload(15f));
         }
         else if (ad.adEvent == SHOW_FAILED_EVENT)
         {
@@ -28,6 +28,7 @@ public class RewardVideo : IAndroidAd
         {
             OnComplete?.Invoke(_reward);
             OnComplete = null;
+            GameManagers.Instance.StartCoroutine(TryReload(2f));
         }
         else if (ad.adEvent == REWARD_EVENT)
         {
@@ -36,7 +37,7 @@ public class RewardVideo : IAndroidAd
                 : r.Equals("true") ? true
                 : r.Equals("false") ? false
                 : false;
-            _reward = true;
+
         }
     }
 
@@ -45,9 +46,9 @@ public class RewardVideo : IAndroidAd
         _javaclass = javaClass;
     }
 
-    IEnumerator TryReload()
+    IEnumerator TryReload(float deley)
     {
-        yield return new WaitForSeconds(15f);
+        yield return new WaitForSeconds(deley);
 
         load();
     }

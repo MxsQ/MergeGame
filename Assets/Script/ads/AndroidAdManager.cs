@@ -26,7 +26,7 @@ public class AndroidAdManager : IADManager
     public const string SPLASH = "splash";
 
     public RewardVideo _rewardVideo;
-
+    private NativeAd _nativeRv;
 
     private AndroidJavaClass _AdsBridge;
     private Dictionary<string, AdAction> adActions = new Dictionary<string, AdAction>();
@@ -45,11 +45,14 @@ public class AndroidAdManager : IADManager
             _rewardVideo = new RewardVideo();
             _rewardVideo.SetJavaClass(_AdsBridge);
             _rewardVideo.load();
+
+            _nativeRv = new NativeAd();
+            _nativeRv.SetJavaClass(_AdsBridge);
         }
         catch (Exception e)
         {
-            Console.WriteLine($"»ñÈ¡javaÀà´íÀ² {e.Message}");
-            Debug.Log($"»ñÈ¡javaÀà´íÀ² {e.Message}");
+            Console.WriteLine($"ï¿½ï¿½È¡javaï¿½ï¿½ï¿½ï¿½ï¿½ {e.Message}");
+            Debug.Log($"ï¿½ï¿½È¡javaï¿½ï¿½ï¿½ï¿½ï¿½ {e.Message}");
         }
     }
 
@@ -67,6 +70,11 @@ public class AndroidAdManager : IADManager
     public void ShowRV(Action<bool> OnComplete)
     {
         _rewardVideo.show(OnComplete);
+    }
+
+    public void ShowNativeRv(Action<bool> OnComplete)
+    {
+        _nativeRv.show(OnComplete);
     }
 
     public interface IAndroidAd

@@ -33,7 +33,7 @@ public class ClearUIManager : MonoBehaviour
     private int[] _mutiples = new int[] { 6, 5, 4, 2, 4, 3, 6, 5, 4, 2, 3, 2 };
     private int indexSpan;
     private float muiltRewardConis;
-    private bool reward;
+    private bool rewardByVideo;
 
     private void Update()
     {
@@ -67,8 +67,8 @@ public class ClearUIManager : MonoBehaviour
         _inRoll = false;
         _roteAngle = 0;
 
-        _waitAddCoins = reward ? muiltRewardConis : _waitAddCoins;
-        reward = false;
+        _waitAddCoins = rewardByVideo ? muiltRewardConis : _waitAddCoins;
+        rewardByVideo = false;
 
         AudioManager.Instance.StopWheel();
         AudioManager.Instance.PlayGetCoins();
@@ -86,7 +86,7 @@ public class ClearUIManager : MonoBehaviour
     public void Show(bool win, float waitAddCoins)
     {
         _gainReward = false;
-        reward = false;
+        rewardByVideo = false;
         _waitAddCoins = waitAddCoins;
         if (win)
         {
@@ -123,13 +123,14 @@ public class ClearUIManager : MonoBehaviour
 
     public void OnRewardClick()
     {
+        Ads.Instance.report("RewardCoins");
         AudioManager.Instance.PlayClick();
         AudioManager.Instance.StopWheel();
         _inRoll = false;
 
         Ads.Instance.ShowRV((theReward) =>
         {
-            reward = theReward;
+            rewardByVideo = theReward;
             UIManager.Instance.OnNextClick();
         });
     }

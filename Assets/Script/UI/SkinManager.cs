@@ -209,6 +209,7 @@ public class SkinManager : MonoBehaviour
 
     public void OnRVForSkin()
     {
+        Ads.Instance.report("GetSkin_" + SkinIndex);
         Ads.Instance.ShowRV(reward =>
         {
             if (reward)

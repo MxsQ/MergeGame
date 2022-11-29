@@ -312,10 +312,10 @@ public class ArcherHero : Role
             return;
         }
 
-        if (!Evil)
-        {
-            Debug.Log("111111");
-        }
+        //if (!Evil)
+        //{
+        //    Debug.Log("111111");
+        //}
 
         _hasShootTarget = true;
         _nextShootTarget = target.Position();

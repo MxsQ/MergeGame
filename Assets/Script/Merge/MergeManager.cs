@@ -272,6 +272,13 @@ public class MergeManager : MonoBehaviour
         return new Vector2(0, 0);
     }
 
+    private void ChangeButtonShow()
+    {
+        UIManager.Instance.ChangeWarriorBtnShow();
+        UIManager.Instance.ChangeArcherBtnShow();
+        UIManager.Instance.ChangePlayerCoinsShow();
+    }
+
     public void OnAddWarriorClick()
     {
         var record = GameManagers.Instance.PlayerRecored;
@@ -283,13 +290,22 @@ public class MergeManager : MonoBehaviour
 
         record.Coins -= price;
         record.WarriorCount += 1;
-        UIManager.Instance.ChangeWarriorBtnShow();
-        UIManager.Instance.ChangeArcherBtnShow();
-        UIManager.Instance.ChangePlayerCoinsShow();
+        ChangeButtonShow();
 
         MergeItem cur = selectEmptyItem(true);
         cur?.setCharector(new CharactorData(getWorriorCharacterBy(0), HeroConstance.WORRIOR));
+    }
 
+    public void OnAddWarriorByReward()
+    {
+        if (!HasPosition())
+        {
+            return;
+        }
+        var record = GameManagers.Instance.PlayerRecored;
+        record.WarriorCount += 1;
+        MergeItem cur = selectEmptyItem(true);
+        cur?.setCharector(new CharactorData(getWorriorCharacterBy(0), HeroConstance.WORRIOR));
     }
 
     public void OnAddArcherClick()
@@ -303,11 +319,21 @@ public class MergeManager : MonoBehaviour
 
         record.Coins -= price;
         record.ArcherCount += 1;
-        UIManager.Instance.ChangeArcherBtnShow();
-        UIManager.Instance.ChangeWarriorBtnShow();
-        UIManager.Instance.ChangePlayerCoinsShow();
+        ChangeButtonShow();
 
         MergeItem cur = selectEmptyItem();
+        cur?.setCharector(new CharactorData(getArcherCharacterBy(0), HeroConstance.ARCHER));
+    }
+
+    public void OnAddArcherByReward()
+    {
+        if (!HasPosition())
+        {
+            return;
+        }
+        var record = GameManagers.Instance.PlayerRecored;
+        record.ArcherCount += 1;
+        MergeItem cur = selectEmptyItem(true);
         cur?.setCharector(new CharactorData(getArcherCharacterBy(0), HeroConstance.ARCHER));
     }
 

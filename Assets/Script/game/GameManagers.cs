@@ -214,6 +214,7 @@ public class GameManagers : MonoBehaviour
     {
         _warFinish = false;
         InGame = true;
+        Ads.Instance.report("game_start_" + PlayerRecored.Level);
         OnGameStart.Invoke();
     }
 
@@ -231,12 +232,14 @@ public class GameManagers : MonoBehaviour
     public void InvokeGameWin()
     {
         Debug.Log("win.");
+        Ads.Instance.report("game_win_" + PlayerRecored.Level);
         OnGameWin.Invoke();
     }
 
     public void InvokeGameFaild()
     {
         Debug.Log("Faild.");
+        Ads.Instance.report("game_failed_" + PlayerRecored.Level);
         OnGameFaild.Invoke();
     }
 
