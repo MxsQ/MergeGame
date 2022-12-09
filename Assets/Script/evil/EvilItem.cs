@@ -72,10 +72,9 @@ public class EvilItem : MonoBehaviour
         //}
     }
 
-
-    private void Update()
+    public void DoUpdate()
     {
-        if (!GameManagers.InGame || _role == null)
+        if (_role == null)
         {
             return;
         }
@@ -83,10 +82,9 @@ public class EvilItem : MonoBehaviour
         _role.Update();
     }
 
-    public void LateUpdate()
+    public void DoLateUpdate()
     {
-
-        if (!GameManagers.InGame || _role == null || _role.Death)
+        if (_role == null || _role.Death)
         {
             return;
         }
@@ -95,9 +93,7 @@ public class EvilItem : MonoBehaviour
         {
             ((ArcherHero)_role).LateUpdate();
         }
-
     }
-
 
 
     public int GetRoleHP()

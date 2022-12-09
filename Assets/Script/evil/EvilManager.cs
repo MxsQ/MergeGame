@@ -66,7 +66,25 @@ public class EvilManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (GameManagers.InGame)
+        {
+            EvilMid1.DoUpdate();
+            EvilMid2.DoUpdate();
+            EvilBig1.DoUpdate();
+        }
+    }
 
+    private void LateUpdate()
+    {
+        if (GameManagers.InGame)
+        {
+            EvilMid1.DoLateUpdate();
+            EvilMid2.DoLateUpdate();
+            EvilBig1.DoLateUpdate();
+        }
+    }
 
     private void OnGameEnd()
     {
@@ -80,11 +98,6 @@ public class EvilManager : MonoBehaviour
         //EvilMid1.MakeReady();
         //EvilMid2.MakeReady();
         //EvilBig1.MakeReady();
-    }
-
-    private void MakeEvilReady()
-    {
-
     }
 
     public void OnEvilBeHit()

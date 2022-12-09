@@ -12,4 +12,9 @@ public interface IADManager
     public void ShowRV(Action<bool> OnComplete);
 
     public void ShowNativeRv(Action<bool> OnComplete);
+
+    public void ShowInterstitial();
+
+    public void ShowNativeInterstial();
+
 }

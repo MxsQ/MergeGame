@@ -35,6 +35,8 @@ public class ClearUIManager : MonoBehaviour
     private float muiltRewardConis;
     private bool rewardByVideo;
 
+    private bool showInterstitial;
+
     private void Update()
     {
         if (!_inRoll)
@@ -80,11 +82,16 @@ public class ClearUIManager : MonoBehaviour
         {
             FinishPanel.SetActive(false);
             OnClose?.Invoke();
+            if (showInterstitial)
+            {
+                Ads.Instance.ShowInterstitial();
+            }
         }));
     }
 
     public void Show(bool win, float waitAddCoins)
     {
+        showInterstitial = true;
         _gainReward = false;
         rewardByVideo = false;
         _waitAddCoins = waitAddCoins;
@@ -127,6 +134,7 @@ public class ClearUIManager : MonoBehaviour
         AudioManager.Instance.PlayClick();
         AudioManager.Instance.StopWheel();
         _inRoll = false;
+        showInterstitial = false;
 
         Ads.Instance.ShowRV((theReward) =>
         {

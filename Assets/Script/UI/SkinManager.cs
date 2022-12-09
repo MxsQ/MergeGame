@@ -26,6 +26,12 @@ public class SkinManager : MonoBehaviour
     [SerializeField] Text SelectBtnText;
     [SerializeField] Image RVForSkinBtn;
 
+    [SerializeField] GameObject LeftIndicator;
+    [SerializeField] GameObject RightIndicator;
+    [SerializeField] Image LeftOutline;
+    [SerializeField] Image RightOutline;
+    [SerializeField] Sprite[] OutlineImg;
+
     GameObject _curShowRole;
 
 
@@ -141,6 +147,20 @@ public class SkinManager : MonoBehaviour
 
         }
 
+
+        int leftOutlineIndex = SkinIndex - 1;
+        int rightOutlineIndex = SkinIndex + 1;
+        if (SkinIndex == 0)
+        {
+            leftOutlineIndex = Skins.Length - 1;
+        }
+        else if (SkinIndex == Skins.Length - 1)
+        {
+            rightOutlineIndex = 0;
+        }
+        LeftOutline.sprite = Instantiate<Sprite>(OutlineImg[leftOutlineIndex]);
+        RightOutline.sprite = Instantiate<Sprite>(OutlineImg[rightOutlineIndex]);
+
         OnItemClick(0);
     }
 
@@ -152,24 +172,39 @@ public class SkinManager : MonoBehaviour
 
     public void OnItemClick(int index)
     {
+
+        GameObject role = null;
+        if (_curSkin == RoleSkin.ARCHER_1 || _curSkin == RoleSkin.ARCHER_DEFAUL)
+        {
+            var record = GameManagers.Instance.PlayerRecored;
+            if (record.MaxArcherLevel < index)
+            {
+                return;
+            }
+
+            role = GameManagers.Instance.GetArcherCharacter(index, _curSkin);
+
+        }
+        else
+        {
+            var record = GameManagers.Instance.PlayerRecored;
+            if (record.MaxWarriorLevel < index)
+            {
+                return;
+            }
+
+            role = GameManagers.Instance.GetWarriorCharacter(index, _curSkin);
+        }
         if (_curShowRole != null)
         {
             Destroy(_curShowRole);
         }
 
-        GameObject role = null;
-        if (_curSkin == RoleSkin.ARCHER_1 || _curSkin == RoleSkin.ARCHER_DEFAUL)
-        {
-            role = GameManagers.Instance.GetArcherCharacter(index, _curSkin);
-        }
-        else
-        {
-            role = GameManagers.Instance.GetWarriorCharacter(index, _curSkin);
-        }
+
         Stage.position = new Vector3(Stub.position.x, Stub.position.y, 0);
         var roleT = role.gameObject.transform;
         roleT.parent = Stage;
-        roleT.localScale = new Vector3(135, 135, 0);
+        roleT.localScale = new Vector3(180, 180, 0);
         roleT.position = new Vector3(Stub.position.x, Stub.position.y - 40, 0);
         _curShowRole = role;
 
@@ -179,11 +214,12 @@ public class SkinManager : MonoBehaviour
     public void OnShowPreSkin()
     {
         AudioManager.Instance.PlayClick();
-        if (SkinIndex == 0)
-        {
-            return;
-        }
         SkinIndex--;
+        if (SkinIndex < 0)
+        {
+            SkinIndex = Skins.Length - 1;
+        }
+
         _curSkin = Skins[SkinIndex];
         RefreshBooth();
     }
@@ -191,11 +227,11 @@ public class SkinManager : MonoBehaviour
     public void OnShowNextSkin()
     {
         AudioManager.Instance.PlayClick();
-        if (SkinIndex >= Skins.Length - 1)
-        {
-            return;
-        }
         SkinIndex++;
+        if (SkinIndex > Skins.Length - 1)
+        {
+            SkinIndex = 0;
+        }
         _curSkin = Skins[SkinIndex];
         RefreshBooth();
     }

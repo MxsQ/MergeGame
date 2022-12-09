@@ -55,4 +55,14 @@ public class Ads : MonoBehaviour, IADManager
     {
         _ad.ShowNativeRv(OnComplete);
     }
+
+    public void ShowInterstitial()
+    {
+        _ad.ShowInterstitial();
+    }
+
+    public void ShowNativeInterstial()
+    {
+        _ad.ShowNativeInterstial();
+    }
 }

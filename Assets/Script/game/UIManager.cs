@@ -7,11 +7,11 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    [Header("War")]
     [SerializeField] GameObject WarPage;
     [SerializeField] GameObject HeroPanel;
     [SerializeField] GameObject TopPanel;
     [SerializeField] GameObject SkinEntrance;
-    [SerializeField] Text LevelText;
     [SerializeField] Text PlayerCoinsText;
     [SerializeField] GameObject AddWarriorByCoinView;
     [SerializeField] GameObject AddWarriorByRewardView;
@@ -19,17 +19,25 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject AddArcherByRewardView;
     [SerializeField] Text AddWarriorText;
     [SerializeField] Text AddArcherText;
+    [SerializeField] SpriteRenderer GameBG;
 
-    [SerializeField] ClearUIManager ClearUI;
-    [SerializeField] SkinManager SkinUI;
-
+    [Header("Level")]
+    [SerializeField] Text LevelText;
     [SerializeField] Image[] Dots;
+    [SerializeField] Sprite[] SecenImg;
     [SerializeField] Sprite[] BossLogoImage;
     [SerializeField] Sprite InProgressDot;
     [SerializeField] Sprite PassProgressDot;
     [SerializeField] Sprite UnreachProgressDot;
+    [SerializeField] Image BgLogo;
     [SerializeField] Image BossLogo;
-    [SerializeField] SpriteRenderer GameBG;
+
+    [Header("Function")]
+    [SerializeField] ClearUIManager ClearUI;
+    [SerializeField] SkinManager SkinUI;
+    [SerializeField] GameObject GuildUI;
+
+
 
     private bool _inGame;
     private int _curLevel;
@@ -58,6 +66,14 @@ public class UIManager : MonoBehaviour
         OnLevelChange(GameManagers.Instance.PlayerRecored.Level);
 
         AudioManager.Instance.PlayNormalBGAudio();
+    }
+
+    private void Start()
+    {
+        //if (GameManagers.Instance.PlayerRecored.Level == 1)
+        //{
+        //    OpenGuildUI();
+        //}
     }
 
     private IEnumerator DelayWorkOnAwake()
@@ -146,6 +162,16 @@ public class UIManager : MonoBehaviour
         HeroPanel.SetActive(true);
         SkinEntrance.SetActive(true);
         SkinUI.Hide();
+    }
+
+    public void OpenGuildUI()
+    {
+        GuildUI.SetActive(true);
+    }
+
+    public void CloseGuildUI()
+    {
+        GuildUI.SetActive(false);
     }
 
     private void OnGameStart()
@@ -271,5 +297,6 @@ public class UIManager : MonoBehaviour
         var bgIndex = level / 10 % levelBG.Length;
         GameBG.sprite = GameObject.Instantiate(levelBG[bgIndex]);
         BossLogo.sprite = Instantiate(BossLogoImage[bgIndex]);
+        BgLogo.sprite = Instantiate(SecenImg[bgIndex]);
     }
 }

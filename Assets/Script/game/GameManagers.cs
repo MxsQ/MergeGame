@@ -233,6 +233,10 @@ public class GameManagers : MonoBehaviour
     {
         Debug.Log("win.");
         Ads.Instance.report("game_win_" + PlayerRecored.Level);
+        StartCoroutine(DeleyWork(1, () =>
+        {
+            Ads.Instance.ShowNativeInterstial();
+        }));
         OnGameWin.Invoke();
     }
 
@@ -240,6 +244,10 @@ public class GameManagers : MonoBehaviour
     {
         Debug.Log("Faild.");
         Ads.Instance.report("game_failed_" + PlayerRecored.Level);
+        StartCoroutine(DeleyWork(1, () =>
+        {
+            Ads.Instance.ShowNativeInterstial();
+        }));
         OnGameFaild.Invoke();
     }
 

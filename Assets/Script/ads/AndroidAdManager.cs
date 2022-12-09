@@ -27,6 +27,7 @@ public class AndroidAdManager : IADManager
 
     public RewardVideo _rewardVideo;
     private NativeAd _nativeRv;
+    private InterstitialAd _interstitialAd;
 
     private AndroidJavaClass _AdsBridge;
     private Dictionary<string, AdAction> adActions = new Dictionary<string, AdAction>();
@@ -48,6 +49,9 @@ public class AndroidAdManager : IADManager
 
             _nativeRv = new NativeAd();
             _nativeRv.SetJavaClass(_AdsBridge);
+
+            _interstitialAd = new InterstitialAd();
+            _interstitialAd.load();
         }
         catch (Exception e)
         {
@@ -74,7 +78,17 @@ public class AndroidAdManager : IADManager
 
     public void ShowNativeRv(Action<bool> OnComplete)
     {
-        _nativeRv.show(OnComplete);
+        _nativeRv.Show(OnComplete);
+    }
+
+    public void ShowInterstitial()
+    {
+        _interstitialAd.show();
+    }
+
+    public void ShowNativeInterstial()
+    {
+        _nativeRv.ShowCenterNative();
     }
 
     public interface IAndroidAd

@@ -14,6 +14,16 @@ public class FakeAdManager : IADManager
 
     }
 
+    public void ShowInterstitial()
+    {
+
+    }
+
+    public void ShowNativeInterstial()
+    {
+
+    }
+
     public void ShowNativeRv(Action<bool> OnComplete)
     {
         OnComplete?.Invoke(true);
