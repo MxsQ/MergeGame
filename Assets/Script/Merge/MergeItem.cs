@@ -10,6 +10,7 @@ public class MergeItem : MonoBehaviour
 
     [SerializeField] SpriteRenderer EmptyBG;
     [SerializeField] SpriteRenderer OccupyBG;
+    [SerializeField] SpriteRenderer GuessBG;
     [SerializeField] SpriteRenderer Light;
 
     //[SerializeField] AudioSource ATKSource;
@@ -167,6 +168,7 @@ public class MergeItem : MonoBehaviour
         EmptyBG.SetActive(false);
         OccupyBG.SetActive(false);
         Light.SetActive(false);
+        GuessBG.SetActive(false);
     }
 
     public void ShowEmptyBG()
@@ -174,6 +176,7 @@ public class MergeItem : MonoBehaviour
         EmptyBG.SetActive(true);
         OccupyBG.SetActive(false);
         Light.SetActive(false);
+        GuessBG.SetActive(false);
     }
 
     public void ShowOcuppyBG()
@@ -181,6 +184,15 @@ public class MergeItem : MonoBehaviour
         EmptyBG.SetActive(false);
         OccupyBG.SetActive(true);
         Light.SetActive(false);
+        GuessBG.SetActive(false);
+    }
+
+    public void ShowGuessBG()
+    {
+        EmptyBG.SetActive(false);
+        OccupyBG.SetActive(false);
+        Light.SetActive(false);
+        GuessBG.SetActive(true);
     }
 
     public void ShowLight()

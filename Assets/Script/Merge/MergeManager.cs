@@ -18,6 +18,7 @@ public class MergeManager : MonoBehaviour
     private TOUCH_STATE _curTouchState = TOUCH_STATE.IDLE;
     private MergeItem _curItem;
     private MergeItem _aboveItem;
+    private MergeItem _guessItem;
 
     private bool _inGame;
 
@@ -74,10 +75,24 @@ public class MergeManager : MonoBehaviour
 
             _aboveItem?.HideLight();
             _aboveItem = newTarget;
-            if (_curItem != _aboveItem && _aboveItem != null && _curItem.canbeMerge(_aboveItem))
+
+            if (_curItem != _aboveItem && _aboveItem != null)
             {
-                _aboveItem.ShowLight();
+                if (!_aboveItem.HasCharesctor)
+                {
+                    _guessItem?.ShowEmptyBG();
+                    _aboveItem.ShowGuessBG();
+                    _guessItem = _aboveItem;
+                }
+
+                else if (_curItem.canbeMerge(_aboveItem))
+                {
+                    _guessItem?.ShowEmptyBG();
+                    _guessItem = null;
+                    _aboveItem.ShowLight();
+                }
             }
+
         }
         else if (_curTouchState == TOUCH_STATE.END)
         {
